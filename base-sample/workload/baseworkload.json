@@ -1,0 +1,23 @@
+{
+    "name": "baseworkload",
+    "task": [
+        {
+            "name": "basetask-authenticate"
+        },
+        {
+            "name": "$BLT-SLEEP"
+        }, 
+        {
+            "name": "basetask-validate",
+            "threshold-to-error": 50,
+            "threshold-to-fail": 60,
+            "continue-on-fail": true
+        },
+        {
+            "name": "basetask-logout",
+            "threshold-to-error": 45,
+            "threshold-to-fail": 600,
+            "continue-on-fail": false
+        }
+    ]
+}

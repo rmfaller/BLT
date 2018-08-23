@@ -1,0 +1,5 @@
+{
+    "name": "sleep",
+    "service-location-port" : ["$BLT-SLEEP"],
+    "sleep-time": 30
+}

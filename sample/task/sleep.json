@@ -1,0 +1,8 @@
+{
+    "taskname": "sleep",
+    "service-location-port" : "http://localhost:8080",
+    "header": {
+        "Content-Type": "application/json"
+    },
+    "url-endpoint": "$BLT-SLEEP"
+}

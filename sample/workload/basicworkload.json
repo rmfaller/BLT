@@ -1,0 +1,26 @@
+{
+    "name": "basicworkload",
+    "service-location-port": null,
+    "loading-style": null, 
+    "value-base": null,
+    "value-top": null,
+    "threshold": 800,
+    "threshold-hit-continue": false,
+    "maintain-connection": true,
+    "task": [
+        {
+            "name": "basetask-authenticate",
+            "threshold": 200,
+            "iteration": 2,
+            "continue-on-timeout": true,
+            "maintain-connection": true
+        },
+        {
+            "name": "basetask-logout",
+            "threshold": 100,
+            "iteration": 0,
+            "continue-on-timeout": false,
+            "maintain-connection": false
+        }
+    ]
+}

@@ -1,0 +1,13 @@
+{
+    "name": "basetask-authenticate",
+    "request": "POST",
+    "header": { 
+        "X-OpenAM-Username": "user.$BLT-RANDOM-NUMBER",
+        "X-OpenAM-Password": "$BLT-PASSWORD",
+        "Accept-API-Version": "resource=2.0, protocol=1.0",
+        "Content-Type": "application/json"
+    },
+    "url-endpoint": "/$BLT-AM-REALM/json/realms/root/",
+    "url-payload": "authenticate",
+    "data-payload": {}
+}

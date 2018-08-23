@@ -1,0 +1,10 @@
+{
+    "name": "basetask-logout",
+    "request": "POST",
+    "header": { 
+        "iplanetDirectoryPro" : "$BLT-TOKEN-PAYLOAD",
+        "Content-Type": "application/json"
+    },
+    "url-endpoint": "/$BLT-AM-REALM/json/sessions/",
+    "url-payload": "?_action=logout"
+}

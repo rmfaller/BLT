@@ -1,0 +1,39 @@
+{
+    "name": "basejob",
+    "load-generator": "this host",
+    "services-description": "base test",
+    "service-location-port": ["http://am0.example.com:8080", "http://am1.example.com:8080"],
+    "loading-style": "roundrobin, random, ha", 
+    "value-base": 0,
+    "value-top": 100000,
+    "run-thread": "parallel, serial",
+    "threshold-to-error": 545,
+    "threshold-to-fail": 600,
+    "continue-on-fail": false,
+    "workload": [
+        {
+            "name": "baseworkload",
+            "iteration": 10,
+            "start-delay": 0,
+            "threads": 2,
+            "thread-group-size": 2,
+            "thread-interval": 20,
+            "value-base": 10,
+            "value-top": 10000,
+            "threshold-to-error": 60,
+            "threshold-to-fail": 100,
+            "continue-on-fail": false
+        },
+        {
+            "name": "baseworkload",
+            "iteration": 0,
+            "start-delay": 0,
+            "threads": 1,
+            "thread-group-size": 2,
+            "thread-interval": 20,
+            "value-base": 10,
+            "value-top": 1000,
+            "threshold": 625
+        }
+    ]
+}
