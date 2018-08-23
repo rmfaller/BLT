@@ -52,7 +52,7 @@ class Worker extends Thread {
         this.reserved = reserved;
         JSONArray taska = (JSONArray) workloadconfig.get("task");
         for (int i = 0; i < taska.size(); i++) {
-            if ((((String) ((JSONObject) taska.get(i)).get("name")).compareTo("sleep")) != 0) {
+//            if ((((String) ((JSONObject) taska.get(i)).get("name")).compareTo("sleep")) != 0) {
 //                System.out.println("name=" + ((JSONObject) taska.get(i)).get("name").toString());
 /*                result.put(this.threadid + "-" + ((JSONObject) taska.get(i)).get("name").toString() + "-passed", 0);
                 result.put(this.threadid + "-" + ((JSONObject) taska.get(i)).get("name").toString() + "-passedtime", 0);
@@ -63,16 +63,16 @@ class Worker extends Thread {
                 result.put(this.threadid + "-" + ((JSONObject) taska.get(i)).get("name").toString() + "-threshold-to-error", getLong(i, "threshold-to-error"));
                 result.put(this.threadid + "-" + ((JSONObject) taska.get(i)).get("name").toString() + "-threshold-to-fail", getLong(i, "threshold-to-fail"));
                 result.put(this.threadid + "-" + ((JSONObject) taska.get(i)).get("name").toString() + "-skipped", 0); */
-                result.put(((JSONObject) taska.get(i)).get("name").toString() + "-passed", 0);
-                result.put(((JSONObject) taska.get(i)).get("name").toString() + "-passedtime", 0);
-                result.put(((JSONObject) taska.get(i)).get("name").toString() + "-failed", 0);
-                result.put(((JSONObject) taska.get(i)).get("name").toString() + "-failedtime", 0);
-                result.put(((JSONObject) taska.get(i)).get("name").toString() + "-exceeded", 0);
-                result.put(((JSONObject) taska.get(i)).get("name").toString() + "-exceededtime", 0);
-                result.put(((JSONObject) taska.get(i)).get("name").toString() + "-threshold-to-error", getLong(i, "threshold-to-error"));
-                result.put(((JSONObject) taska.get(i)).get("name").toString() + "-threshold-to-fail", getLong(i, "threshold-to-fail"));
-                result.put(((JSONObject) taska.get(i)).get("name").toString() + "-skipped", 0);
-            }
+            result.put(((JSONObject) taska.get(i)).get("name").toString() + "-passed", 0);
+            result.put(((JSONObject) taska.get(i)).get("name").toString() + "-passedtime", 0);
+            result.put(((JSONObject) taska.get(i)).get("name").toString() + "-failed", 0);
+            result.put(((JSONObject) taska.get(i)).get("name").toString() + "-failedtime", 0);
+            result.put(((JSONObject) taska.get(i)).get("name").toString() + "-exceeded", 0);
+            result.put(((JSONObject) taska.get(i)).get("name").toString() + "-exceededtime", 0);
+            result.put(((JSONObject) taska.get(i)).get("name").toString() + "-threshold-to-error", getLong(i, "threshold-to-error"));
+            result.put(((JSONObject) taska.get(i)).get("name").toString() + "-threshold-to-fail", getLong(i, "threshold-to-fail"));
+            result.put(((JSONObject) taska.get(i)).get("name").toString() + "-skipped", 0);
+//            }
         }
 //        if (workloadconfig.containsKey("maintain-connection")) {
 //            keepopen = (boolean) workloadconfig.get("maintain-connection");
@@ -107,7 +107,7 @@ class Worker extends Thread {
                         String urlstring = (String) slp.get(instance) + (String) taskconfig[index].get("url-endpoint") + (String) taskconfig[index].get("url-payload");
                         urlstring = replaceVariable(urlstring);
                         urlstring = updateReserved(index, urlstring, state);
-                        if ((getLong(index, "threshold-to-fail")) < getLong(index, "threshold-to-error")){
+                        if ((getLong(index, "threshold-to-fail")) < getLong(index, "threshold-to-error")) {
                             System.err.println("Fail threshold set lower than error threshold. Rookie mistake. Results will be inconclusive!");
                         }
                         taskstart = new Date().getTime();
@@ -170,7 +170,7 @@ class Worker extends Thread {
                             result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "-failed", 1);
                             if (getBoolean(index, "continue-on-fail")) {
                                 worked = true;
-                            } 
+                            }
                         }
                     } else {
                         result.addTo(this.threadid + "-" + ((JSONObject) taska.get(index)).get("name").toString() + "-skipped", 1);
@@ -178,6 +178,8 @@ class Worker extends Thread {
                 } else {
                     try {
                         Thread.sleep((Long) taskconfig[index].get("sleep-time"));
+                        result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "-passedtime", (Long) taskconfig[index].get("sleep-time"));
+                        result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "-passed", 1);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
                     }

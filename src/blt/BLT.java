@@ -126,13 +126,20 @@ public class BLT {
                         spinner.continueToRun = false;
                         System.out.println("..... done.");
                         if (csv) {
-                            System.out.println("job,thread,workload,task,");
                             for (int i = 0; i < result.length; i++) {
+                                System.out.print("job,thread,workload,task");
+                                String[] rattr = result[i][0].getAttributes();
+                                for (int j = 0; j < rattr.length; j++) {
+                                    System.out.print("," + rattr[j]);
+                                }
+                                System.out.println();
                                 for (int j = 0; j < result[i].length; j++) {
-                                    String[] rattr = result[i][j].getAttributes();
-                                    for (int x = 0; x < taska.size(); x++) {
-//                                        System.out.print(rattr[x] + "=" + result[i][j].get(rattr[x]));
-                                        System.out.println(jobconfig.get("name") + "," + result[i][j].uid + "," + workloadconfig[i].get("name") + "," + ((JSONObject) taska.get(x)).get("name"));
+                                    for (int k = 0; k < taska.size(); k++) {
+                                        System.out.print(jobconfig.get("name") + "," + result[i][j].uid + "," + workloadconfig[i].get("name") + "," + ((JSONObject) taska.get(k)).get("name"));
+                                        for (int l = 0; l < rattr.length; l++) {
+                                            System.out.print("," + result[i][j].get(rattr[l]));
+                                        }
+                                        System.out.println();
                                     }
                                 }
                                 System.out.println("===================================================");
@@ -153,6 +160,7 @@ public class BLT {
                 + "\noptions:"
                 + "\n\tif not specified [FILE] defaults to ${BLT_HOME}/sample/config.json\n"
                 + "\n\t[FILE] example: ${BLT_HOME}/mytest/myconfig.json\n"
+                + "\n\t--csv | -c displays results in a comma delimited format\n"
                 + "\n\t--help | -h this output\n"
                 + "\nExamples:"
                 + "";

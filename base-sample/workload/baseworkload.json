@@ -5,7 +5,7 @@
             "name": "basetask-authenticate"
         },
         {
-            "name": "$BLT-SLEEP"
+            "name": "sleep"
         }, 
         {
             "name": "basetask-validate",
