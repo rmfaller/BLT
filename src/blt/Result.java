@@ -12,6 +12,8 @@ import java.util.Iterator;
  *
  * @author rmfaller
  */
+@SuppressWarnings("serial")
+        
 class Result extends HashMap<String,Long> {
 
     public String config;

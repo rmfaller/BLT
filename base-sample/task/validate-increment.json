@@ -1,0 +1,15 @@
+{
+    "name": "validate-increment",
+    "request": "POST",
+    "header": { 
+        "iplanetDirectoryPro": "$BLT-TOKEN-PAYLOAD",
+        "Accept-API-Version": "resource=3.1",
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+    },
+    "url-endpoint": "/$BLT-AM-REALM/json/sessions",
+    "url-payload": "?_action=validate",
+    "data-payload": {
+        "tokenId": "$BLT-TOKEN-PAYLOAD"
+    }
+}

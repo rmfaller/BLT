@@ -1,5 +1,7 @@
 {
     "name": "baseworkload",
+    "minvalue": 10,
+    "maxvalue": 1000,
     "task": [
         {
             "name": "basetask-authenticate"
@@ -9,15 +11,23 @@
         }, 
         {
             "name": "basetask-validate",
-            "threshold-to-error": 50,
-            "threshold-to-fail": 60,
+            "threshold-to-error": 100,
+            "threshold-to-fail": 200,
+            "continue-on-fail": true
+        },
+        {
+            "name": "sleep"
+        }, 
+        {
+            "name": "basetask-validate",
+            "threshold-to-error": 200,
+            "threshold-to-fail": 300,
             "continue-on-fail": true
         },
         {
             "name": "basetask-logout",
-            "threshold-to-error": 45,
-            "threshold-to-fail": 600,
-            "continue-on-fail": false
+            "threshold-to-error": 450,
+            "threshold-to-fail": 600
         }
     ]
 }

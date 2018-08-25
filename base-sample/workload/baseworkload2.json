@@ -1,0 +1,14 @@
+{
+    "name": "baseworkload2",
+    "task": [
+        {
+            "name": "authenticate-increment"
+        },
+        {
+            "name": "validate-increment"
+        },
+        {
+            "name": "logout-increment"
+        }
+    ]
+}

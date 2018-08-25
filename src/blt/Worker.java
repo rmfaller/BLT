@@ -27,6 +27,8 @@ import org.json.simple.parser.ParseException;
  *
  * @author rmfaller
  */
+@SuppressWarnings("unchecked")
+
 class Worker extends Thread {
 
     private int threadid;
@@ -37,11 +39,12 @@ class Worker extends Thread {
     private int workloadset;
     private JSONObject bltenv = null;
     private JSONObject reserved = null;
+    private long waittostart = 0;
 
     public Worker() {
     }
 
-    Worker(int j, int workloadset, JSONObject jobconfig, JSONObject workloadconfig, JSONObject[] taskconfig, Result result, JSONObject bltenv, JSONObject reserved) {
+    Worker(int j, int workloadset, JSONObject jobconfig, JSONObject workloadconfig, JSONObject[] taskconfig, Result result, JSONObject bltenv, JSONObject reserved, long waittostart) {
         this.threadid = j;
         this.workloadset = workloadset;
         this.jobconfig = jobconfig;
@@ -50,6 +53,7 @@ class Worker extends Thread {
         this.result = result;
         this.bltenv = bltenv;
         this.reserved = reserved;
+        this.waittostart = waittostart;
         JSONArray taska = (JSONArray) workloadconfig.get("task");
         for (int i = 0; i < taska.size(); i++) {
 //            if ((((String) ((JSONObject) taska.get(i)).get("name")).compareTo("sleep")) != 0) {
@@ -88,13 +92,24 @@ class Worker extends Thread {
         JSONArray taska = (JSONArray) workloadconfig.get("task");
         JSONArray workloada = (JSONArray) jobconfig.get("workload");
         JSONObject[] state = new JSONObject[taska.size()];
+        Long minvalue = getLong(0, "minvalue");
+        Long maxvalue = getLong(0, "maxvalue");
+        Long randomvalue;
         JSONArray slp = null;
         boolean worked;
         long taskstart = 0;
         long taskstop = 0;
         Long iteration = (Long) ((JSONObject) workloada.get(workloadset)).get("iteration");
+        if ((waittostart > 0) && (iteration > 0)) {
+            try {
+                Thread.sleep(waittostart);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         for (int i = 0; i < iteration; i++) {
             worked = true;
+            randomvalue = (long) (Math.random() * ((long) getLong(0, "maxvalue") + 1));
             for (index = 0; index < taska.size(); index++) {
                 slp = getJSONArray(index, "service-location-port");
                 url = new URL[slp.size()];
@@ -106,7 +121,7 @@ class Worker extends Thread {
                     if (worked) {
                         String urlstring = (String) slp.get(instance) + (String) taskconfig[index].get("url-endpoint") + (String) taskconfig[index].get("url-payload");
                         urlstring = replaceVariable(urlstring);
-                        urlstring = updateReserved(index, urlstring, state);
+                        urlstring = updateReserved(index, urlstring, state, minvalue, maxvalue, randomvalue);
                         if ((getLong(index, "threshold-to-fail")) < getLong(index, "threshold-to-error")) {
                             System.err.println("Fail threshold set lower than error threshold. Rookie mistake. Results will be inconclusive!");
                         }
@@ -126,8 +141,8 @@ class Worker extends Thread {
 //                            System.out.println("pre-head= " + headerattr + " attr: " + headervalue);
                                 headerattr = replaceVariable(headerattr);
                                 headervalue = replaceVariable(headervalue);
-                                headerattr = updateReserved(index, headerattr, state);
-                                headervalue = updateReserved(index, headervalue, state);
+                                headerattr = updateReserved(index, headerattr, state, minvalue, maxvalue, randomvalue);
+                                headervalue = updateReserved(index, headervalue, state, minvalue, maxvalue, randomvalue);
 //                            System.out.println("post-head= " + headerattr + " attr: " + headervalue + " t= " + getLong(index, "threshold").intValue() + " wls:" + workloadset + " wlc " + workloadconfig.get("name"));
                                 conn[instance].setRequestProperty(headerattr, headervalue);
                             }
@@ -135,7 +150,7 @@ class Worker extends Thread {
                             if (taskconfig[index].containsKey("data-payload")) {
                                 dp = ((JSONObject) taskconfig[index].get("data-payload")).toString();
                                 dp = replaceVariable(dp);
-                                dp = updateReserved(index, dp, state);
+                                dp = updateReserved(index, dp, state, minvalue, maxvalue, randomvalue);
                                 OutputStreamWriter cwr = new OutputStreamWriter(conn[instance].getOutputStream());
                                 cwr.write(dp);
                                 cwr.close();
@@ -173,7 +188,7 @@ class Worker extends Thread {
                             }
                         }
                     } else {
-                        result.addTo(this.threadid + "-" + ((JSONObject) taska.get(index)).get("name").toString() + "-skipped", 1);
+                        result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "-skipped", 1);
                     }
                 } else {
                     try {
@@ -185,13 +200,20 @@ class Worker extends Thread {
                     }
                 }
             }
+            minvalue++;
+            maxvalue--;
+            if (minvalue > getLong(0, "maxvalue")) {
+                minvalue = getLong(0, "minvalue");
+            }
+            if (maxvalue < getLong(0, "minvalue")) {
+                maxvalue = getLong(0, "maxvalue");
+            }
         }
-        StringBuffer sb = new StringBuffer(threadid + " : " + jobconfig + "\n\t Taskset " + workloadset + ": " + workloadconfig + "\n");
+        StringBuffer sb = new StringBuffer("Job: \n" + jobconfig.toJSONString() + "\n\t Workload(s): \n\t" + workloadconfig.toJSONString() + "\n\t\tTask(s): \n");
         for (int i = 0; i < taskconfig.length; i++) {
-            sb.append("\t\ttask ").append(i).append(": ").append(taskconfig[i]).append("\n");
+            sb.append("\t\t" + taskconfig[i].toJSONString()).append("\n");
         }
-        String s = sb + "\n====================================\n";
-        result.config = s;
+        result.config = sb.toString();
     }
 
     private String getString(int index, String key) {
@@ -209,12 +231,16 @@ class Worker extends Thread {
                 } else {
                     ja = (JSONArray) jobconfig.get("workload");
                     for (int i = 0; i < ja.size(); i++) {
-                        if (((JSONObject) ja.get(i)).get("name").equals(workloadconfig.get("name"))) {
-                            value = (String) (((JSONObject) ja.get(i)).get(key));
+                        if (((String) ((JSONObject) ja.get(i)).get("name")).compareTo((String) (workloadconfig.get("name"))) == 0) {
+                            if (((JSONObject) ja.get(i)).containsKey(key)) {
+                                value = (String) (((JSONObject) ja.get(i)).get(key));
+                            }
                         }
                     }
-                    if (value == null) {
+                    if ((jobconfig.containsKey(key)) && (value == null)) {
                         value = (String) jobconfig.get(key);
+                    } else {
+                        value = null;
                     }
                 }
             }
@@ -241,13 +267,17 @@ class Worker extends Thread {
                 } else {
                     ja = (JSONArray) jobconfig.get("workload");
                     for (int i = 0; i < ja.size(); i++) {
-                        if (((JSONObject) ja.get(i)).get("name").equals(workloadconfig.get("name"))) {
-                            value = (boolean) (((JSONObject) ja.get(i)).get(key));
-                            found = true;
+                        if (((String) ((JSONObject) ja.get(i)).get("name")).compareTo((String) (workloadconfig.get("name"))) == 0) {
+                            if (((JSONObject) ja.get(i)).containsKey(key)) {
+                                value = (boolean) (((JSONObject) ja.get(i)).get(key));
+                                found = true;
+                            }
                         }
                     }
-                    if (!found) {
+                    if ((jobconfig.containsKey(key)) && (!found)) {
                         value = (boolean) jobconfig.get(key);
+                    } else {
+                        value = false;
                     }
                 }
             }
@@ -270,12 +300,16 @@ class Worker extends Thread {
                 } else {
                     ja = (JSONArray) jobconfig.get("workload");
                     for (int i = 0; i < ja.size(); i++) {
-                        if (((JSONObject) ja.get(i)).get("name").equals(workloadconfig.get("name"))) {
-                            value = (Long) (((JSONObject) ja.get(i)).get(key));
+                        if (((String) ((JSONObject) ja.get(i)).get("name")).compareTo((String) (workloadconfig.get("name"))) == 0) {
+                            if (((JSONObject) ja.get(i)).containsKey(key)) {
+                                value = (Long) (((JSONObject) ja.get(i)).get(key));
+                            }
                         }
                     }
-                    if (value == null) {
+                    if ((jobconfig.containsKey(key)) && (value == null)) {
                         value = (Long) jobconfig.get(key);
+                    } else {
+                        value = new Long(0);
                     }
                 }
             }
@@ -316,14 +350,13 @@ class Worker extends Thread {
         return tmpstring;
     }
 
-    private String updateReserved(int index, String tmpstring, JSONObject[] state) {
+    private String updateReserved(int index, String tmpstring, JSONObject[] state, Long minvalue, Long maxvalue, Long randomvalue) {
         String ks = null;
         String kv = null;
         for (Object key : reserved.keySet()) {
             ks = (String) key;
             switch (ks) {
                 case "$BLT-RANDOM-NUMBER":
-                    Long randomvalue = (long) (Math.random() * ((long) getLong(index, "value-top") + 1));
                     tmpstring = tmpstring.replace(ks, randomvalue.toString());
                     break;
                 case "$BLT-TOKEN-PAYLOAD":
@@ -331,9 +364,7 @@ class Worker extends Thread {
                     boolean found = false;
                     int i = state.length - 1;
                     while ((!found) && (i >= 0)) {
-//                        System.out.println("tmp=" + i + "::" + tmpstring + "==" + state[i]);
                         if (state[i] != null) {
-//                            System.out.println("state " + state[i] + " i " + i + "kv:" + kv);
                             if (state[i].containsKey(kv)) {
                                 tmpstring = tmpstring.replace(ks, (String) state[i].get(kv));
                                 found = true;
@@ -341,6 +372,16 @@ class Worker extends Thread {
                         }
                         i--;
                     }
+                    break;
+                case "$BLT-INCREMENT":
+                    tmpstring = tmpstring.replace(ks, minvalue.toString());
+                    break;
+                case "$BLT-DECREMENT":
+                    tmpstring = tmpstring.replace(ks, maxvalue.toString());
+                    break;
+                case "$BLT-THREADID":
+                    tmpstring = tmpstring.replace(ks, new Integer(this.threadid).toString());
+                    break;
                 default:
                     break;
             }
