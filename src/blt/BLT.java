@@ -103,6 +103,7 @@ public class BLT {
                                 }
                             }
                             int c = 0;
+                            // set c to a start-delay value
                             long waittostart = 0;
                             for (int j = 0; j < threadcount; j++) {
                                 result[i][j] = new Result(j);
@@ -125,6 +126,7 @@ public class BLT {
                         jobstart = new Date().getTime();
                         for (int i = 0; i < worker.length; i++) {
                             for (int j = 0; j < worker[i].length; j++) {
+                                // if workloadconfig[i] != serial
                                 worker[i][j].start();
                             }
                         }
