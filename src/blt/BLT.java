@@ -8,6 +8,7 @@ package blt;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,6 +41,7 @@ public class BLT {
         Worker[][] worker = null;
         boolean csv = false;
         boolean showjob = false;
+        boolean summary = false;
         FileReader fr;
         long jobstart = 0;
         long jobstop = 0;
@@ -59,6 +61,10 @@ public class BLT {
                     case "-j":
                     case "--job":
                         showjob = true;
+                        break;
+                    case "-s":
+                    case "--summary":
+                        summary = true;
                         break;
                     default:
                         confighome = args[args.length - 1];
@@ -102,18 +108,17 @@ public class BLT {
                                     found = false;
                                 }
                             }
-                            int c = 0;
-                            // set c to a start-delay value
-                            long waittostart = 0;
+                            long startdelay = (long) ((JSONObject) wla.get(i)).get("start-delay");
+                            long threadstartdelay = 0;
                             for (int j = 0; j < threadcount; j++) {
                                 result[i][j] = new Result(j);
                                 if (threadgroupsize > 0) {
                                     if ((j % threadgroupsize) == 0) {
-                                        waittostart = ((j % threadgroupsize) + (c * threadinterval));
-                                        c++;
+                                        threadstartdelay = ((j % threadgroupsize) + (startdelay * threadinterval));
+                                        startdelay++;
                                     }
                                 }
-                                worker[i][j] = new Worker(threadid, i, jobconfig, workloadconfig[i], taskconfig[i], result[i][j], bltenv, reserved, waittostart);
+                                worker[i][j] = new Worker(threadid, i, jobconfig, workloadconfig[i], taskconfig[i], result[i][j], bltenv, reserved, threadstartdelay);
                                 threadid++;
                             }
                         } else {
@@ -126,7 +131,7 @@ public class BLT {
                         jobstart = new Date().getTime();
                         for (int i = 0; i < worker.length; i++) {
                             for (int j = 0; j < worker[i].length; j++) {
-                                // if workloadconfig[i] != serial
+                                // if workloadconfig[i] != serial - dumb idea; if serial create multiple BLT commands 
                                 worker[i][j].start();
                             }
                         }
@@ -147,6 +152,7 @@ public class BLT {
                                 System.out.println("CSV for job = " + jobconfig.get("name") + " and workload = " + workloadconfig[i].get("name") + ":");
                                 System.out.print("job,thread,workload");
                                 String[] rattr = result[i][0].getAttributes();
+                                Arrays.sort(rattr);
                                 for (int j = 0; j < rattr.length; j++) {
                                     System.out.print("," + rattr[j]);
                                 }
@@ -165,7 +171,9 @@ public class BLT {
                                 System.out.println(config.toString());
                                 System.out.println(result[i][0].config);
                             }
-
+                        }
+                        if (summary) {
+                            summary(result);
                         }
                     } else {
                         help();
@@ -182,8 +190,9 @@ public class BLT {
                 + "\noptions:"
                 + "\n\tif not specified [FILE] defaults to ${BLT_HOME}/sample/config.json\n"
                 + "\n\t[FILE] example: ${BLT_HOME}/mytest/myconfig.json and does require a layout similar to ${BLT_HOME}/sample/\n"
-                + "\n\t--csv | -c displays results in a comma delimited format\n"
-                + "\n\t--job | -j displays JSON configuration data used for the test\n"
+                + "\n\t--csv     | -c displays results in a comma delimited format\n"
+                + "\n\t--job     | -j displays JSON configuration data used for the test\n"
+                + "\n\t--summary | -s displays a summary of the test\n"
                 + "\n\t--help | -h this output\n"
                 + "\nExamples:"
                 + "";
@@ -207,4 +216,58 @@ public class BLT {
         return jo;
     }
 
+    private static void summary(Result[][] result) {
+        for (int i = 0; i < result.length; i++) {
+            System.out.printf("%-32s", "Operation");
+            System.out.printf("%4s", " Thds");
+            System.out.printf("%10s", " TxTotal");
+            System.out.printf("%10s", "AccmTime");
+            System.out.printf("%10s", "Thrshold");
+            System.out.printf("%10s", "  TxPass");
+            System.out.printf("%10s", "PassTime");
+            System.out.printf("%10s", " TxExced");
+            System.out.printf("%10s", "ExcdTime");
+            System.out.printf("%10s", "  TxFail");
+            System.out.printf("%10s", "Failtime");
+            System.out.printf("%12s", "CbdPsOps");
+            System.out.printf("%12s", " ThrdOps");
+            System.out.printf("%14s", "Avrms/op");
+            System.out.printf("%10s", " Success");
+            System.out.printf("%10s", "  Exceed");
+            System.out.printf("%10s", "    Fail");
+            System.out.println("\n--------------------------------------------------------------------------------------\n");
+            String[] rattr = result[i][0].getAttributes();
+            int taskcount = 0;
+            for (int r = 0; r < rattr.length; r++) {
+                if (rattr[r].endsWith("~passed")) {
+                    taskcount++;
+                }
+            }
+            String[] tasks = new String[taskcount];
+            for (int r = 0; r < rattr.length; r++) {
+                if (rattr[r].endsWith("~passed")) {
+                    tasks[r] = new String(rattr[r].split("~passed")[0]);
+                }
+            }
+            Arrays.sort(rattr);
+            for (int r = 0; r < rattr.length; r++) {
+                long passed = 0;
+                if (rattr[r].endsWith("~passed")) {
+                    System.out.printf("%32s", rattr[r].split("~passed")[0]);
+                    System.out.printf("%4s", result[i].length);
+                }
+                for (int j = 0; j < result[i].length; j++) {
+                    if (rattr[r].endsWith("~passed")) {
+                        passed = passed + result[i][j].get(rattr[r]);
+                    }
+                }
+                System.out.printf("%10s", passed);
+                System.out.println();
+            }
+            System.out.println();
+            for (int j = 0; j < result[i].length; j++) {
+            }
+            System.out.println("====================================================\n");
+        }
+    }
 }
