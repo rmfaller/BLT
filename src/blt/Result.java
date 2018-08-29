@@ -17,6 +17,7 @@ import java.util.Iterator;
 class Result extends HashMap<String,Long> {
 
     public String config;
+    public String curler;
     private final HashMap<String,Long> result;
     public int uid = 0;
     private String resulttype = null;
@@ -29,10 +30,6 @@ class Result extends HashMap<String,Long> {
     public Result(int uid) {
         result = new HashMap<String,Long>();
         this.uid = uid;
-    }
-
-    public void put(int threadid, String attr, long value) {
-        result.put(attr, value);
     }
 
     public void put(String attr, long value) {

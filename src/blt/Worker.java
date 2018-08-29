@@ -39,12 +39,12 @@ class Worker extends Thread {
     private int workloadset;
     private JSONObject bltenv = null;
     private JSONObject reserved = null;
-    private long waittostart = 0;
+    private long threadstartdelay = 0;
 
     public Worker() {
     }
 
-    Worker(int j, int workloadset, JSONObject jobconfig, JSONObject workloadconfig, JSONObject[] taskconfig, Result result, JSONObject bltenv, JSONObject reserved, long waittostart) {
+    Worker(int j, int workloadset, JSONObject jobconfig, JSONObject workloadconfig, JSONObject[] taskconfig, Result result, JSONObject bltenv, JSONObject reserved, long threadstartdelay) {
         this.threadid = j;
         this.workloadset = workloadset;
         this.jobconfig = jobconfig;
@@ -53,34 +53,17 @@ class Worker extends Thread {
         this.result = result;
         this.bltenv = bltenv;
         this.reserved = reserved;
-        this.waittostart = waittostart;
+        this.threadstartdelay = threadstartdelay;
         JSONArray taska = (JSONArray) workloadconfig.get("task");
         for (int i = 0; i < taska.size(); i++) {
-//            if ((((String) ((JSONObject) taska.get(i)).get("name")).compareTo("sleep")) != 0) {
-//                System.out.println("name=" + ((JSONObject) taska.get(i)).get("name").toString());
-/*                result.put(this.threadid + "-" + ((JSONObject) taska.get(i)).get("name").toString() + "-passed", 0);
-                result.put(this.threadid + "-" + ((JSONObject) taska.get(i)).get("name").toString() + "-passedtime", 0);
-                result.put(this.threadid + "-" + ((JSONObject) taska.get(i)).get("name").toString() + "-failed", 0);
-                result.put(this.threadid + "-" + ((JSONObject) taska.get(i)).get("name").toString() + "-failedtime", 0);
-                result.put(this.threadid + "-" + ((JSONObject) taska.get(i)).get("name").toString() + "-exceeded", 0);
-                result.put(this.threadid + "-" + ((JSONObject) taska.get(i)).get("name").toString() + "-exceededtime", 0);
-                result.put(this.threadid + "-" + ((JSONObject) taska.get(i)).get("name").toString() + "-threshold-to-error", getLong(i, "threshold-to-error"));
-                result.put(this.threadid + "-" + ((JSONObject) taska.get(i)).get("name").toString() + "-threshold-to-fail", getLong(i, "threshold-to-fail"));
-                result.put(this.threadid + "-" + ((JSONObject) taska.get(i)).get("name").toString() + "-skipped", 0); */
-            result.put(((JSONObject) taska.get(i)).get("name").toString() + "-passed", 0);
-            result.put(((JSONObject) taska.get(i)).get("name").toString() + "-passedtime", 0);
-            result.put(((JSONObject) taska.get(i)).get("name").toString() + "-failed", 0);
-            result.put(((JSONObject) taska.get(i)).get("name").toString() + "-failedtime", 0);
-            result.put(((JSONObject) taska.get(i)).get("name").toString() + "-exceeded", 0);
-            result.put(((JSONObject) taska.get(i)).get("name").toString() + "-exceededtime", 0);
-            result.put(((JSONObject) taska.get(i)).get("name").toString() + "-threshold-to-error", getLong(i, "threshold-to-error"));
-            result.put(((JSONObject) taska.get(i)).get("name").toString() + "-threshold-to-fail", getLong(i, "threshold-to-fail"));
-            result.put(((JSONObject) taska.get(i)).get("name").toString() + "-skipped", 0);
-//            }
+            result.put(((JSONObject) taska.get(i)).get("name").toString() + "~passed", 0);
+            result.put(((JSONObject) taska.get(i)).get("name").toString() + "~passedtime", 0);
+            result.put(((JSONObject) taska.get(i)).get("name").toString() + "~failed", 0);
+            result.put(((JSONObject) taska.get(i)).get("name").toString() + "~failedtime", 0);
+            result.put(((JSONObject) taska.get(i)).get("name").toString() + "~exceeded", 0);
+            result.put(((JSONObject) taska.get(i)).get("name").toString() + "~exceededtime", 0);
+            result.put(((JSONObject) taska.get(i)).get("name").toString() + "~skipped", 0);
         }
-//        if (workloadconfig.containsKey("maintain-connection")) {
-//            keepopen = (boolean) workloadconfig.get("maintain-connection");
-//        }
     }
 
     @Override
@@ -100,9 +83,9 @@ class Worker extends Thread {
         long taskstart = 0;
         long taskstop = 0;
         Long iteration = (Long) ((JSONObject) workloada.get(workloadset)).get("iteration");
-        if ((waittostart > 0) && (iteration > 0)) {
+        if ((threadstartdelay > 0) && (iteration > 0)) {
             try {
-                Thread.sleep(waittostart);
+                Thread.sleep(threadstartdelay);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -122,8 +105,10 @@ class Worker extends Thread {
                         String urlstring = (String) slp.get(instance) + (String) taskconfig[index].get("url-endpoint") + (String) taskconfig[index].get("url-payload");
                         urlstring = replaceVariable(urlstring);
                         urlstring = updateReserved(index, urlstring, state, minvalue, maxvalue, randomvalue);
+                        result.put(((JSONObject) taska.get(index)).get("name").toString() + "~threshold-to-error", getLong(index, "threshold-to-error").longValue());
+                        result.put(((JSONObject) taska.get(index)).get("name").toString() + "~threshold-to-fail", getLong(index, "threshold-to-fail").longValue());
                         if ((getLong(index, "threshold-to-fail")) < getLong(index, "threshold-to-error")) {
-                            System.err.println("Fail threshold set lower than error threshold. Rookie mistake. Results will be inconclusive!");
+                            System.err.println("Fail threshold " + getLong(index, "threshold-to-fail") + " set lower than error threshold " + getLong(index, "threshold-to-error") + ". Rookie mistake. Results will be inconclusive!");
                         }
                         taskstart = new Date().getTime();
                         try {
@@ -172,29 +157,27 @@ class Worker extends Thread {
                         taskstop = new Date().getTime();
                         if (worked) {
                             if ((getLong(index, "threshold-to-error")) >= (taskstop - taskstart)) {
-//                                result.addTo(this.threadid + "-" + ((JSONObject) taska.get(index)).get("name").toString() + "-passedtime", (taskstop - taskstart));
-//                                result.addTo(this.threadid + "-" + ((JSONObject) taska.get(index)).get("name").toString() + "-passed", 1);
-                                result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "-passedtime", (taskstop - taskstart));
-                                result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "-passed", 1);
+                                result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~passedtime", (taskstop - taskstart));
+                                result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~passed", 1);
                             } else {
-                                result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "-exceededtime", (taskstop - taskstart));
-                                result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "-exceeded", 1);
+                                result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~exceededtime", (taskstop - taskstart));
+                                result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~exceeded", 1);
                             }
                         } else {
-                            result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "-failedtime", (taskstop - taskstart));
-                            result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "-failed", 1);
+                            result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~failedtime", (taskstop - taskstart));
+                            result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~failed", 1);
                             if (getBoolean(index, "continue-on-fail")) {
                                 worked = true;
                             }
                         }
                     } else {
-                        result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "-skipped", 1);
+                        result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~skipped", 1);
                     }
                 } else {
                     try {
                         Thread.sleep((Long) taskconfig[index].get("sleep-time"));
-                        result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "-passedtime", (Long) taskconfig[index].get("sleep-time"));
-                        result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "-passed", 1);
+                        result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~passedtime", (Long) taskconfig[index].get("sleep-time"));
+                        result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~passed", 1);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -210,10 +193,24 @@ class Worker extends Thread {
             }
         }
         StringBuffer sb = new StringBuffer("Job: \n" + jobconfig.toJSONString() + "\n\t Workload(s): \n\t" + workloadconfig.toJSONString() + "\n\t\tTask(s): \n");
+        StringBuffer cb = new StringBuffer();
         for (int i = 0; i < taskconfig.length; i++) {
             sb.append("\t\t" + taskconfig[i].toJSONString()).append("\n");
         }
         result.config = sb.toString();
+        for (int i = 0; i < taskconfig.length; i++) {
+            if (taskconfig[i].get("request") != null) {
+                cb.append("\t\tcurl --request " + (String) taskconfig[i].get("request") + " \\\n");
+                JSONObject c = (JSONObject) taskconfig[i].get("header");
+                for (Object key : c.keySet()) {
+                    cb.append("\t\t\t--header \"" + (String) key + ":" + c.get(key) + "\" \\\n");
+                }
+                c = (JSONObject) taskconfig[i].get("data-payload");
+                cb.append("\t\t\t--data \"" + c.toJSONString() + "\" \\\n");
+                cb.append("\t\t\t"+ getJSONArray(i,"service-location-port").get(0) + taskconfig[i].get("url-endpoint") + taskconfig[i].get("url-payload") + "\n");
+            }
+        }
+        result.curler = cb.toString();
     }
 
     private String getString(int index, String key) {
@@ -223,15 +220,15 @@ class Worker extends Thread {
             value = (String) taskconfig[index].get(key);
         } else {
             ja = (JSONArray) workloadconfig.get("task");
-            if (((JSONObject) ja.get(index)).containsKey(key)) {
+            if ((((JSONObject) ja.get(index)).containsKey(key)) && (value == null)) {
                 value = (String) (((JSONObject) ja.get(index)).get(key));
             } else {
-                if (workloadconfig.containsKey(key)) {
+                if ((workloadconfig.containsKey(key)) && (value == null)) {
                     value = (String) workloadconfig.get(key);
                 } else {
                     ja = (JSONArray) jobconfig.get("workload");
                     for (int i = 0; i < ja.size(); i++) {
-                        if (((String) ((JSONObject) ja.get(i)).get("name")).compareTo((String) (workloadconfig.get("name"))) == 0) {
+                        if ((((String) ((JSONObject) ja.get(i)).get("name")).compareTo((String) (workloadconfig.get("name"))) == 0) && (value == null)) {
                             if (((JSONObject) ja.get(i)).containsKey(key)) {
                                 value = (String) (((JSONObject) ja.get(i)).get(key));
                             }
@@ -257,17 +254,17 @@ class Worker extends Thread {
             found = true;
         } else {
             ja = (JSONArray) workloadconfig.get("task");
-            if (((JSONObject) ja.get(index)).containsKey(key)) {
+            if ((((JSONObject) ja.get(index)).containsKey(key)) && (!found)) {
                 value = (boolean) (((JSONObject) ja.get(index)).get(key));
                 found = true;
             } else {
-                if (workloadconfig.containsKey(key)) {
+                if ((workloadconfig.containsKey(key)) && (!found)) {
                     value = (boolean) workloadconfig.get(key);
                     found = true;
                 } else {
                     ja = (JSONArray) jobconfig.get("workload");
                     for (int i = 0; i < ja.size(); i++) {
-                        if (((String) ((JSONObject) ja.get(i)).get("name")).compareTo((String) (workloadconfig.get("name"))) == 0) {
+                        if ((((String) ((JSONObject) ja.get(i)).get("name")).compareTo((String) (workloadconfig.get("name"))) == 0) && (!found)) {
                             if (((JSONObject) ja.get(i)).containsKey(key)) {
                                 value = (boolean) (((JSONObject) ja.get(i)).get(key));
                                 found = true;
@@ -277,7 +274,9 @@ class Worker extends Thread {
                     if ((jobconfig.containsKey(key)) && (!found)) {
                         value = (boolean) jobconfig.get(key);
                     } else {
-                        value = false;
+                        if (!found) {
+                            value = false;
+                        }
                     }
                 }
             }
@@ -292,28 +291,34 @@ class Worker extends Thread {
             value = (Long) taskconfig[index].get(key);
         } else {
             ja = (JSONArray) workloadconfig.get("task");
-            if (((JSONObject) ja.get(index)).containsKey(key)) {
+            if ((((JSONObject) ja.get(index)).containsKey(key)) && (value == null)) {
                 value = (Long) (((JSONObject) ja.get(index)).get(key));
+//                System.out.println("vw0= " + value);
             } else {
-                if (workloadconfig.containsKey(key)) {
+                if ((workloadconfig.containsKey(key)) && (value == null)) {
                     value = (Long) workloadconfig.get(key);
+//                    System.out.println("vw1= " + value);
                 } else {
                     ja = (JSONArray) jobconfig.get("workload");
                     for (int i = 0; i < ja.size(); i++) {
-                        if (((String) ((JSONObject) ja.get(i)).get("name")).compareTo((String) (workloadconfig.get("name"))) == 0) {
+                        if ((((String) ((JSONObject) ja.get(i)).get("name")).compareTo((String) (workloadconfig.get("name"))) == 0) && (value == null)) {
                             if (((JSONObject) ja.get(i)).containsKey(key)) {
                                 value = (Long) (((JSONObject) ja.get(i)).get(key));
+//                                System.out.println("vj= " + value);
                             }
                         }
                     }
                     if ((jobconfig.containsKey(key)) && (value == null)) {
                         value = (Long) jobconfig.get(key);
                     } else {
-                        value = new Long(0);
+                        if (value == null) {
+                            value = new Long(0);
+                        }
                     }
                 }
             }
         }
+//        System.out.println("returning : " + value + " for key =" + key);
         return value;
     }
 

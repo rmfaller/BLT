@@ -35,7 +35,9 @@ shared values:
 
 Features to add:
 All json stored in DS
-tasks can read from files for commands - file(s) can be created from existing logs
+ingest cURL commands
+tasks can read from files tasks
+tasks can be created from existing logs based on usage profile
 tasks support LDAP
 
 Code cuts:

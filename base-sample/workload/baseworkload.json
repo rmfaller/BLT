@@ -11,8 +11,6 @@
         }, 
         {
             "name": "basetask-validate",
-            "threshold-to-error": 100,
-            "threshold-to-fail": 200,
             "continue-on-fail": true
         },
         {
@@ -20,14 +18,14 @@
         }, 
         {
             "name": "basetask-validate",
-            "threshold-to-error": 200,
-            "threshold-to-fail": 300,
+            "threshold-to-error": 111,
+            "threshold-to-fail": 1111,
             "continue-on-fail": true
         },
         {
             "name": "basetask-logout",
-            "threshold-to-error": 450,
-            "threshold-to-fail": 600
+            "threshold-to-error": 222,
+            "threshold-to-fail": 2222
         }
     ]
 }
