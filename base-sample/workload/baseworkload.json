@@ -2,7 +2,7 @@
     "name": "baseworkload",
     "minvalue": 1,
     "maxvalue": 10000,
-    "loading-style": "roundrobin", 
+    "loading-style": "none", 
     "task": [
         {
             "name": "basetask-authenticate"

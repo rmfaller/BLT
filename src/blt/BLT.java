@@ -231,16 +231,16 @@ public class BLT {
                 + "\n\tif not specified [FILE] defaults to ${BLT_HOME}/sample/config.json\n"
                 + "\n\t[FILE] example: ${BLT_HOME}/mytest/myconfig.json and does require a layout similar to ${BLT_HOME}/sample/\n"
                 + "\n\t--csv      | -v displays results in a comma delimited format\n"
-                + "\n\t--curl     | -c displays example cURL commands used against REST endpoints\n"
+                + "\n\t--curl     | -c displays example cURL commands used against REST endpoints for this test\n"
                 + "\n\t--job      | -j displays JSON configuration data used for the test\n"
-                + "\n\t--job      | -j displays JSON configuration data used for the test\n"
+                + "\n\t--summary  | -s displays summary of test\n"
                 + "\n\t--progress | -p displays progress while BLT is running\n"
-                + "\n\t--help | -h this output\n"
+                + "\n\t--help     | -h this output\n"
                 + "\nExamples:"
                 + "";
         System.out.println(help);
         System.out.println("java -jar ${BLT_HOME}/dist/BLT.jar\n");
-        System.out.println("java -jar ${BLT_HOME}/dist/BLT.jar --job --csv --curl --summary ${BLT_HOME}/mytest/myconfig.json\n");
+        System.out.println("java -jar ${BLT_HOME}/dist/BLT.jar --csv --curl --job --summary --progress ${BLT_HOME}/mytest/myconfig.json\n");
     }
 
     private static JSONObject readFile(String filename) {
