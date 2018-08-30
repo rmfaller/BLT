@@ -1,6 +1,6 @@
 {
     "name": "baseworkload",
-    "minvalue": 10,
+    "minvalue": 1,
     "maxvalue": 10000,
     "loading-style": "roundrobin", 
     "task": [
