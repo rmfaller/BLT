@@ -1,9 +1,9 @@
 {
     "name": "basejob",
-    "load-generator": "this host",
-    "services-description": "base test",
+    "load-generator": "My MacBook Pro",
+    "services-description": "Testing BLT",
     "service-location-port": ["http://am0.example.com:8080", "http://am1.example.com:8080"],
-    "loading-style": "roundrobin, random, ha", 
+    "loading-style": "roundrobin", 
     "minvalue": 0,
     "maxvalue": 200000,
     "threshold-to-error": 99,
@@ -16,11 +16,11 @@
             "start-delay": 0,
             "threads": 2,
             "thread-group-size": 0,
-            "thread-interval": 1000,
+            "thread-interval": 10000,
             "minvalue": 0,
             "maxvalue": 100000,
             "threshold-to-error": 88,
-            "threshold-to-fail": 89,
+            "threshold-to-fail": 90,
             "continue-on-fail": false
         },
         {

@@ -80,8 +80,10 @@ class Worker extends Thread {
         Long randomvalue;
         JSONArray slp = null;
         boolean worked;
+        boolean retry = false;
         long taskstart = 0;
         long taskstop = 0;
+        int instance = 0;
         Long iteration = (Long) ((JSONObject) workloada.get(workloadset)).get("iteration");
         if ((threadstartdelay > 0) && (iteration > 0)) {
             try {
@@ -97,7 +99,25 @@ class Worker extends Thread {
                 slp = getJSONArray(index, "service-location-port");
                 url = new URL[slp.size()];
                 conn = new HttpURLConnection[slp.size()];
-                int instance = 0;
+                if (slp.size() > 1) {
+                    if (getString(index, "loading-style").compareTo("roundrobin") == 0) {
+                        instance++;
+                        if (instance >= slp.size()) {
+                            instance = 0;
+                        }
+                    }
+                    if (getString(index, "loading-style").compareTo("random") == 0) {
+                        Double r = (Math.random() * (slp.size() + 1));
+                        instance = r.intValue();
+                        if (instance >= slp.size()) {
+                            instance = 0;
+                        }
+                    }
+                    if (getString(index, "loading-style").compareTo("ha") == 0) {
+                        retry = true;
+                        instance = 0;
+                    }
+                }
                 // from spl, if greater than 1 select the instance
                 // may make conn and url not an array
                 if (((String) slp.get(0)).compareTo("$BLT-SLEEP") != 0) {
@@ -118,17 +138,14 @@ class Worker extends Thread {
                             conn[instance].setConnectTimeout(getLong(index, "threshold-to-fail").intValue());
                             conn[instance].setReadTimeout(getLong(index, "threshold-to-fail").intValue());
                             conn[instance].setRequestMethod(getString(index, "request"));
-//                    System.out.println(((JSONObject) taskconfig[index].get("header")).toString());
                             Iterator<String> iter = ((JSONObject) taskconfig[index].get("header")).keySet().iterator();
                             while (iter.hasNext()) {
                                 String headerattr = iter.next();
                                 String headervalue = (String) ((JSONObject) taskconfig[index].get("header")).get(headerattr);
-//                            System.out.println("pre-head= " + headerattr + " attr: " + headervalue);
                                 headerattr = replaceVariable(headerattr);
                                 headervalue = replaceVariable(headervalue);
                                 headerattr = updateReserved(index, headerattr, state, minvalue, maxvalue, randomvalue);
                                 headervalue = updateReserved(index, headervalue, state, minvalue, maxvalue, randomvalue);
-//                            System.out.println("post-head= " + headerattr + " attr: " + headervalue + " t= " + getLong(index, "threshold").intValue() + " wls:" + workloadset + " wlc " + workloadconfig.get("name"));
                                 conn[instance].setRequestProperty(headerattr, headervalue);
                             }
                             String dp = null;
@@ -147,12 +164,18 @@ class Worker extends Thread {
                             while ((rl = reader.readLine()) != null) {
                                 sbin.append(rl);
                             }
-//                            System.out.println("iteration= " + i + "  sbin= " + sbin);
                             reader.close();
                             state[index] = (JSONObject) jp.parse(sbin.toString());
                         } catch (URISyntaxException | ParseException | IOException ex) {
                             worked = false;
                             Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
+                            if (retry) {
+                                instance++;
+                                if (instance >= slp.size()) {
+                                    instance = 0;
+                                    retry = false;
+                                }
+                            }
                         }
                         taskstop = new Date().getTime();
                         if (worked) {
@@ -207,7 +230,7 @@ class Worker extends Thread {
                 }
                 c = (JSONObject) taskconfig[i].get("data-payload");
                 cb.append("\t\t\t--data \"" + c.toJSONString() + "\" \\\n");
-                cb.append("\t\t\t"+ getJSONArray(i,"service-location-port").get(0) + taskconfig[i].get("url-endpoint") + taskconfig[i].get("url-payload") + "\n");
+                cb.append("\t\t\t" + getJSONArray(i, "service-location-port").get(0) + taskconfig[i].get("url-endpoint") + taskconfig[i].get("url-payload") + "\n");
             }
         }
         result.curler = cb.toString();
@@ -293,18 +316,15 @@ class Worker extends Thread {
             ja = (JSONArray) workloadconfig.get("task");
             if ((((JSONObject) ja.get(index)).containsKey(key)) && (value == null)) {
                 value = (Long) (((JSONObject) ja.get(index)).get(key));
-//                System.out.println("vw0= " + value);
             } else {
                 if ((workloadconfig.containsKey(key)) && (value == null)) {
                     value = (Long) workloadconfig.get(key);
-//                    System.out.println("vw1= " + value);
                 } else {
                     ja = (JSONArray) jobconfig.get("workload");
                     for (int i = 0; i < ja.size(); i++) {
                         if ((((String) ((JSONObject) ja.get(i)).get("name")).compareTo((String) (workloadconfig.get("name"))) == 0) && (value == null)) {
                             if (((JSONObject) ja.get(i)).containsKey(key)) {
                                 value = (Long) (((JSONObject) ja.get(i)).get(key));
-//                                System.out.println("vj= " + value);
                             }
                         }
                     }
@@ -318,7 +338,6 @@ class Worker extends Thread {
                 }
             }
         }
-//        System.out.println("returning : " + value + " for key =" + key);
         return value;
     }
 
@@ -391,7 +410,6 @@ class Worker extends Thread {
                     break;
             }
         }
-//        System.out.println("tmp= " + tmpstring);
         return tmpstring;
     }
 

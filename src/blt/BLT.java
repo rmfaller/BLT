@@ -87,7 +87,6 @@ public class BLT {
                 bltenv = (JSONObject) config.get("BLT-environment");
                 reserved = (JSONObject) config.get("BLT-reserved");
                 jobconfig = readFile((String) config.get("job"));
-//                System.out.println(jobconfig);
                 if (jobconfig != null) {
                     JSONArray wla = (JSONArray) jobconfig.get("workload");
                     workloadconfig = new JSONObject[wla.size()];
@@ -208,7 +207,7 @@ public class BLT {
                 + "";
         System.out.println(help);
         System.out.println("java -jar ${BLT_HOME}/dist/BLT.jar\n");
-        System.out.println("java -jar ${BLT_HOME}/dist/BLT.jar --job --csv ${BLT_HOME}/mytest/myconfig.json\n");
+        System.out.println("java -jar ${BLT_HOME}/dist/BLT.jar --job --csv --curl --summary ${BLT_HOME}/mytest/myconfig.json\n");
     }
 
     private static JSONObject readFile(String filename) {
