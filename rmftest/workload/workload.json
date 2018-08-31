@@ -1,0 +1,13 @@
+{
+    "name": "workload",
+    "task": [
+        {
+            "name": "idm-create",
+            "threshold-to-error": 300,
+            "threshold-to-fail": 600
+        }, 
+        {
+            "name": "ds-authenticate"
+        }
+    ]
+}

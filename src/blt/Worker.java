@@ -228,8 +228,10 @@ class Worker extends Thread {
                 for (Object key : c.keySet()) {
                     cb.append("\t\t\t--header \"" + (String) key + ":" + c.get(key) + "\" \\\n");
                 }
-                c = (JSONObject) taskconfig[i].get("data-payload");
-                cb.append("\t\t\t--data \"" + c.toJSONString() + "\" \\\n");
+                if (taskconfig[i].containsKey("data-payload")) {
+                    c = (JSONObject) taskconfig[i].get("data-payload");
+                    cb.append("\t\t\t--data \"" + c.toJSONString() + "\" \\\n");
+                }
                 cb.append("\t\t\t" + getJSONArray(i, "service-location-port").get(0) + taskconfig[i].get("url-endpoint") + taskconfig[i].get("url-payload") + "\n");
             }
         }

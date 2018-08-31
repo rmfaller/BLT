@@ -159,7 +159,7 @@ public class BLT {
                         jobstop = new Date().getTime();
                         if (progress) {
                             spinner.continueToRun = false;
-                            System.out.println("..... done.\n");
+                            System.out.println("..... done. Total lapsed time = " + (jobstop - jobstart) + "ms\n");
                         }
                         long millis = (jobstop - jobstart);
                         long days = TimeUnit.MILLISECONDS.toDays(millis);
@@ -201,7 +201,7 @@ public class BLT {
                                 }
                                 if (showjob) {
                                     System.out.println("Configuration for job = " + jobconfig.get("name") + " and workload = " + workloadconfig[i].get("name")
-                                           + " completed on " + new Date().toString() + " running for " + sbt.toString()  + ":");
+                                            + " completed on " + new Date().toString() + " running for " + sbt.toString() + ":");
                                     System.out.println(config.toString());
                                     System.out.println(result[i][0].config);
                                 }
@@ -262,7 +262,7 @@ public class BLT {
         Result[] tr = new Result[result.length];
         for (int i = 0; i < result.length; i++) {
             if ((Long) ((JSONObject) ((JSONArray) jobconfig.get("workload")).get(i)).get("threads") > 0) {
-                System.out.println("Summary for job = " + jobconfig.get("name") + " and workload = " + workloadconfig[i].get("name") 
+                System.out.println("Summary for job = " + jobconfig.get("name") + " and workload = " + workloadconfig[i].get("name")
                         + " completed on " + new Date().toString() + " running for " + sbt.toString() + ":");
                 System.out.printf("%-23s", "Operation");
                 System.out.printf("%4s", " Thds");
@@ -328,7 +328,7 @@ public class BLT {
                 float totalthreadops = 0;
                 boolean include;
                 for (int t = 0; t < tasks.length; t++) {
-                    if ((tr[i].get(tasks[t] + "~threshold-to-error") > 0) || (tr[i].get(tasks[t] + "~threshold-to-error") > 0)) {
+                    if ((tr[i].get(tasks[t] + "~threshold-to-error") > 0) || (tr[i].get(tasks[t] + "~threshold-to-fail") > 0) || (tr[i].get(tasks[t] + "~skipped") > 0)) {
                         include = true;
                     } else {
                         include = false;
@@ -349,7 +349,14 @@ public class BLT {
                     float ops = 0;
                     float threadops = 0;
                     for (int r = 0; r < rattr.length; r++) {
-                        if (rattr[r].startsWith(tasks[t])) {
+                        StringBuilder sb = new StringBuilder();
+                        String[] sa = rattr[r].split("~");
+                        for (int s = 0; s < (sa.length - 1); s++) {
+                            sb.append(sa[s]);
+                        }
+//                        System.out.println(sb.toString() + "----" + tasks[t]);
+//                       if (rattr[r].startsWith(tasks[t])) {
+                        if ((tasks[t]).compareTo(sb.toString()) == 0) {
                             if ((rattr[r].endsWith("~threshold-to-error"))) {
                                 t2e = tr[i].get(rattr[r]);
                             }
@@ -423,9 +430,10 @@ public class BLT {
                     System.out.format("%10s", failed);
                     System.out.format("%10s", failedtime);
                     System.out.format("%10s", skipped);
-                    ops = ((passed + exceeded) / (float) (passedtime + exceededtime)) * 1000;
+                    ops = (((passed + exceeded) / (float) (passedtime + exceededtime)) * 1000) * result[i].length;
                     System.out.format("%10.2f%s", ops, "/s");
-                    threadops = (((passed + exceeded) / (float) (passedtime + exceededtime)) * 1000) / (float) result[i].length;
+                    threadops = (ops / result[i].length);
+//                    threadops = (((passed + exceeded) / (float) (passedtime + exceededtime)) * 1000) / (float) result[i].length;
                     System.out.format("%8.2f%s", threadops, "/s");
                     if (include) {
                         totalops = totalops + ops;
@@ -451,8 +459,8 @@ public class BLT {
                 System.out.format("%10s", totalfailed);
                 System.out.format("%10s", totalfailedtime);
                 System.out.format("%10s", totalskipped);
-                System.out.format("%10.2f%s", ((totalpassed + totalexceeded) / (float) (totalpassedtime + totalexceededtime)) * 1000, "/s");
-                System.out.format("%8.2f%s", (((totalpassed + totalexceeded) / (float) (totalpassedtime + totalexceededtime)) * 1000) / (float) result[i].length, "/s");
+                System.out.format("%10.2f%s", totalops, "/s");
+                System.out.format("%8.2f%s", totalthreadops, "/s");
                 System.out.format("%8.2f%s", ((totalpassedtime + totalexceededtime) / (float) (totalpassed + totalexceeded)) / (float) result[i].length, "ms");
                 System.out.println("\nexcludes sleep & skipped\n");
             }
