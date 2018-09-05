@@ -1,5 +1,5 @@
 {
-    "name": "ds-authenticate",
+    "name": "ds-authenticate_1",
     "service-location-port": ["$BLT-DSHOST0"],
     "request": "GET",
     "header": { 

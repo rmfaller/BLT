@@ -12,18 +12,10 @@
     "continue-on-fail": false,
     "workload": [
         {
-            "name": "workload-create",
-            "iteration": 0,
+            "name": "workload",
+            "iteration": 1000,
             "start-delay": 0,
-            "threads": 0,
-            "thread-group-size": 0,
-            "thread-interval": 1000
-        },
-        {
-            "name": "workload-delete",
-            "iteration": 400,
-            "start-delay": 0,
-            "threads": 2,
+            "threads": 1,
             "thread-group-size": 0,
             "thread-interval": 1000
         }

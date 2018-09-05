@@ -1,11 +1,8 @@
 {
     "name": "workload",
+    "threshold-to-error": 10,
+    "threshold-to-fail": 20,
     "task": [
-        {
-            "name": "idm-create",
-            "threshold-to-error": 300,
-            "threshold-to-fail": 600
-        }, 
         {
             "name": "ds-authenticate"
         }

@@ -45,6 +45,7 @@ public class BLT {
         boolean showcurl = false;
         boolean summary = false;
         boolean progress = false;
+        int incrementthread = 0;
         FileReader fr;
         long jobstart = 0;
         long jobstop = 0;
@@ -69,6 +70,10 @@ public class BLT {
                     case "--job":
                         showjob = true;
                         break;
+                    case "-i":
+                    case "--increment":
+                        incrementthread = new Integer(args[i + 1]).intValue();
+                        break;
                     case "-s":
                     case "--summary":
                         summary = true;
@@ -88,6 +93,13 @@ public class BLT {
             }
         }
         if (confighome != null) {
+            if (incrementthread > 0) {
+                summary = false;
+                progress = false;
+                showjob = false;
+                showcurl = false;
+                csv = false;
+            }
             config = readFile(confighome);
             if (config != null) {
                 bltenv = (JSONObject) config.get("BLT-environment");
@@ -99,124 +111,111 @@ public class BLT {
                     taskconfig = new JSONObject[wla.size()][];
                     worker = new Worker[wla.size()][];
                     result = new Result[wla.size()][];
-                    int threadid = 0;
+                    int ti = 0;
                     boolean found = true;
-                    for (int i = 0; i < wla.size(); i++) {
-                        workloadconfig[i] = readFile(config.get("workload") + (String) ((JSONObject) wla.get(i)).get("name") + ".json");
-                        if (workloadconfig != null) {
-                            taska = (JSONArray) workloadconfig[i].get("task");
-                            taskconfig[i] = new JSONObject[taska.size()];
-                            Long threadcount = (Long) ((JSONObject) wla.get(i)).get("threads");
-                            Long threadgroupsize = (Long) ((JSONObject) wla.get(i)).get("thread-group-size");
-                            Long threadinterval = (Long) ((JSONObject) wla.get(i)).get("thread-interval");
-                            worker[i] = new Worker[threadcount.intValue()];
-                            result[i] = new Result[threadcount.intValue()];
-                            for (int j = 0; j < taska.size(); j++) {
-                                taskconfig[i][j] = readFile(config.get("task") + (String) ((JSONObject) taska.get(j)).get("name") + ".json");
-                                if (taskconfig != null) {
-                                } else {
-                                    found = false;
-                                }
-                            }
-                            long startdelay = (long) ((JSONObject) wla.get(i)).get("start-delay");
-                            long threadstartdelay = 0;
-                            for (int j = 0; j < threadcount; j++) {
-                                result[i][j] = new Result(j);
-                                if (threadgroupsize > 0) {
-                                    if ((j % threadgroupsize) == 0) {
-                                        threadstartdelay = ((j % threadgroupsize) + (startdelay * threadinterval));
-                                        startdelay++;
+                    while ((ti < incrementthread) && (found)) {
+                        int threadid = 0;
+                        for (int i = 0; i < wla.size(); i++) {
+                            workloadconfig[i] = readFile(config.get("workload") + (String) ((JSONObject) wla.get(i)).get("name") + ".json");
+                            if (workloadconfig != null) {
+                                taska = (JSONArray) workloadconfig[i].get("task");
+                                taskconfig[i] = new JSONObject[taska.size()];
+                                Long threadcount = (Long) ((JSONObject) wla.get(i)).get("threads");
+                                threadcount = threadcount + ti;
+                                Long threadgroupsize = (Long) ((JSONObject) wla.get(i)).get("thread-group-size");
+                                Long threadinterval = (Long) ((JSONObject) wla.get(i)).get("thread-interval");
+                                worker[i] = new Worker[threadcount.intValue()];
+                                result[i] = new Result[threadcount.intValue()];
+                                for (int j = 0; j < taska.size(); j++) {
+                                    taskconfig[i][j] = readFile(config.get("task") + (String) ((JSONObject) taska.get(j)).get("name") + ".json");
+                                    if (taskconfig != null) {
+                                    } else {
+                                        found = false;
                                     }
                                 }
-                                worker[i][j] = new Worker(threadid, i, jobconfig, workloadconfig[i], taskconfig[i], result[i][j], bltenv, reserved, threadstartdelay);
-                                threadid++;
+                                long startdelay = (long) ((JSONObject) wla.get(i)).get("start-delay");
+                                long threadstartdelay = 0;
+                                for (int j = 0; j < threadcount; j++) {
+                                    result[i][j] = new Result(j);
+                                    if (threadgroupsize > 0) {
+                                        if ((j % threadgroupsize) == 0) {
+                                            threadstartdelay = ((j % threadgroupsize) + (startdelay * threadinterval));
+                                            startdelay++;
+                                        }
+                                    }
+                                    worker[i][j] = new Worker(threadid, i, jobconfig, workloadconfig[i], taskconfig[i], result[i][j], bltenv, reserved, threadstartdelay);
+                                    threadid++;
+                                }
+                            } else {
+                                found = false;
+                            }
+                        }
+                        if (found) {
+                            Spinner spinner = new Spinner(128, result);
+                            if (progress) {
+                                spinner.start();
+                            }
+                            jobstart = new Date().getTime();
+                            for (int i = 0; i < worker.length; i++) {
+                                for (int j = 0; j < worker[i].length; j++) {
+                                    // if workloadconfig[i] != serial - dumb idea; if serial create multiple BLT commands 
+                                    worker[i][j].start();
+                                }
+                            }
+                            for (int i = 0; i < worker.length; i++) {
+                                for (int j = 0; j < worker[i].length; j++) {
+                                    try {
+                                        worker[i][j].join();
+                                    } catch (InterruptedException ex) {
+                                        Logger.getLogger(BLT.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                }
+                            }
+                            jobstop = new Date().getTime();
+                            if (progress) {
+                                spinner.continueToRun = false;
+                                System.out.println("..... done. Total lapsed time = " + (jobstop - jobstart) + "ms\n");
+                            }
+                            long millis = (jobstop - jobstart);
+                            long days = TimeUnit.MILLISECONDS.toDays(millis);
+                            millis -= TimeUnit.DAYS.toMillis(days);
+                            long hours = TimeUnit.MILLISECONDS.toHours(millis);
+                            millis -= TimeUnit.HOURS.toMillis(hours);
+                            long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
+                            millis -= TimeUnit.MINUTES.toMillis(minutes);
+                            long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
+                            StringBuilder sbt = new StringBuilder(64);
+                            sbt.append(days);
+                            sbt.append(" Days ");
+                            sbt.append(hours);
+                            sbt.append(" Hours ");
+                            sbt.append(minutes);
+                            sbt.append(" Minutes ");
+                            sbt.append(seconds);
+                            sbt.append(" Seconds");
+                            for (int i = 0; i < result.length; i++) {
+                                if ((Long) ((JSONObject) ((JSONArray) jobconfig.get("workload")).get(i)).get("threads") > 0) {
+                                    if (csv) {
+                                        csvout(i, result, jobconfig, workloadconfig, sbt);
+                                    }
+                                    if (showjob) {
+                                        jobout(i, result, jobconfig, workloadconfig, sbt, config);
+                                    }
+                                    if (showcurl) {
+                                        curlout(i, result, jobconfig, workloadconfig, sbt);
+                                    }
+                                }
+                            }
+                            if (incrementthread > 0) {
+                                threadsout(ti, result, jobconfig, workloadconfig, sbt);
+                            }
+                            ti++;
+                            if (summary) {
+                                summary(result, jobconfig, workloadconfig, sbt, config);
                             }
                         } else {
-                            found = false;
+                            help();
                         }
-                    }
-                    if (found) {
-                        Spinner spinner = new Spinner(128, result);
-                        if (progress) {
-                            spinner.start();
-                        }
-                        jobstart = new Date().getTime();
-                        for (int i = 0; i < worker.length; i++) {
-                            for (int j = 0; j < worker[i].length; j++) {
-                                // if workloadconfig[i] != serial - dumb idea; if serial create multiple BLT commands 
-                                worker[i][j].start();
-                            }
-                        }
-                        for (int i = 0; i < worker.length; i++) {
-                            for (int j = 0; j < worker[i].length; j++) {
-                                try {
-                                    worker[i][j].join();
-                                } catch (InterruptedException ex) {
-                                    Logger.getLogger(BLT.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                            }
-                        }
-                        jobstop = new Date().getTime();
-                        if (progress) {
-                            spinner.continueToRun = false;
-                            System.out.println("..... done. Total lapsed time = " + (jobstop - jobstart) + "ms\n");
-                        }
-                        long millis = (jobstop - jobstart);
-                        long days = TimeUnit.MILLISECONDS.toDays(millis);
-                        millis -= TimeUnit.DAYS.toMillis(days);
-                        long hours = TimeUnit.MILLISECONDS.toHours(millis);
-                        millis -= TimeUnit.HOURS.toMillis(hours);
-                        long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
-                        millis -= TimeUnit.MINUTES.toMillis(minutes);
-                        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
-                        StringBuilder sbt = new StringBuilder(64);
-                        sbt.append(days);
-                        sbt.append(" Days ");
-                        sbt.append(hours);
-                        sbt.append(" Hours ");
-                        sbt.append(minutes);
-                        sbt.append(" Minutes ");
-                        sbt.append(seconds);
-                        sbt.append(" Seconds");
-                        for (int i = 0; i < result.length; i++) {
-                            if ((Long) ((JSONObject) ((JSONArray) jobconfig.get("workload")).get(i)).get("threads") > 0) {
-                                if (csv) {
-                                    System.out.println("CSV for job = " + jobconfig.get("name") + " and workload = " + workloadconfig[i].get("name")
-                                            + " completed on " + new Date().toString() + " running for " + sbt.toString() + " :");
-                                    System.out.print("job,thread,workload");
-                                    String[] rattr = result[i][0].getAttributes();
-                                    Arrays.sort(rattr);
-                                    for (int j = 0; j < rattr.length; j++) {
-                                        System.out.print("," + rattr[j]);
-                                    }
-                                    System.out.println();
-                                    for (int j = 0; j < result[i].length; j++) {
-                                        System.out.print(jobconfig.get("name") + "," + result[i][j].uid + "," + workloadconfig[i].get("name"));
-                                        for (int l = 0; l < rattr.length; l++) {
-                                            System.out.print("," + result[i][j].get(rattr[l]));
-                                        }
-                                        System.out.println();
-                                    }
-                                    System.out.println();
-                                }
-                                if (showjob) {
-                                    System.out.println("Configuration for job = " + jobconfig.get("name") + " and workload = " + workloadconfig[i].get("name")
-                                            + " completed on " + new Date().toString() + " running for " + sbt.toString() + ":");
-                                    System.out.println(config.toString());
-                                    System.out.println(result[i][0].config);
-                                }
-                                if (showcurl) {
-                                    System.out.println("Sample cURL commands for job = " + jobconfig.get("name") + " and workload = " + workloadconfig[i].get("name")
-                                            + " completed on " + new Date().toString() + " running for " + sbt.toString() + ":");
-                                    System.out.println(result[i][0].curler);
-                                }
-                            }
-                        }
-                        if (summary) {
-                            summary(result, jobconfig, workloadconfig, sbt);
-                        }
-                    } else {
-                        help();
                     }
                 }
             }
@@ -230,12 +229,14 @@ public class BLT {
                 + "\noptions:"
                 + "\n\tif not specified [FILE] defaults to ${BLT_HOME}/sample/config.json\n"
                 + "\n\t[FILE] example: ${BLT_HOME}/mytest/myconfig.json and does require a layout similar to ${BLT_HOME}/sample/\n"
-                + "\n\t--csv      | -v displays results in a comma delimited format\n"
-                + "\n\t--curl     | -c displays example cURL commands used against REST endpoints for this test\n"
-                + "\n\t--job      | -j displays JSON configuration data used for the test\n"
-                + "\n\t--summary  | -s displays summary of test\n"
-                + "\n\t--progress | -p displays progress while BLT is running\n"
-                + "\n\t--help     | -h this output\n"
+                + "\n\t--csv         | -v displays results in a comma delimited format\n"
+                + "\n\t--curl        | -c displays example cURL commands used against REST endpoints for this test\n"
+                + "\n\t--increment n | -i increment the \"threads\" value by one until the value(s) are incremented by the number n.\n"
+                + "                           All other options are turned off. Good option for reaching resource contention.\n" 
+                + "\n\t--job         | -j displays JSON configuration data used for the test\n"
+                + "\n\t--summary     | -s displays summary of test\n"
+                + "\n\t--progress    | -p displays progress while BLT is running\n"
+                + "\n\t--help        | -h this output\n"
                 + "\nExamples:"
                 + "";
         System.out.println(help);
@@ -258,7 +259,7 @@ public class BLT {
         return jo;
     }
 
-    private static void summary(Result[][] result, JSONObject jobconfig, JSONObject[] workloadconfig, StringBuilder sbt) {
+    private static void summary(Result[][] result, JSONObject jobconfig, JSONObject[] workloadconfig, StringBuilder sbt, JSONObject config) {
         Result[] tr = new Result[result.length];
         for (int i = 0; i < result.length; i++) {
             if ((Long) ((JSONObject) ((JSONArray) jobconfig.get("workload")).get(i)).get("threads") > 0) {
@@ -463,6 +464,200 @@ public class BLT {
                 System.out.format("%8.2f%s", totalthreadops, "/s");
                 System.out.format("%8.2f%s", ((totalpassedtime + totalexceededtime) / (float) (totalpassed + totalexceeded)) / (float) result[i].length, "ms");
                 System.out.println("\nexcludes sleep & skipped\n");
+            }
+        }
+    }
+
+    private static void csvout(int i, Result[][] result, JSONObject jobconfig, JSONObject[] workloadconfig, StringBuilder sbt) {
+        System.out.println("CSV for job = " + jobconfig.get("name") + " and workload = " + workloadconfig[i].get("name")
+                + " completed on " + new Date().toString() + " running for " + sbt.toString() + " :");
+        System.out.print("job,thread,workload");
+        String[] rattr = result[i][0].getAttributes();
+        Arrays.sort(rattr);
+        for (int j = 0; j < rattr.length; j++) {
+            System.out.print("," + rattr[j]);
+        }
+        System.out.println();
+        for (int j = 0; j < result[i].length; j++) {
+            System.out.print(jobconfig.get("name") + "," + result[i][j].uid + "," + workloadconfig[i].get("name"));
+            for (int l = 0; l < rattr.length; l++) {
+                System.out.print("," + result[i][j].get(rattr[l]));
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+    private static void jobout(int i, Result[][] result, JSONObject jobconfig, JSONObject[] workloadconfig, StringBuilder sbt, JSONObject config) {
+        System.out.println("Configuration for job = " + jobconfig.get("name") + " and workload = " + workloadconfig[i].get("name")
+                + " completed on " + new Date().toString() + " running for " + sbt.toString() + ":");
+        System.out.println(config.toString());
+        System.out.println(result[i][0].config);
+    }
+
+    private static void curlout(int i, Result[][] result, JSONObject jobconfig, JSONObject[] workloadconfig, StringBuilder sbt) {
+        System.out.println("Sample cURL commands for job = " + jobconfig.get("name") + " and workload = " + workloadconfig[i].get("name")
+                + " completed on " + new Date().toString() + " running for " + sbt.toString() + ":");
+        System.out.println(result[i][0].curler);
+    }
+
+    private static void threadsout(int ti, Result[][] result, JSONObject jobconfig, JSONObject[] workloadconfig, StringBuilder sbt) {
+        if (ti == 0) {
+            System.out.println("Data for job = " + jobconfig.get("name") + " started on " + new Date().toString() + ":");
+            System.out.println("Operation,Threads,TXTotal,AccumTime,T2E,T2F,TXPass,PassTime,TXExceed,ExceedTime,TXFail,FailTime,Skipped,CombinedPassOps,ThreadOps,Avr-ms-per-op,Success,Exceed,Fail");
+        }
+        Result[] tr = new Result[result.length];
+        for (int i = 0; i < result.length; i++) {
+            if ((Long) ((JSONObject) ((JSONArray) jobconfig.get("workload")).get(i)).get("threads") > 0) {
+                String[] rattr = result[i][0].getAttributes();
+                Arrays.sort(rattr);
+                int taskcount = 0;
+                tr[i] = new Result(i);
+                for (int r = 0; r < rattr.length; r++) {
+                    tr[i].put(rattr[r], 0);
+                    if ((!rattr[r].endsWith("~threshold-to-fail")) && (!rattr[r].endsWith("~threshold-to-error"))) {
+                        for (int j = 0; j < result[i].length; j++) {
+                            tr[i].addTo(rattr[r], result[i][j].get(rattr[r]));
+                        }
+                    } else {
+                        if (rattr[r].endsWith("~threshold-to-fail")) {
+                            tr[i].addTo(rattr[r], result[i][0].get(rattr[r]));
+                        }
+                        if (rattr[r].endsWith("~threshold-to-error")) {
+                            tr[i].addTo(rattr[r], result[i][0].get(rattr[r]));
+                        }
+                    }
+                    if (rattr[r].endsWith("~passed")) {
+                        taskcount++;
+                    }
+                }
+                String[] tasks = new String[taskcount];
+                int x = 0;
+                for (int r = 0; r < rattr.length; r++) {
+                    if (rattr[r].endsWith("~passed")) {
+                        tasks[x] = new String(rattr[r].split("~passed")[0]);
+                        x++;
+                    }
+                }
+                long totaltxtotal = 0;
+                long totalaccmtime = 0;
+                long totalpassed = 0;
+                long totalpassedtime = 0;
+                long totalexceeded = 0;
+                long totalexceededtime = 0;
+                long totalfailed = 0;
+                long totalfailedtime = 0;
+                long totalskipped = 0;
+                float totalops = 0;
+                float totalthreadops = 0;
+                boolean include;
+                for (int t = 0; t < tasks.length; t++) {
+                    if ((tr[i].get(tasks[t] + "~threshold-to-error") > 0) || (tr[i].get(tasks[t] + "~threshold-to-fail") > 0) || (tr[i].get(tasks[t] + "~skipped") > 0)) {
+                        include = true;
+                    } else {
+                        include = false;
+                    }
+                    System.out.print(tasks[t] + "~" + new Integer(ti).toString() + "," + result[i].length + ",");
+                    long txtotal = 0;
+                    long accmtime = 0;
+                    long t2e = 0;
+                    long t2f = 0;
+                    long passed = 0;
+                    long passedtime = 0;
+                    long exceeded = 0;
+                    long exceededtime = 0;
+                    long failed = 0;
+                    long failedtime = 0;
+                    long skipped = 0;
+                    float ops = 0;
+                    float threadops = 0;
+                    for (int r = 0; r < rattr.length; r++) {
+                        StringBuilder sb = new StringBuilder();
+                        String[] sa = rattr[r].split("~");
+                        for (int s = 0; s < (sa.length - 1); s++) {
+                            sb.append(sa[s]);
+                        }
+                        if ((tasks[t]).compareTo(sb.toString()) == 0) {
+                            if ((rattr[r].endsWith("~threshold-to-error"))) {
+                                t2e = tr[i].get(rattr[r]);
+                            }
+                            if ((rattr[r].endsWith("~threshold-to-fail"))) {
+                                t2f = tr[i].get(rattr[r]);
+                            }
+                            if ((rattr[r].endsWith("~skipped"))) {
+                                skipped = skipped + tr[i].get(rattr[r]);
+                                if (include) {
+                                    totalskipped = totalskipped + tr[i].get(rattr[r]);
+                                }
+                            }
+                            if ((rattr[r].endsWith("~passed")) || (rattr[r].endsWith("~exceeded")) || (rattr[r].endsWith("~failed"))) {
+                                txtotal = txtotal + tr[i].get(rattr[r]);
+                                if (include) {
+                                    totaltxtotal = totaltxtotal + tr[i].get(rattr[r]);
+                                }
+                                if (rattr[r].endsWith("~passed")) {
+                                    passed = passed + tr[i].get(rattr[r]);
+                                    if (include) {
+                                        totalpassed = totalpassed + tr[i].get(rattr[r]);
+                                    }
+                                }
+                                if (rattr[r].endsWith("~exceeded")) {
+                                    exceeded = exceeded + tr[i].get(rattr[r]);
+                                    if (include) {
+                                        totalexceeded = totalexceeded + tr[i].get(rattr[r]);
+                                    }
+                                }
+                                if (rattr[r].endsWith("~failed")) {
+                                    failed = failed + tr[i].get(rattr[r]);
+                                    if (include) {
+                                        totalfailed = totalfailed + tr[i].get(rattr[r]);
+                                    }
+                                }
+                            }
+                            if ((rattr[r].endsWith("~passedtime")) || (rattr[r].endsWith("~exceededtime")) || (rattr[r].endsWith("~failedtime"))) {
+                                accmtime = accmtime + tr[i].get(rattr[r]);
+                                if (include) {
+                                    totalaccmtime = totalaccmtime + tr[i].get(rattr[r]);
+                                }
+                                if (rattr[r].endsWith("~passedtime")) {
+                                    passedtime = passedtime + tr[i].get(rattr[r]);
+                                    if (include) {
+                                        totalpassedtime = totalpassedtime + tr[i].get(rattr[r]);
+                                    }
+                                }
+                                if (rattr[r].endsWith("~exceededtime")) {
+                                    exceededtime = exceededtime + tr[i].get(rattr[r]);
+                                    if (include) {
+                                        totalexceededtime = totalexceededtime + tr[i].get(rattr[r]);
+                                    }
+                                }
+                                if (rattr[r].endsWith("~failedtime")) {
+                                    failedtime = failedtime + tr[i].get(rattr[r]);
+                                    if (include) {
+                                        totalfailedtime = totalfailedtime + tr[i].get(rattr[r]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    System.out.print(txtotal + "," + accmtime + "," + t2e + "," + t2f + "," + passed + "," + passedtime + "," + exceeded + "," + exceededtime + "," + failed + "," + failedtime + "," + skipped + ",");
+                    ops = (((passed + exceeded) / (float) (passedtime + exceededtime)) * 1000) * result[i].length;
+                    threadops = (ops / result[i].length);
+//                    threadops = (((passed + exceeded) / (float) (passedtime + exceededtime)) * 1000) / (float) result[i].length;
+//                    System.out.print(ops + "," + threadops + ",");
+                    System.out.format("%.2f%s", ops, ",");
+                    System.out.format("%.2f%s", threadops, ",");
+                    if (include) {
+                        totalops = totalops + ops;
+                        totalthreadops = totalthreadops + threadops;
+                    }
+//                    System.out.print(((passedtime + exceededtime) / (float) (passed + exceeded)) / (float) result[i].length + ",");
+                    System.out.format("%.2f%s", ((passedtime + exceededtime) / (float) (passed + exceeded)) / (float) result[i].length, ",");
+                    System.out.format("%.2f%s", (passed / (float) txtotal) * 100, "%,");
+                    System.out.format("%.2f%s", (exceeded / (float) txtotal) * 100, "%,");
+                    System.out.format("%.2f%s", (failed / (float) txtotal) * 100, "%");
+                    System.out.println();
+                }
             }
         }
     }
