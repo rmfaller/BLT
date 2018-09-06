@@ -1,6 +1,4 @@
 set terminal 'qt' size 1600, 800
-set label "Exceed threshold = 10, Fail threshold = 50"
-set label boxed offset 0,-3 font ",15"
 set multiplot layout 4,1 columnsfirst scale 1.0,1.0
 set rmargin 32
 set lmargin 8
@@ -22,6 +20,8 @@ plot './csv/ds.csv' using 2:4 title columnheader, \
 '' using 2:12 title columnheader
 plot './csv/ds.csv' using 2:14 title columnheader, \
  '' using 2:15 title columnheader
+set label 11 center at graph 0.5,char 1 "first title" font ",14"
+set label 11 "Exceed threshold = 10, Fail threshold = 50"
 plot './csv/ds.csv' using 2:17 title columnheader, \
  '' using 2:18 title columnheader, \
 '' using 2:19 title columnheader

@@ -1,6 +1,6 @@
 {
     "name": "ds-authenticate",
-    "service-location-port": ["$BLT-DSHOST0"],
+    "service-location-port": ["$BLT-DSHOST0", "$BLT-DSHOST0"],
     "request": "GET",
     "header": { 
         "X-OpenIDM-Username": "user.$BLT-RANDOM-NUMBER",

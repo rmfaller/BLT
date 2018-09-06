@@ -113,7 +113,7 @@ public class BLT {
                     result = new Result[wla.size()][];
                     int ti = 0;
                     boolean found = true;
-                    while ((ti < incrementthread) && (found)) {
+                    while ((ti <= incrementthread) && (found)) {
                         int threadid = 0;
                         for (int i = 0; i < wla.size(); i++) {
                             workloadconfig[i] = readFile(config.get("workload") + (String) ((JSONObject) wla.get(i)).get("name") + ".json");

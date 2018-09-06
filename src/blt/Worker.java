@@ -69,12 +69,15 @@ class Worker extends Thread {
     @Override
     public void run() {
         int index = 0;
-        URL[] url;
-        HttpURLConnection[] conn;
-        JSONParser jp = new JSONParser();
         JSONArray taska = (JSONArray) workloadconfig.get("task");
         JSONArray workloada = (JSONArray) jobconfig.get("workload");
         JSONObject[] state = new JSONObject[taska.size()];
+        URL[] url;
+        HttpURLConnection[] conn;
+        URL[][] turl = new URL[taska.size()][];
+        HttpURLConnection[][] tconn = new HttpURLConnection[taska.size()][];
+        boolean[][] connopen = new boolean[taska.size()][];
+        JSONParser jp = new JSONParser();
         Long minvalue = getLong(0, "minvalue");
         Long maxvalue = getLong(0, "maxvalue");
         Long randomvalue;
@@ -92,6 +95,15 @@ class Worker extends Thread {
                 Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+/*        for (int i = 0; i < taska.size(); i++) {
+            slp = getJSONArray(i, "service-location-port");
+            connopen[i] = new boolean[slp.size()];
+            turl[i] = new URL[slp.size()];
+            tconn[i] = new HttpURLConnection[slp.size()];
+            for (int j = 0; j < slp.size(); j++) {
+                connopen[i][j] = false;
+            }
+        } */
         for (int i = 0; i < iteration; i++) {
             worked = true;
             randomvalue = (long) (Math.random() * ((long) getLong(0, "maxvalue") + 1));
@@ -148,6 +160,7 @@ class Worker extends Thread {
                                 headervalue = updateReserved(index, headervalue, state, minvalue, maxvalue, randomvalue);
                                 conn[instance].setRequestProperty(headerattr, headervalue);
                             }
+
                             String dp = null;
                             if (taskconfig[index].containsKey("data-payload")) {
                                 dp = ((JSONObject) taskconfig[index].get("data-payload")).toString();
@@ -215,15 +228,15 @@ class Worker extends Thread {
                 maxvalue = getLong(0, "maxvalue");
             }
         }
-        StringBuffer sb = new StringBuffer("Job: \n" + jobconfig.toJSONString() + "\n\t Workload(s): \n\t" + workloadconfig.toJSONString() + "\n\t\tTask(s): \n");
-        StringBuffer cb = new StringBuffer();
+        StringBuilder sb = new StringBuilder("Job: \n" + jobconfig.toJSONString() + "\n\t Workload(s): \n\t" + workloadconfig.toJSONString() + "\n\t\tTask(s): \n");
+        StringBuilder cb = new StringBuilder();
         for (int i = 0; i < taskconfig.length; i++) {
             sb.append("\t\t" + taskconfig[i].toJSONString()).append("\n");
         }
         result.config = sb.toString();
         for (int i = 0; i < taskconfig.length; i++) {
             if (taskconfig[i].get("request") != null) {
-                cb.append("\t\tcurl --request " + (String) taskconfig[i].get("request") + " \\\n");
+                cb.append("\t\tcurl --request ").append((String) taskconfig[i].get("request")).append(" \\\n");
                 JSONObject c = (JSONObject) taskconfig[i].get("header");
                 for (Object key : c.keySet()) {
                     cb.append("\t\t\t--header \"" + (String) key + ":" + c.get(key) + "\" \\\n");
