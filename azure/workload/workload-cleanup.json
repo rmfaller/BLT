@@ -1,0 +1,9 @@
+{
+    "name": "workload-cleanup",
+    "task": [
+        {
+            "name": "idm-delete",
+            "read-file": "file-to-read"
+        }
+    ]
+}

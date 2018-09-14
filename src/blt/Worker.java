@@ -6,11 +6,11 @@
 package blt;
 
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -87,6 +87,8 @@ class Worker extends Thread {
         long taskstart = 0;
         long taskstop = 0;
         int instance = 0;
+        StringBuilder taskstring;
+        FileWriter taskfile;
         Long iteration = (Long) ((JSONObject) workloada.get(workloadset)).get("iteration");
         if ((threadstartdelay > 0) && (iteration > 0)) {
             try {
@@ -95,7 +97,7 @@ class Worker extends Thread {
                 Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-/*        for (int i = 0; i < taska.size(); i++) {
+        /*        for (int i = 0; i < taska.size(); i++) {
             slp = getJSONArray(i, "service-location-port");
             connopen[i] = new boolean[slp.size()];
             turl[i] = new URL[slp.size()];
@@ -133,6 +135,7 @@ class Worker extends Thread {
                 // from spl, if greater than 1 select the instance
                 // may make conn and url not an array
                 if (((String) slp.get(0)).compareTo("$BLT-SLEEP") != 0) {
+                    taskstring = new StringBuilder();
                     if (worked) {
                         String urlstring = (String) slp.get(instance) + (String) taskconfig[index].get("url-endpoint") + (String) taskconfig[index].get("url-payload");
                         urlstring = replaceVariable(urlstring);
@@ -140,9 +143,25 @@ class Worker extends Thread {
                         result.put(((JSONObject) taska.get(index)).get("name").toString() + "~threshold-to-error", getLong(index, "threshold-to-error").longValue());
                         result.put(((JSONObject) taska.get(index)).get("name").toString() + "~threshold-to-fail", getLong(index, "threshold-to-fail").longValue());
                         if ((getLong(index, "threshold-to-fail")) < getLong(index, "threshold-to-error")) {
-                            System.err.println("Fail threshold " + getLong(index, "threshold-to-fail") + " set lower than error threshold " + getLong(index, "threshold-to-error") + ". Rookie mistake. Results will be inconclusive!");
+                            System.err.println("Fail threshold " + getLong(index, "threshold-to-fail") + " set lower than error threshold "
+                                    + getLong(index, "threshold-to-error") + ". Rookie mistake. Results will be inconclusive!");
                         }
                         taskstart = new Date().getTime();
+                        if (getString(index, "create-file") != null) {
+                            String tmps = (String) slp.get(instance);
+                            tmps = replaceVariable(tmps);
+                            tmps = updateReserved(index, tmps, state, minvalue, maxvalue, randomvalue);
+                            taskstring.append("{ \"name\": \"" + getString(index, "name") + "\",");
+                            taskstring.append("\"request\": \"" + getString(index, "request") + "\", \"service-location-port\": [\"" + tmps + "\"],");
+                            tmps = (String) taskconfig[index].get("url-endpoint");
+                            tmps = replaceVariable(tmps);
+                            tmps = updateReserved(index, tmps, state, minvalue, maxvalue, randomvalue);
+                            taskstring.append("\"url-endpoint\": \"" + tmps + "\",");
+                            tmps = (String) taskconfig[index].get("url-payload");
+                            tmps = replaceVariable(tmps);
+                            tmps = updateReserved(index, tmps, state, minvalue, maxvalue, randomvalue);
+                            taskstring.append("\"url-payload\": \"" + tmps + "\", \"header\": {");
+                        }
                         try {
                             url[instance] = new URI(urlstring).toURL();
                             conn[instance] = (HttpURLConnection) url[instance].openConnection();
@@ -158,18 +177,29 @@ class Worker extends Thread {
                                 headervalue = replaceVariable(headervalue);
                                 headerattr = updateReserved(index, headerattr, state, minvalue, maxvalue, randomvalue);
                                 headervalue = updateReserved(index, headervalue, state, minvalue, maxvalue, randomvalue);
+                                taskstring.append("\"" + headerattr + "\": \"" + headervalue + "\"");
+                                if (iter.hasNext()) {
+                                    taskstring.append(",");
+                                }
                                 conn[instance].setRequestProperty(headerattr, headervalue);
                             }
-
+                            taskstring.append("}");
                             String dp = null;
                             if (taskconfig[index].containsKey("data-payload")) {
                                 dp = ((JSONObject) taskconfig[index].get("data-payload")).toString();
                                 dp = replaceVariable(dp);
                                 dp = updateReserved(index, dp, state, minvalue, maxvalue, randomvalue);
+                                taskstring.append(",\"data-payload\": " + dp);
                                 OutputStreamWriter cwr = new OutputStreamWriter(conn[instance].getOutputStream());
                                 cwr.write(dp);
                                 cwr.close();
                             }
+                            taskstring.append("}");
+                            taskfile = new FileWriter("./bulk-task/" + (String) ((JSONObject) workloada.get(workloadset)).get("name") + "-"
+                                    + ((JSONObject) taska.get(index)).get("name").toString() + "-" + this.threadid, true);
+                            taskfile.append(taskstring.toString());
+                            taskfile.close();
+//                            System.out.println(taskstring.toString());
                             BufferedReader reader = null;
                             reader = new BufferedReader(new InputStreamReader(conn[instance].getInputStream()));
                             String rl = null;

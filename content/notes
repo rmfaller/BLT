@@ -40,4 +40,12 @@ tasks can read from files tasks
 tasks can be created from existing logs based on usage profile
 tasks support LDAP
 
+Process to clean up, example:
+Run blt to create users and then using the same thread count and iterations run blt again to delete entries
+Same with authentication into AM
+Use same job
+set thresholds to zero to build cleanup strings for logout, delete entries
+file or directory per thread 
+add $BLT-EPOCHTIME for unique data
+
 Code cuts:
