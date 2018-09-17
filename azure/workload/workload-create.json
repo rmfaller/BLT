@@ -8,7 +8,7 @@
         },
         {
             "name": "idm-delete",
-            "create-file": "./bulk-task/"
+            "create-file": "./bulk-task/deletes.txt"
         }
     ]
 }

@@ -46,6 +46,7 @@ public class BLT {
         boolean summary = false;
         boolean progress = false;
         int incrementthread = 0;
+        int groupid = 1;
         FileReader fr;
         long jobstart = 0;
         long jobstop = 0;
@@ -232,7 +233,7 @@ public class BLT {
                 + "\n\t--csv         | -v displays results in a comma delimited format\n"
                 + "\n\t--curl        | -c displays example cURL commands used against REST endpoints for this test\n"
                 + "\n\t--increment n | -i increment the \"threads\" value by one until the value(s) are incremented by the number n.\n"
-                + "                           All other options are turned off. Good option for reaching resource contention.\n" 
+                + "                           All other options are turned off. Good option for reaching resource contention.\n"
                 + "\n\t--job         | -j displays JSON configuration data used for the test\n"
                 + "\n\t--summary     | -s displays summary of test\n"
                 + "\n\t--progress    | -p displays progress while BLT is running\n"
@@ -431,19 +432,36 @@ public class BLT {
                     System.out.format("%10s", failed);
                     System.out.format("%10s", failedtime);
                     System.out.format("%10s", skipped);
-                    ops = (((passed + exceeded) / (float) (passedtime + exceededtime)) * 1000) * result[i].length;
+                    if ((passedtime + exceededtime) != 0) {
+                        ops = (((passed + exceeded) / (float) (passedtime + exceededtime)) * 1000) * result[i].length;
+                    } else {
+                        ops = 0;
+                    }
                     System.out.format("%10.2f%s", ops, "/s");
-                    threadops = (ops / result[i].length);
-//                    threadops = (((passed + exceeded) / (float) (passedtime + exceededtime)) * 1000) / (float) result[i].length;
+                    if (result[i].length != 0) {
+                        threadops = (ops / result[i].length);
+                    } else {
+                        threadops = 0;
+                    }
                     System.out.format("%8.2f%s", threadops, "/s");
                     if (include) {
                         totalops = totalops + ops;
                         totalthreadops = totalthreadops + threadops;
                     }
-                    System.out.format("%8.2f%s", ((passedtime + exceededtime) / (float) (passed + exceeded)) / (float) result[i].length, "ms");
-                    System.out.format("%8.2f%s", (passed / (float) txtotal) * 100, "%");
-                    System.out.format("%8.2f%s", (exceeded / (float) txtotal) * 100, "%");
-                    System.out.format("%8.2f%s", (failed / (float) txtotal) * 100, "%");
+                    if (((passed + exceeded) != 0) && (result[i].length != 0)) {
+                        System.out.format("%8.2f%s", ((passedtime + exceededtime) / (float) (passed + exceeded)) / (float) result[i].length, "ms");
+                    } else {
+                        System.out.format("%8.2f%s", 0.0, "ms");
+                    }
+                    if (txtotal != 0) {
+                        System.out.format("%8.2f%s", (passed / (float) txtotal) * 100, "%");
+                        System.out.format("%8.2f%s", (exceeded / (float) txtotal) * 100, "%");
+                        System.out.format("%8.2f%s", (failed / (float) txtotal) * 100, "%");
+                    } else {
+                        System.out.format("%8.2f%s", 0.0, "%");
+                        System.out.format("%8.2f%s", 0.0, "%");
+                        System.out.format("%8.2f%s", 0.0, "%");
+                    }
                     System.out.println();
                 }
 

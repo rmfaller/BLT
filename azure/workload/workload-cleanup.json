@@ -3,7 +3,7 @@
     "task": [
         {
             "name": "idm-delete",
-            "read-file": "file-to-read"
+            "read-file": "./bulk-task/deletes.txt"
         }
     ]
 }

@@ -15,17 +15,17 @@
             "name": "workload-create",
             "iteration": 6,
             "start-delay": 0,
-            "threads": 2,
+            "threads": 4,
             "thread-group-size": 0,
-            "thread-interval": 1000,
-            "order": 1
+            "thread-interval": 1000
         },
         {
             "name": "workload-cleanup",
             "iteration": 0,
             "start-delay": 0,
             "threads": 0,
-            "order": 2
+            "thread-group-size": 0,
+            "thread-interval": 1000
         }
     ]
 }

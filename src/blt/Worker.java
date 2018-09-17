@@ -6,6 +6,9 @@
 package blt;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,6 +17,8 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -74,9 +79,6 @@ class Worker extends Thread {
         JSONObject[] state = new JSONObject[taska.size()];
         URL[] url;
         HttpURLConnection[] conn;
-        URL[][] turl = new URL[taska.size()][];
-        HttpURLConnection[][] tconn = new HttpURLConnection[taska.size()][];
-        boolean[][] connopen = new boolean[taska.size()][];
         JSONParser jp = new JSONParser();
         Long minvalue = getLong(0, "minvalue");
         Long maxvalue = getLong(0, "maxvalue");
@@ -87,8 +89,10 @@ class Worker extends Thread {
         long taskstart = 0;
         long taskstop = 0;
         int instance = 0;
-        StringBuilder taskstring;
-        FileWriter taskfile;
+        long linecount = 0;
+        long startline = 0;
+        long stopline = 0;
+        BufferedReader taskbr = null;
         Long iteration = (Long) ((JSONObject) workloada.get(workloadset)).get("iteration");
         if ((threadstartdelay > 0) && (iteration > 0)) {
             try {
@@ -97,15 +101,24 @@ class Worker extends Thread {
                 Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        /*        for (int i = 0; i < taska.size(); i++) {
-            slp = getJSONArray(i, "service-location-port");
-            connopen[i] = new boolean[slp.size()];
-            turl[i] = new URL[slp.size()];
-            tconn[i] = new HttpURLConnection[slp.size()];
-            for (int j = 0; j < slp.size(); j++) {
-                connopen[i][j] = false;
+        if (getString(index, "read-file") != null) {
+            try {
+                linecount = Files.lines(Paths.get(new File(((JSONObject) taska.get(0)).get("read-file").toString()).getPath())).count();
+                startline = (linecount / getLong(0, "threads") * threadid);
+                stopline = ((linecount / getLong(0, "threads") * (threadid + 1)) - 1);
+                if (threadid == (getLong(0, "threads") - 1)) {
+                    stopline = linecount;
+                }
+                taskbr = new BufferedReader(new FileReader(((JSONObject) taska.get(0)).get("read-file").toString()));
+                for (int i = 0; i < startline; i++) {
+                    String newtask = taskbr.readLine();
+//                    System.out.println(threadid + " = " + linecount + " : " + getLong(0, "threads") + " start = " + startline + " --- end = " + stopline + " ~~~ " + newtask);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } */
+            iteration = stopline - startline;
+        }
         for (int i = 0; i < iteration; i++) {
             worked = true;
             randomvalue = (long) (Math.random() * ((long) getLong(0, "maxvalue") + 1));
@@ -135,105 +148,79 @@ class Worker extends Thread {
                 // from spl, if greater than 1 select the instance
                 // may make conn and url not an array
                 if (((String) slp.get(0)).compareTo("$BLT-SLEEP") != 0) {
-                    taskstring = new StringBuilder();
                     if (worked) {
-                        String urlstring = (String) slp.get(instance) + (String) taskconfig[index].get("url-endpoint") + (String) taskconfig[index].get("url-payload");
-                        urlstring = replaceVariable(urlstring);
-                        urlstring = updateReserved(index, urlstring, state, minvalue, maxvalue, randomvalue);
                         result.put(((JSONObject) taska.get(index)).get("name").toString() + "~threshold-to-error", getLong(index, "threshold-to-error").longValue());
                         result.put(((JSONObject) taska.get(index)).get("name").toString() + "~threshold-to-fail", getLong(index, "threshold-to-fail").longValue());
                         if ((getLong(index, "threshold-to-fail")) < getLong(index, "threshold-to-error")) {
                             System.err.println("Fail threshold " + getLong(index, "threshold-to-fail") + " set lower than error threshold "
                                     + getLong(index, "threshold-to-error") + ". Rookie mistake. Results will be inconclusive!");
                         }
-                        taskstart = new Date().getTime();
                         if (getString(index, "create-file") != null) {
-                            String tmps = (String) slp.get(instance);
-                            tmps = replaceVariable(tmps);
-                            tmps = updateReserved(index, tmps, state, minvalue, maxvalue, randomvalue);
-                            taskstring.append("{ \"name\": \"" + getString(index, "name") + "\",");
-                            taskstring.append("\"request\": \"" + getString(index, "request") + "\", \"service-location-port\": [\"" + tmps + "\"],");
-                            tmps = (String) taskconfig[index].get("url-endpoint");
-                            tmps = replaceVariable(tmps);
-                            tmps = updateReserved(index, tmps, state, minvalue, maxvalue, randomvalue);
-                            taskstring.append("\"url-endpoint\": \"" + tmps + "\",");
-                            tmps = (String) taskconfig[index].get("url-payload");
-                            tmps = replaceVariable(tmps);
-                            tmps = updateReserved(index, tmps, state, minvalue, maxvalue, randomvalue);
-                            taskstring.append("\"url-payload\": \"" + tmps + "\", \"header\": {");
-                        }
-                        try {
-                            url[instance] = new URI(urlstring).toURL();
-                            conn[instance] = (HttpURLConnection) url[instance].openConnection();
-                            conn[instance].setDoOutput(true);
-                            conn[instance].setConnectTimeout(getLong(index, "threshold-to-fail").intValue());
-                            conn[instance].setReadTimeout(getLong(index, "threshold-to-fail").intValue());
-                            conn[instance].setRequestMethod(getString(index, "request"));
-                            Iterator<String> iter = ((JSONObject) taskconfig[index].get("header")).keySet().iterator();
-                            while (iter.hasNext()) {
-                                String headerattr = iter.next();
-                                String headervalue = (String) ((JSONObject) taskconfig[index].get("header")).get(headerattr);
-                                headerattr = replaceVariable(headerattr);
-                                headervalue = replaceVariable(headervalue);
-                                headerattr = updateReserved(index, headerattr, state, minvalue, maxvalue, randomvalue);
-                                headervalue = updateReserved(index, headervalue, state, minvalue, maxvalue, randomvalue);
-                                taskstring.append("\"" + headerattr + "\": \"" + headervalue + "\"");
-                                if (iter.hasNext()) {
-                                    taskstring.append(",");
-                                }
-                                conn[instance].setRequestProperty(headerattr, headervalue);
-                            }
-                            taskstring.append("}");
-                            String dp = null;
-                            if (taskconfig[index].containsKey("data-payload")) {
-                                dp = ((JSONObject) taskconfig[index].get("data-payload")).toString();
-                                dp = replaceVariable(dp);
-                                dp = updateReserved(index, dp, state, minvalue, maxvalue, randomvalue);
-                                taskstring.append(",\"data-payload\": " + dp);
-                                OutputStreamWriter cwr = new OutputStreamWriter(conn[instance].getOutputStream());
-                                cwr.write(dp);
-                                cwr.close();
-                            }
-                            taskstring.append("}");
-                            taskfile = new FileWriter("./bulk-task/" + (String) ((JSONObject) workloada.get(workloadset)).get("name") + "-"
-                                    + ((JSONObject) taska.get(index)).get("name").toString() + "-" + this.threadid, true);
-                            taskfile.append(taskstring.toString());
-                            taskfile.close();
-//                            System.out.println(taskstring.toString());
-                            BufferedReader reader = null;
-                            reader = new BufferedReader(new InputStreamReader(conn[instance].getInputStream()));
-                            String rl = null;
-                            StringBuilder sbin = new StringBuilder();
-                            while ((rl = reader.readLine()) != null) {
-                                sbin.append(rl);
-                            }
-                            reader.close();
-                            state[index] = (JSONObject) jp.parse(sbin.toString());
-                        } catch (URISyntaxException | ParseException | IOException ex) {
-                            worked = false;
-                            Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
-                            if (retry) {
-                                instance++;
-                                if (instance >= slp.size()) {
-                                    instance = 0;
-                                    retry = false;
-                                }
-                            }
-                        }
-                        taskstop = new Date().getTime();
-                        if (worked) {
-                            if ((getLong(index, "threshold-to-error")) >= (taskstop - taskstart)) {
-                                result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~passedtime", (taskstop - taskstart));
-                                result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~passed", 1);
-                            } else {
-                                result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~exceededtime", (taskstop - taskstart));
-                                result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~exceeded", 1);
-                            }
+                            createTaskFile(index, (String) ((JSONObject) workloada.get(workloadset)).get("name"),
+                                    ((JSONObject) taska.get(index)).get("name").toString(), (String) slp.get(instance),
+                                    state, minvalue, maxvalue, randomvalue);
+                            result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~skipped", 1);
                         } else {
-                            result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~failedtime", (taskstop - taskstart));
-                            result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~failed", 1);
-                            if (getBoolean(index, "continue-on-fail")) {
-                                worked = true;
+                            String urlstring = replaceWildcard(index, (String) slp.get(instance) + (String) taskconfig[index].get("url-endpoint") + (String) taskconfig[index].get("url-payload"), state, minvalue, maxvalue, randomvalue);
+                            try {
+                                if (getString(index, "read-file") != null) {
+                                    taskconfig[index] = (JSONObject) jp.parse(taskbr.readLine());
+                                }
+                                taskstart = new Date().getTime();
+                                url[instance] = new URI(urlstring).toURL();
+                                conn[instance] = (HttpURLConnection) url[instance].openConnection();
+                                conn[instance].setDoOutput(true);
+                                conn[instance].setConnectTimeout(getLong(index, "threshold-to-fail").intValue());
+                                conn[instance].setReadTimeout(getLong(index, "threshold-to-fail").intValue());
+                                conn[instance].setRequestMethod(getString(index, "request"));
+                                Iterator<String> iter = ((JSONObject) taskconfig[index].get("header")).keySet().iterator();
+                                while (iter.hasNext()) {
+                                    String headerattr = iter.next();
+                                    conn[instance].setRequestProperty(replaceWildcard(index, headerattr, state, minvalue, maxvalue, randomvalue),
+                                            replaceWildcard(index, (String) ((JSONObject) taskconfig[index].get("header")).get(headerattr), state, minvalue, maxvalue, randomvalue));
+                                }
+                                if (taskconfig[index].containsKey("data-payload")) {
+                                    try (OutputStreamWriter cwr = new OutputStreamWriter(conn[instance].getOutputStream())) {
+                                        cwr.write(replaceWildcard(index, ((JSONObject) taskconfig[index].get("data-payload")).toString(), state, minvalue, maxvalue, randomvalue));
+                                    }
+                                }
+                                taskstart = new Date().getTime();
+                                BufferedReader reader = null;
+                                reader = new BufferedReader(new InputStreamReader(conn[instance].getInputStream()));
+                                String rl = null;
+                                StringBuilder sbin = new StringBuilder();
+//                            taskstart = new Date().getTime();
+                                while ((rl = reader.readLine()) != null) {
+                                    sbin.append(rl);
+                                }
+                                reader.close();
+                                state[index] = (JSONObject) jp.parse(sbin.toString());
+                            } catch (URISyntaxException | ParseException | IOException ex) {
+                                worked = false;
+                                Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
+                                if (retry) {
+                                    instance++;
+                                    if (instance >= slp.size()) {
+                                        instance = 0;
+                                        retry = false;
+                                    }
+                                }
+                            }
+                            taskstop = new Date().getTime();
+                            if (worked) {
+                                if ((getLong(index, "threshold-to-error")) >= (taskstop - taskstart)) {
+                                    result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~passedtime", (taskstop - taskstart));
+                                    result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~passed", 1);
+                                } else {
+                                    result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~exceededtime", (taskstop - taskstart));
+                                    result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~exceeded", 1);
+                                }
+                            } else {
+                                result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~failedtime", (taskstop - taskstart));
+                                result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~failed", 1);
+                                if (getBoolean(index, "continue-on-fail")) {
+                                    worked = true;
+                                }
                             }
                         }
                     } else {
@@ -261,7 +248,7 @@ class Worker extends Thread {
         StringBuilder sb = new StringBuilder("Job: \n" + jobconfig.toJSONString() + "\n\t Workload(s): \n\t" + workloadconfig.toJSONString() + "\n\t\tTask(s): \n");
         StringBuilder cb = new StringBuilder();
         for (int i = 0; i < taskconfig.length; i++) {
-            sb.append("\t\t" + taskconfig[i].toJSONString()).append("\n");
+            sb.append("\t\t").append(taskconfig[i].toJSONString()).append("\n");
         }
         result.config = sb.toString();
         for (int i = 0; i < taskconfig.length; i++) {
@@ -456,6 +443,44 @@ class Worker extends Thread {
             }
         }
         return tmpstring;
+    }
+
+    private String replaceWildcard(int index, String ws, JSONObject[] state, Long minvalue, Long maxvalue, Long randomvalue) {
+        return (updateReserved(index, replaceVariable(ws), state, minvalue, maxvalue, randomvalue));
+    }
+
+    private void createTaskFile(int index, String wn, String tn, String slp, JSONObject[] state, Long minvalue, Long maxvalue, Long randomvalue) {
+        StringBuilder taskstring = new StringBuilder();
+//        FileWriter taskfile = null;
+        BufferedWriter taskfile = null;
+        taskstring.append("{ \"name\": \"").append(getString(index, "name")).append("\",");
+        taskstring.append("\"request\": \"").append(getString(index, "request")).append("\", \"service-location-port\": [\"").append(replaceWildcard(index, slp, state, minvalue, maxvalue, randomvalue)).append("\"],");
+        taskstring.append("\"url-endpoint\": \"").append(replaceWildcard(index, (String) taskconfig[index].get("url-endpoint"), state, minvalue, maxvalue, randomvalue)).append("\",");
+        taskstring.append("\"url-payload\": \"").append(replaceWildcard(index, (String) taskconfig[index].get("url-payload"), state, minvalue, maxvalue, randomvalue)).append("\", \"header\": {");
+        Iterator<String> iter = ((JSONObject) taskconfig[index].get("header")).keySet().iterator();
+        while (iter.hasNext()) {
+            String headerattr = iter.next();
+            taskstring.append("\"").append(replaceWildcard(index, headerattr, state, minvalue, maxvalue, randomvalue)).append("\": \"").append(replaceWildcard(index, (String) ((JSONObject) taskconfig[index].get("header")).get(headerattr), state, minvalue, maxvalue, randomvalue)).append("\"");
+            if (iter.hasNext()) {
+                taskstring.append(",");
+            }
+        }
+        taskstring.append("}");
+        if (taskconfig[index].containsKey("data-payload")) {
+            taskstring.append(",\"data-payload\": ")
+                    .append(replaceWildcard(index, ((JSONObject) taskconfig[index].get("data-payload")).toString(), state, minvalue, maxvalue, randomvalue));
+        }
+        taskstring.append("}");
+        try {
+//            taskfile = new FileWriter("./bulk-task/" + wn + "-" + tn + "-" + this.threadid, true);
+            taskfile = new BufferedWriter(new FileWriter(getString(index, "create-file"), true));
+            taskfile.write(taskstring.toString());
+            taskfile.newLine();
+            taskfile.flush();
+            taskfile.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }
