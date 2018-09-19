@@ -1,0 +1,32 @@
+{
+    "name": "workload-am",
+    "_task": [
+        {
+            "name": "am-create"
+        },
+        {
+            "name": "am-authenticate-stateful"
+        },
+        {
+            "name": "am-authenticate-stateless"
+        },
+        {
+            "name": "am-validate"
+        },
+        {
+            "name": "am-logout"
+        }
+    ],
+    "task": [
+        {
+            "name": "am-create",
+            "threshold-to-error": 400,
+            "threshold-to-fail": 600
+        },
+        {
+            "name": "am-authenticate-stateful",
+            "threshold-to-error": 200,
+            "threshold-to-fail": 400
+        }
+    ]
+}

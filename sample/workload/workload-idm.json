@@ -1,0 +1,49 @@
+{
+    "name": "workload-idm",
+    "_task": [
+        {
+            "name": "idm-create-put"
+        },
+        {
+            "name": "idm-create-post"
+        },
+        {
+            "name": "idm-update-put"
+        },
+        {
+            "name": "idm-delete"
+        },
+        {
+            "name": "idm-query"
+        },
+        {
+            "name": "idm-read"
+        }
+    ],
+    "task": [
+        {
+            "name": "idm-create-put",
+            "threshold-to-error": 400,
+            "threshold-to-fail": 600
+        },
+        {
+            "name": "idm-read",
+            "threshold-to-error": 50,
+            "threshold-to-fail": 100
+        },
+        {
+            "name": "idm-update-put",
+            "threshold-to-error": 200,
+            "threshold-to-fail": 400
+        },
+        {
+            "name": "idm-query",
+            "threshold-to-error": 20,
+            "threshold-to-fail": 40
+        },
+        {
+            "name": "idm-delete",
+            "create-file": "./bulk-task/deletes.txt"
+        }
+    ]
+}

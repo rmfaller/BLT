@@ -1,9 +1,8 @@
 {
-    "name": "config",
-    "job": "./azure/job/job.json",
-    "workload": "./azure/workload/",
-    "task": "./azure/task/",
-    "result": "./azure/result/",
+    "name": "config-cleanup",
+    "job": "./sample/job/job-cleanup.json",
+    "workload": "./sample/workload/",
+    "task": "./sample/task/",
     "BLT-environment": {
         "$BLT-DSHOST0": "http://ds0.example.com:8080",
         "$BLT-AMHOST1": "https://am07.example.com:8787",

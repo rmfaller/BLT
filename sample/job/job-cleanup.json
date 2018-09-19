@@ -1,0 +1,56 @@
+{
+    "name": "job-cleanup",
+    "load-generator": "My MacBook Pro",
+    "services-description": "Cleanup the mess",
+    "service-location-port": ["http://idm0.example.com:8080"],
+    "loading-style": "none", 
+    "minvalue": 0,
+    "maxvalue": 2000000,
+    "threshold-to-error": 2000,
+    "threshold-to-fail": 4000,
+    "continue-on-fail": true,
+    "_workload": [
+        {
+            "name": "workload-cleanup-am",
+            "iteration": 0,
+            "start-delay": 0,
+            "threads": 0,
+            "thread-group-size": 0,
+            "thread-interval": 0
+        }, 
+        {
+            "name": "workload-cleanup-ds",
+            "iteration": 0,
+            "start-delay": 0,
+            "threads": 0,
+            "thread-group-size": 0,
+            "thread-interval": 0
+        },
+        {
+            "name": "workload-cleanup-idm",
+            "iteration": 0,
+            "start-delay": 0,
+            "threads": 0,
+            "thread-group-size": 0,
+            "thread-interval": 0
+        },
+        {
+            "name": "workload-cleanup-ig",
+            "iteration": 0,
+            "start-delay": 0,
+            "threads": 0,
+            "thread-group-size": 0,
+            "thread-interval": 0
+        }
+    ],
+    "workload": [
+        {
+            "name": "workload-cleanup-idm",
+            "iteration": 1,
+            "start-delay": 0,
+            "threads": 2,
+            "thread-group-size": 0,
+            "thread-interval": 0
+        }
+    ]
+}

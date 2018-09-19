@@ -1,9 +1,27 @@
 {
     "name": "config",
-    "job": "./sample/job/basejob.json",
+    "job": "./sample/job/job.json",
     "workload": "./sample/workload/",
     "task": "./sample/task/",
     "BLT-environment": {
-        "$BLT-AMHOST": "am0.example.com:8080"
+        "$BLT-DSHOST0": "http://ds0.example.com:8080",
+        "$BLT-AMHOST1": "https://am07.example.com:8787",
+        "$BLT-IDMHOST0": "http://idm0.example.com:8080",
+        "$BLT-MINVALUE": 0,
+        "$BLT-MAXVALUE": 2000000,
+        "$BLT-AM-REALM": "am",
+        "$BLT-PASSWORD": "password",
+        "$BLT-IDMADMINID": "openidm-admin",
+        "$BLT-IDMADMINPASSWORD": "openidm-admin"
+    },
+    "BLT-reserved": {
+        "$BLT-RANDOM-NUMBER": "random-long",
+        "$BLT-RANDOM-ALPHA-STRING": "Alpha only - not implemented",
+        "$BLT-RANDOM-ALPHANUMERIC-STRING": "Alpha and number - not implemented",
+        "$BLT-THREADID": "threadid-int",
+        "$BLT-INCREMENT": "long",
+        "$BLT-DECREMENT": "long",
+        "$BLT-TOKEN-PAYLOAD": "tokenId",
+        "$BLT-SLEEP": "sleep"
     }
 }

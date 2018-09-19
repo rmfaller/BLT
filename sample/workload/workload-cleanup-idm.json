@@ -1,5 +1,5 @@
 {
-    "name": "workload-cleanup",
+    "name": "workload-cleanup-idm",
     "task": [
         {
             "name": "idm-delete",
