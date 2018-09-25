@@ -19,14 +19,7 @@
     ],
     "task": [
         {
-            "name": "am-create",
-            "threshold-to-error": 400,
-            "threshold-to-fail": 600
-        },
-        {
-            "name": "am-authenticate-stateful",
-            "threshold-to-error": 200,
-            "threshold-to-fail": 400
+            "name": "sleep"
         }
     ]
 }

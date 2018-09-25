@@ -158,7 +158,7 @@ class Worker extends Thread {
                             System.err.println("Fail threshold " + getLong(index, "threshold-to-fail") + " set lower than error threshold "
                                     + getLong(index, "threshold-to-error") + ". Rookie mistake. Results will be inconclusive!");
                         }
-                        if (getString(index, "create-file") != null) {
+                        if (getString(index, "write-file") != null) {
                             createTaskFile(index, (String) ((JSONObject) workloada.get(workloadset)).get("name"),
                                     ((JSONObject) taska.get(index)).get("name").toString(), (String) slp.get(instance),
                                     state, minvalue, maxvalue, randomvalue);
@@ -454,8 +454,13 @@ class Worker extends Thread {
 
     private void createTaskFile(int index, String wn, String tn, String slp, JSONObject[] state, Long minvalue, Long maxvalue, Long randomvalue) {
         StringBuilder taskstring = new StringBuilder();
+        StringBuilder curlstring = new StringBuilder("curl --request " + getString(index, "request") + " ");
+        StringBuilder curlendpoint = new StringBuilder(replaceWildcard(index, slp, state, minvalue, maxvalue, randomvalue));
+        curlendpoint.append(replaceWildcard(index, (String) taskconfig[index].get("url-endpoint"), state, minvalue, maxvalue, randomvalue));
+        curlendpoint.append(replaceWildcard(index, (String) taskconfig[index].get("url-payload"), state, minvalue, maxvalue, randomvalue));
 //        FileWriter taskfile = null;
         BufferedWriter taskfile = null;
+        BufferedWriter curlfile = null;
         taskstring.append("{ \"name\": \"").append(getString(index, "name")).append("\",");
         taskstring.append("\"request\": \"").append(getString(index, "request")).append("\", \"service-location-port\": [\"").append(replaceWildcard(index, slp, state, minvalue, maxvalue, randomvalue)).append("\"],");
         taskstring.append("\"url-endpoint\": \"").append(replaceWildcard(index, (String) taskconfig[index].get("url-endpoint"), state, minvalue, maxvalue, randomvalue)).append("\",");
@@ -464,23 +469,30 @@ class Worker extends Thread {
         while (iter.hasNext()) {
             String headerattr = iter.next();
             taskstring.append("\"").append(replaceWildcard(index, headerattr, state, minvalue, maxvalue, randomvalue)).append("\": \"").append(replaceWildcard(index, (String) ((JSONObject) taskconfig[index].get("header")).get(headerattr), state, minvalue, maxvalue, randomvalue)).append("\"");
+            curlstring.append("--header \"").append(replaceWildcard(index, headerattr, state, minvalue, maxvalue, randomvalue)).append(": ").append(replaceWildcard(index, (String) ((JSONObject) taskconfig[index].get("header")).get(headerattr), state, minvalue, maxvalue, randomvalue)).append("\" ");
             if (iter.hasNext()) {
                 taskstring.append(",");
             }
         }
         taskstring.append("}");
         if (taskconfig[index].containsKey("data-payload")) {
+            curlstring.append(" --data '" + replaceWildcard(index, ((JSONObject) taskconfig[index].get("data-payload")).toString(), state, minvalue, maxvalue, randomvalue) + "'");
             taskstring.append(",\"data-payload\": ")
                     .append(replaceWildcard(index, ((JSONObject) taskconfig[index].get("data-payload")).toString(), state, minvalue, maxvalue, randomvalue));
         }
         taskstring.append("}");
         try {
 //            taskfile = new FileWriter("./bulk-task/" + wn + "-" + tn + "-" + this.threadid, true);
-            taskfile = new BufferedWriter(new FileWriter(getString(index, "create-file"), true));
+            taskfile = new BufferedWriter(new FileWriter(getString(index, "write-file"), true));
+            curlfile = new BufferedWriter(new FileWriter(getString(index, "write-file") + "-curl", true));
             taskfile.write(taskstring.toString());
             taskfile.newLine();
+            curlfile.write(curlstring.toString() + " " + curlendpoint.toString());
+            curlfile.newLine();
             taskfile.flush();
             taskfile.close();
+            curlfile.flush();
+            curlfile.close();
         } catch (IOException ex) {
             Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -1,8 +1,0 @@
-{
-    "name": "workload_1",
-    "task": [
-        {
-            "name": "ds-authenticate_1"
-        }
-    ]
-}

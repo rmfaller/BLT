@@ -12,14 +12,6 @@
     "continue-on-fail": true,
     "_workload": [
         {
-            "name": "workload-am",
-            "iteration": 0,
-            "start-delay": 0,
-            "threads": 0,
-            "thread-group-size": 0,
-            "thread-interval": 1000
-        },
-        {
             "name": "workload-ds",
             "iteration": 0,
             "start-delay": 0,
@@ -46,10 +38,18 @@
     ],
     "workload": [
         {
-            "name": "workload-idm",
-            "iteration": 800,
+            "name": "workload-am",
+            "iteration": 0,
             "start-delay": 0,
-            "threads": 4,
+            "threads": 0,
+            "thread-group-size": 0,
+            "thread-interval": 1000
+        },
+        {
+            "name": "workload-idm",
+            "iteration": 10,
+            "start-delay": 0,
+            "threads": 2,
             "thread-group-size": 0,
             "thread-interval": 1000
         }

@@ -5,6 +5,7 @@
     "header": {
         "X-OpenIDM-Username": "$BLT-IDMADMINID",
         "X-OpenIDM-Password": "$BLT-IDMADMINPASSWORD",
+        "If-None-Match": "*",
         "X-ForgeRock-Transactionid": "$BLT-INCREMENT",
         "Content-Type": "application/json"
     },

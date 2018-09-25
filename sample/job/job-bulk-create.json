@@ -1,21 +1,21 @@
 {
-    "name": "job",
+    "name": "job-bulk-create",
     "load-generator": "My MacBook Pro",
     "services-description": "Testing BLT",
-    "service-location-port": ["http://dsx.example.com:8080"],
+    "service-location-port": ["http://idm0.example.com:8080"],
     "_comment-loading-style": "none, roundrobin, random, ha", 
     "loading-style": "none", 
     "minvalue": 0,
     "maxvalue": 2000000,
-    "threshold-to-error": 50,
-    "threshold-to-fail": 100,
-    "continue-on-fail": false,
+    "threshold-to-error": 500,
+    "threshold-to-fail": 1000,
+    "continue-on-fail": true,
     "workload": [
         {
-            "name": "workload",
-            "iteration": 1000,
+            "name": "workload-idm-bulk-create",
+            "iteration": 10,
             "start-delay": 0,
-            "threads": 1,
+            "threads": 4,
             "thread-group-size": 0,
             "thread-interval": 1000
         }

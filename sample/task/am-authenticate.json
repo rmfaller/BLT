@@ -1,10 +1,11 @@
 {
-    "name": "ds-create-object",
-    "request": "PUT",
+    "name": "am-authenticate",
+    "request": "POST",
     "header": { 
-        "X-OpenIDM-Username": "user.$BLT-RANDOM-NUMBER",
-        "X-OpenIDM-Password": "$BLT-PASSWORD",
+        "X-OpenAM-Username": "user.$BLT-RANDOM-NUMBER",
+        "X-OpenAM-Password": "$BLT-PASSWORD",
         "Accept-API-Version": "resource=2.0, protocol=1.0",
+        "X-ForgeRock-Transactionid": "",
         "Content-Type": "application/json"
     },
     "url-endpoint": "/$BLT-AM-REALM/json/realms/root/",

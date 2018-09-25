@@ -1,16 +1,18 @@
 {
-    "name": "config",
-    "job": "./base-sample/job/basejob.json",
-    "workload": "./base-sample/workload/",
-    "task": "./base-sample/task/",
-    "result": "./result/",
+    "name": "config-bulk",
+    "job": "./sample/job/job-bulk-create.json",
+    "workload": "./sample/workload/",
+    "task": "./sample/task/",
     "BLT-environment": {
-        "$BLT-AMHOST0": "http://am0.example.com:8080",
+        "$BLT-DSHOST0": "http://ds0.example.com:8080",
         "$BLT-AMHOST1": "https://am07.example.com:8787",
+        "$BLT-IDMHOST0": "http://idm0.example.com:8080",
         "$BLT-MINVALUE": 0,
-        "$BLT-MAXVALUE": 200000,
+        "$BLT-MAXVALUE": 2000000,
         "$BLT-AM-REALM": "am",
-        "$BLT-PASSWORD": "password"
+        "$BLT-PASSWORD": "password",
+        "$BLT-IDMADMINID": "openidm-admin",
+        "$BLT-IDMADMINPASSWORD": "openidm-admin"
     },
     "BLT-reserved": {
         "$BLT-RANDOM-NUMBER": "random-long",

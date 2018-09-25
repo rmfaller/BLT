@@ -1,0 +1,9 @@
+{
+    "name": "workload-idm-bulk-create",
+    "task": [
+        {
+            "name": "idm-create-put",
+            "write-file": "./bulk-task/creates.txt"
+        }
+    ]
+}
