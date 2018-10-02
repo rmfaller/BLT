@@ -3,7 +3,9 @@
     "task": [
         {
             "name": "idm-delete",
-            "read-file": "./bulk-task/deletes.txt"
+            "threshold-to-error": 4000,
+            "threshold-to-fail": 6000,
+            "read-file": "./bulk-task/deletes-blt.json"
         }
     ]
 }

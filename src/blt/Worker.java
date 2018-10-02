@@ -150,7 +150,8 @@ class Worker extends Thread {
                 }
                 // from spl, if greater than 1 select the instance
                 // may make conn and url not an array
-                if (((String) slp.get(0)).compareTo("$BLT-SLEEP") != 0) {
+                if ((((String) slp.get(0)).compareTo("$BLT-SLEEP") != 0) && (getLong(index, "threshold-to-fail") > 0) && (getLong(index, "threshold-to-error") > 0)) {
+//                if (((String) slp.get(0)).compareTo("$BLT-SLEEP") != 0) {
                     if (worked) {
                         result.put(((JSONObject) taska.get(index)).get("name").toString() + "~threshold-to-error", getLong(index, "threshold-to-error").longValue());
                         result.put(((JSONObject) taska.get(index)).get("name").toString() + "~threshold-to-fail", getLong(index, "threshold-to-fail").longValue());
@@ -230,12 +231,14 @@ class Worker extends Thread {
                         result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~skipped", 1);
                     }
                 } else {
-                    try {
-                        Thread.sleep((Long) taskconfig[index].get("sleep-time"));
-                        result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~passedtime", (Long) taskconfig[index].get("sleep-time"));
-                        result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~passed", 1);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
+                    if (((String) slp.get(0)).compareTo("$BLT-SLEEP") == 0) {
+                        try {
+                            Thread.sleep((Long) taskconfig[index].get("sleep-time"));
+                            result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~passedtime", (Long) taskconfig[index].get("sleep-time"));
+                            result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~passed", 1);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 }
             }
@@ -483,8 +486,8 @@ class Worker extends Thread {
         taskstring.append("}");
         try {
 //            taskfile = new FileWriter("./bulk-task/" + wn + "-" + tn + "-" + this.threadid, true);
-            taskfile = new BufferedWriter(new FileWriter(getString(index, "write-file"), true));
-            curlfile = new BufferedWriter(new FileWriter(getString(index, "write-file") + "-curl", true));
+            taskfile = new BufferedWriter(new FileWriter(getString(index, "write-file") + "-blt.json", true));
+            curlfile = new BufferedWriter(new FileWriter(getString(index, "write-file") + "-curl.sh", true));
             taskfile.write(taskstring.toString());
             taskfile.newLine();
             curlfile.write(curlstring.toString() + " " + curlendpoint.toString());

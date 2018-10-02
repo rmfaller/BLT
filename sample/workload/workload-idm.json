@@ -27,9 +27,15 @@
             "threshold-to-fail": 600
         },
         {
+            "name": "idm-create-put",
+            "threshold-to-error": 0,
+            "threshold-to-fail": 0,
+            "write-file": "./bulk-task/creates"
+        },
+        {
             "name": "idm-read",
-            "threshold-to-error": 50,
-            "threshold-to-fail": 100
+            "threshold-to-error": 100,
+            "threshold-to-fail": 1000
         },
         {
             "name": "idm-update-put",
@@ -38,12 +44,17 @@
         },
         {
             "name": "idm-query",
-            "threshold-to-error": 20,
-            "threshold-to-fail": 40
+            "threshold-to-error": 100,
+            "threshold-to-fail": 400
+        },
+                {
+            "name": "idm-delete",
+            "threshold-to-error": 0,
+            "threshold-to-fail": 0
         },
         {
             "name": "idm-delete",
-            "create-file": "./bulk-task/deletes.txt"
+            "write-file": "./bulk-task/deletes"
         }
     ]
 }

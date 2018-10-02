@@ -48,7 +48,7 @@
             "name": "workload-cleanup-idm",
             "iteration": 1,
             "start-delay": 0,
-            "threads": 2,
+            "threads": 3,
             "thread-group-size": 0,
             "thread-interval": 0
         }

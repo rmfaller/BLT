@@ -47,9 +47,9 @@
         },
         {
             "name": "workload-idm",
-            "iteration": 10,
+            "iteration": 100,
             "start-delay": 0,
-            "threads": 2,
+            "threads": 4,
             "thread-group-size": 0,
             "thread-interval": 1000
         }

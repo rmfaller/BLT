@@ -3,7 +3,7 @@
     "task": [
         {
             "name": "idm-create-put",
-            "write-file": "./bulk-task/creates.txt"
+            "write-file": "./bulk-task/creates"
         }
     ]
 }
