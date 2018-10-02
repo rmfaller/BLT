@@ -2,22 +2,7 @@
     "name": "workload-idm",
     "_task": [
         {
-            "name": "idm-create-put"
-        },
-        {
             "name": "idm-create-post"
-        },
-        {
-            "name": "idm-update-put"
-        },
-        {
-            "name": "idm-delete"
-        },
-        {
-            "name": "idm-query"
-        },
-        {
-            "name": "idm-read"
         }
     ],
     "task": [
@@ -47,7 +32,7 @@
             "threshold-to-error": 100,
             "threshold-to-fail": 400
         },
-                {
+        {
             "name": "idm-delete",
             "threshold-to-error": 0,
             "threshold-to-fail": 0
