@@ -3,23 +3,23 @@
     "_task": [
         {
             "name": "am-create"
+        }
+    ],
+    "task": [
+        {
+            "name": "am-authenticate"
         },
         {
-            "name": "am-authenticate-stateful"
-        },
-        {
-            "name": "am-authenticate-stateless"
+            "name": "sleep"
         },
         {
             "name": "am-validate"
         },
         {
-            "name": "am-logout"
-        }
-    ],
-    "task": [
-        {
             "name": "sleep"
+        },
+        {
+            "name": "am-logout"
         }
     ]
 }

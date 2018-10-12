@@ -4,15 +4,24 @@
     "workload": "./sample/workload/",
     "task": "./sample/task/",
     "BLT-environment": {
+        "$BLT-AMHOST0": "http://am0.example.com:8080",
+        "$BLT-AMHOST1": "http://am1.example.com:8080",
         "$BLT-DSHOST0": "http://ds0.example.com:8080",
-        "$BLT-AMHOST1": "https://am07.example.com:8787",
+        "$BLT-DSHOST1": "http://ds1.example.com:8080",
         "$BLT-IDMHOST0": "http://idm0.example.com:8080",
+        "$BLT-IDMHOST1": "http://idm1.example.com:8080",
+        "$BLT-IGHOST0": "http://ig0.example.com:8080",
+        "$BLT-IGHOST1": "http://ig1.example.com:8080",
         "$BLT-MINVALUE": 0,
         "$BLT-MAXVALUE": 2000000,
         "$BLT-AM-REALM": "am",
-        "$BLT-PASSWORD": "password",
+        "$BLT-AMADMINID": "amadmin",
+        "$BLT-AMADMINPASSWORD": "password",
+        "$BLT-DSADMINID": "adminuser",
+        "$BLT-DSADMINPASSWORD": "password",
         "$BLT-IDMADMINID": "openidm-admin",
-        "$BLT-IDMADMINPASSWORD": "openidm-admin"
+        "$BLT-IDMADMINPASSWORD": "openidm-admin",
+        "$BLT-PASSWORD": "password"
     },
     "BLT-reserved": {
         "$BLT-RANDOM-NUMBER": "random-long",

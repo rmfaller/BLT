@@ -1,15 +1,15 @@
 {
     "name": "workload-idm",
-    "_task": [
-        {
-            "name": "idm-create-post"
-        }
-    ],
     "task": [
         {
+            "name": "idm-create-post",
+            "threshold-to-error": 0,
+            "threshold-to-fail": 0
+        },
+        {
             "name": "idm-create-put",
-            "threshold-to-error": 400,
-            "threshold-to-fail": 600
+            "threshold-to-error": 600,
+            "threshold-to-fail": 800
         },
         {
             "name": "idm-create-put",
@@ -19,13 +19,13 @@
         },
         {
             "name": "idm-read",
-            "threshold-to-error": 100,
-            "threshold-to-fail": 1000
+            "threshold-to-error": 400,
+            "threshold-to-fail": 600
         },
         {
             "name": "idm-update-put",
-            "threshold-to-error": 200,
-            "threshold-to-fail": 400
+            "threshold-to-error": 500,
+            "threshold-to-fail": 700
         },
         {
             "name": "idm-query",
