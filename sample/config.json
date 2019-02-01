@@ -21,6 +21,10 @@
         "$BLT-DSADMINPASSWORD": "password",
         "$BLT-IDMADMINID": "openidm-admin",
         "$BLT-IDMADMINPASSWORD": "openidm-admin",
+        "$BLT-IDMUSERID": "user1",
+        "$BLT-IDMUSERPASSWORD": "Welcome1",
+        "$BLT-IDMMANAGERID": "manager1",
+        "$BLT-IDMMANAGERPASSWORD": "Welcome1",
         "$BLT-PASSWORD": "password"
     },
     "BLT-reserved": {

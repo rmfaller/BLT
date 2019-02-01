@@ -36,9 +36,9 @@ class Spinner extends Thread {
         while (continueToRun) {
             p = 0;
             for (int i = 0; i < r.length; i++) {
-                for (int j = 0; j < r[i].length; j++) {
-                    p = r[i][j].processed + p;
-                }
+                    for (int j = 0; j < r[i].length; j++) {
+                        p = r[i][j].processed + p;
+                    }
             }
 //            System.out.print("\r Processing " + anim.charAt(x++ % anim.length()) + " for " + ((new Date().getTime()) - starttime) + "ms" + " approximate tasks completed: " + p);
             System.out.print("\r Approximately " + p + " tasks completed in " + ((new Date().getTime()) - starttime) + "ms");

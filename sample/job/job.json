@@ -2,20 +2,22 @@
     "name": "job",
     "load-generator": "My MacBook Pro",
     "services-description": "Testing BLT",
-    "service-location-port": ["http://am0.example.com:8080"],
+    "service-location-port": [
+        "http://idm0.example.com:8080"
+    ],
     "_comment-loading-style": "none, roundrobin, random, ha", 
     "loading-style": "none", 
     "minvalue": 0,
-    "maxvalue": 200000,
-    "threshold-to-error": 500,
+    "maxvalue": 2000,
+    "threshold-to-error": 200,
     "threshold-to-fail": 1000,
     "continue-on-fail": true,
     "workload": [
         {
             "name": "workload-am",
-            "iteration": 2,
+            "iteration": 0,
             "start-delay": 0,
-            "threads": 20,
+            "threads": 0,
             "thread-group-size": 0,
             "thread-interval": 1000
         },
@@ -32,6 +34,14 @@
             "iteration": 0,
             "start-delay": 0,
             "threads": 0,
+            "thread-group-size": 0,
+            "thread-interval": 1000
+        },
+        {
+            "name": "workload-idm-workflow",
+            "iteration": 2000,
+            "start-delay": 0,
+            "threads": 1,
             "thread-group-size": 0,
             "thread-interval": 1000
         },

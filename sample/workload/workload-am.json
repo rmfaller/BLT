@@ -10,10 +10,10 @@
             "name": "am-authenticate"
         },
         {
-            "name": "sleep"
+            "name": "am-validate"
         },
         {
-            "name": "am-validate"
+            "name": "am-read-user"
         },
         {
             "name": "sleep"

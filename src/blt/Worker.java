@@ -186,6 +186,10 @@ class Worker extends Thread {
                                 if (taskconfig[index].containsKey("data-payload")) {
                                     try (OutputStreamWriter cwr = new OutputStreamWriter(conn[instance].getOutputStream())) {
                                         cwr.write(replaceWildcard(index, ((JSONObject) taskconfig[index].get("data-payload")).toString(), state, minvalue, maxvalue, randomvalue));
+//                                        String datapayload = ((replaceWildcard(index, ((JSONObject) taskconfig[index].get("data-payload")).toString(), state, minvalue, maxvalue, randomvalue)));
+//                                        String datapayload = ("'" + (replaceWildcard(index, ((JSONObject) taskconfig[index].get("data-payload")).toString(), state, minvalue, maxvalue, randomvalue)) + "'");
+//                                        cwr.write(datapayload);
+//                                        System.out.println(datapayload);
                                     }
                                 }
                                 taskstart = new Date().getTime();
