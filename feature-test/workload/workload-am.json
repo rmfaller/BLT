@@ -1,0 +1,12 @@
+{
+    "name": "workload-am",
+    "service-location-port": [ "http://am5.example.com:8080" ],
+    "task": [
+        {
+            "name": "am-authenticate"
+        },
+        {
+            "name": "am-logout"
+        }
+    ]
+}

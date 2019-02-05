@@ -5,6 +5,7 @@
  */
 package blt;
 
+import java.io.Console;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;

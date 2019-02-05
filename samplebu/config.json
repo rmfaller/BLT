@@ -1,9 +1,0 @@
-{
-    "name": "config",
-    "job": "./sample/job/basejob.json",
-    "workload": "./sample/workload/",
-    "task": "./sample/task/",
-    "BLT-environment": {
-        "$BLT-AMHOST": "am0.example.com:8080"
-    }
-}

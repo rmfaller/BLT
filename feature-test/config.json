@@ -1,0 +1,23 @@
+{
+    "name": "config",
+    "job": "./feature-test/job/job.json",
+    "workload": "./feature-test/workload/",
+    "task": "./feature-test/task/",
+    "BLT-environment": {
+        "$BLT-AMHOST0": "http://am0.example.com:8080",
+        "$BLT-MINVALUE": 0,
+        "$BLT-MAXVALUE": 2000,
+        "$BLT-AM-REALM": "am",
+        "$BLT-AMADMINID": "amadmin",
+        "$BLT-AMADMINPASSWORD": "password",
+        "$BLT-AMUSERPASSWORD": "password"
+    },
+    "BLT-reserved": {
+        "$BLT-RANDOM-NUMBER": "random-long",
+        "$BLT-THREADID": "threadid-int",
+        "$BLT-INCREMENT": "long",
+        "$BLT-DECREMENT": "long",
+        "$BLT-TOKEN-PAYLOAD": "tokenId",
+        "$BLT-SLEEP": "sleep"
+    }
+}

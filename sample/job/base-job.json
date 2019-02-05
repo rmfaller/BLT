@@ -1,11 +1,8 @@
 {
-    "name": "job",
+    "name": "base-job",
     "load-generator": "My MacBook Pro",
     "services-description": "Testing BLT",
-    "service-location-port": [
-        "http://am0.example.com:8080"
-    ],
-    "_comment-loading-style": "none, roundrobin, random, ha", 
+    "service-location-port": [ "http://am0.example.com:8080", "http://am1.example.com:8080" ],
     "loading-style": "none", 
     "minvalue": 0,
     "maxvalue": 2000,
