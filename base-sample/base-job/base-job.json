@@ -2,7 +2,7 @@
     "name": "base-job",
     "load-generator": "My MacBook Pro",
     "services-description": "Testing BLT",
-    "service-location-port": [ "http://am0.example.com:8080", "http://am1.example.com:8080" ],
+    "service-location-port": [ "$BLT-AMHOST0", "http://am1.example.com:8080" ],
     "loading-style": "none", 
     "minvalue": 0,
     "maxvalue": 2000,
@@ -11,42 +11,74 @@
     "continue-on-fail": true,
     "workload": [
         {
-            "name": "workload-am",
-            "iteration": 1,
+            "name": "base-workload",
+            "iteration": 0,
+            "threads": 0,
             "start-delay": 0,
-            "threads": 1,
+            "thread-group-size": 0,
+            "thread-interval": 1000
+        },
+        {
+            "name": "workload-am",
+            "iteration": 0,
+            "threads": 0,
+            "start-delay": 0,
             "thread-group-size": 0,
             "thread-interval": 1000
         },
         {
             "name": "workload-ds",
             "iteration": 0,
-            "start-delay": 0,
             "threads": 0,
+            "start-delay": 0,
             "thread-group-size": 0,
             "thread-interval": 1000
         },
         {
             "name": "workload-idm",
             "iteration": 0,
-            "start-delay": 0,
             "threads": 0,
+            "start-delay": 0,
             "thread-group-size": 0,
             "thread-interval": 1000
         },
         {
             "name": "workload-idm-workflow",
             "iteration": 0,
-            "start-delay": 0,
             "threads": 0,
+            "start-delay": 0,
             "thread-group-size": 0,
             "thread-interval": 1000
         },
         {
             "name": "workload-ig",
             "iteration": 0,
-            "start-delay": 0,
             "threads": 0,
+            "start-delay": 0,
+            "thread-group-size": 0,
+            "thread-interval": 1000
+        },
+        {
+            "name": "register-user",
+            "iteration": 0,
+            "threads": 0,
+            "start-delay": 0,
+            "thread-group-size": 0,
+            "thread-interval": 1000
+        },
+        {
+            "name": "user-login-logout",
+            "iteration": 0,
+            "threads": 0,
+            "start-delay": 0,
+            "thread-group-size": 0,
+            "thread-interval": 1000
+        },
+        {
+            "name": "user-access-protected-endpoint",
+            "iteration": 0,
+            "threads": 0,
+            "start-delay": 0,
             "thread-group-size": 0,
             "thread-interval": 1000
         }

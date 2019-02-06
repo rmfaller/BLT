@@ -1,10 +1,8 @@
 {
     "name": "base-config",
-    "_job": "./sample/job/job-bulk-create.json",
-    "_job": "./sample/job/job-cleanup.json",
-    "job": "./sample/job/base-job.json",
-    "workload": "./sample/base-workload/",
-    "task": "./sample/base-task/",
+    "job": "./base-sample/base-job/base-job.json",
+    "workload": "./base-sample/base-workload/",
+    "task": "./base-sample/base-task/",
     "BLT-environment": {
         "$BLT-AMHOST0": "http://am0.example.com:8080",
         "$BLT-AMHOST1": "http://am1.example.com:8080",

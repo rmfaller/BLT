@@ -1,13 +1,8 @@
 {
-    "name": "ibase-workload",
+    "name": "base-workload",
     "task": [
         {
             "name": "ds-create-post",
-            "threshold-to-error": 0,
-            "threshold-to-fail": 0
-        },
-        {
-            "name": "ds-create-put",
             "threshold-to-error": 0,
             "threshold-to-fail": 0
         },
@@ -22,11 +17,6 @@
         },
         {
             "name": "ds-read",
-            "threshold-to-error": 0,
-            "threshold-to-fail": 0
-        },
-        {
-            "name": "ds-update",
             "threshold-to-error": 0,
             "threshold-to-fail": 0
         },
