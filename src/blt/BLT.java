@@ -450,7 +450,8 @@ public class BLT {
                         totalthreadops = totalthreadops + threadops;
                     }
                     if (((passed + exceeded) != 0) && (result[i].length != 0)) {
-                        System.out.format("%8.2f%s", ((passedtime + exceededtime) / (float) (passed + exceeded)) / (float) result[i].length, "ms");
+//                        System.out.format("%8.2f%s", ((passedtime + exceededtime) / (float) (passed + exceeded)) / (float) result[i].length, "ms");
+                        System.out.format("%8.2f%s", ((passedtime + exceededtime) / (float) (passed + exceeded)), "ms");
                     } else {
                         System.out.format("%8.2f%s", 0.0, "ms");
                     }
@@ -481,7 +482,8 @@ public class BLT {
                 System.out.format("%10s", totalskipped);
                 System.out.format("%10.2f%s", totalops, "/s");
                 System.out.format("%8.2f%s", totalthreadops, "/s");
-                System.out.format("%8.2f%s", ((totalpassedtime + totalexceededtime) / (float) (totalpassed + totalexceeded)) / (float) result[i].length, "ms");
+//                System.out.format("%8.2f%s", ((totalpassedtime + totalexceededtime) / (float) (totalpassed + totalexceeded)) / (float) result[i].length, "ms");
+                System.out.format("%8.2f%s", ((totalpassedtime + totalexceededtime) / (float) (totalpassed + totalexceeded)), "ms");
                 System.out.println("\nexcludes sleep & skipped\n");
             }
         }
