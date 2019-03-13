@@ -1,0 +1,25 @@
+{
+    "name": "ds-patch",
+    "request": "PUT",
+    "header": {
+        "X-OpenIDM-Username": "$BLT-DSADMINID",
+        "X-OpenIDM-Password": "$BLT-DSADMINPASSWORD",
+        "If-Match": "*",
+        "Content-Type": "application/json"
+    },
+    "url-endpoint": "/api/users/",
+    "url-payload": "user.$BLT-RANDOM-NUMBER",
+    "data-payload": {
+"contactInformation": {
+     "telephoneNumber": "+1 408 555 4798",
+     "emailAddress": "user.$BLT-RANDOM-NUMBER@example.com"
+   },
+   "name": {
+     "familyName": "$BLT-RANDOM-NUMBER",
+     "givenName": "user"
+   },
+   "userName": "user.$BLT-RANDOM-NUMBER@example.com",
+   "displayName": ["Sam Carter", "Samantha Carter"]
+        "description": "Updated managed user object for user.$BLT-THREADID.$BLT-INCREMENT",
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "name": "workload-ds",
+    "task": [
+        {
+            "name": "ds-create-put",
+            "continue-on-fail": false,
+            "threshold-to-error": 200,
+            "threshold-to-fail": 400
+        },
+	{
+            "name": "sleep"
+	},
+        {
+            "name": "ds-read",
+            "threshold-to-error": 400,
+            "threshold-to-fail": 600
+        },
+        {
+            "name": "ds-delete",
+            "threshold-to-error": 100,
+            "threshold-to-fail": 200,
+            "write-file": "./bulk-task/deletes"
+        }
+    ]
+}

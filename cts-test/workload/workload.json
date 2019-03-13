@@ -1,0 +1,14 @@
+{
+    "name": "base-workload",
+    "task": [
+        {
+            "name": "ds-read",
+        },
+        {
+            "name": "ds-patch",
+        },
+        {
+            "name": "ds-read",
+        }
+    ]
+}

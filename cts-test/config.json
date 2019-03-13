@@ -1,0 +1,25 @@
+{
+    "name": "config",
+    "job": "./cts-test/job/job.json",
+    "workload": "./cts-test/workload/",
+    "task": "./cts-test/task/",
+    "BLT-environment": {
+        "$BLT-DSHOST0": "http://ds0.example.com:8080",
+        "$BLT-DSHOST1": "http://ds1.example.com:8080",
+        "$BLT-MINVALUE": 0,
+        "$BLT-MAXVALUE": 2000,
+        "$BLT-DSADMINID": "adminuser",
+        "$BLT-DSADMINPASSWORD": "password",
+        "$BLT-PASSWORD": "password"
+    },
+    "BLT-reserved": {
+        "$BLT-RANDOM-NUMBER": "random-long",
+        "$BLT-RANDOM-ALPHA-STRING": "Alpha only - not implemented",
+        "$BLT-RANDOM-ALPHANUMERIC-STRING": "Alpha and number - not implemented",
+        "$BLT-THREADID": "threadid-int",
+        "$BLT-INCREMENT": "long",
+        "$BLT-DECREMENT": "long",
+        "$BLT-TOKEN-PAYLOAD": "tokenId",
+        "$BLT-SLEEP": "sleep"
+    }
+}

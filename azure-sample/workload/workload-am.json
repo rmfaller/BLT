@@ -1,0 +1,25 @@
+{
+    "name": "workload-am",
+    "_task": [
+        {
+            "name": "am-create"
+        }
+    ],
+    "task": [
+        {
+            "name": "am-authenticate"
+        },
+        {
+            "name": "am-validate"
+        },
+        {
+            "name": "am-read-user"
+        },
+        {
+            "name": "sleep"
+        },
+        {
+            "name": "am-logout"
+        }
+    ]
+}
