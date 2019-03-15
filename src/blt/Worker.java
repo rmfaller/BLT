@@ -71,6 +71,7 @@ class Worker extends Thread {
             result.put(((JSONObject) taska.get(i)).get("name").toString() + "~exceeded", 0);
             result.put(((JSONObject) taska.get(i)).get("name").toString() + "~exceededtime", 0);
             result.put(((JSONObject) taska.get(i)).get("name").toString() + "~skipped", 0);
+            result.put(((JSONObject) taska.get(i)).get("name").toString() + "~retry", 0);
         }
     }
 
@@ -211,11 +212,16 @@ class Worker extends Thread {
                                     if (instance >= slp.size()) {
                                         instance = 0;
                                         retry = false;
+                                    } else {
+                                        System.err.println("Error on but retrying: " + urlstring + "\n\n");
                                     }
+                                } else {
+                                    System.err.println("Error on: " + urlstring + "\n\n");
                                 }
                             }
                             taskstop = new Date().getTime();
                             if (worked) {
+                                retry = false;
                                 if ((getLong(index, "threshold-to-error")) >= (taskstop - taskstart)) {
                                     result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~passedtime", (taskstop - taskstart));
                                     result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~passed", 1);
@@ -224,10 +230,14 @@ class Worker extends Thread {
                                     result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~exceeded", 1);
                                 }
                             } else {
-                                result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~failedtime", (taskstop - taskstart));
-                                result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~failed", 1);
-                                if (getBoolean(index, "continue-on-fail")) {
-                                    worked = true;
+                                if (retry) {
+                                    result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~retry", 1);
+                                } else {
+                                    result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~failedtime", (taskstop - taskstart));
+                                    result.addTo(((JSONObject) taska.get(index)).get("name").toString() + "~failed", 1);
+                                    if (getBoolean(index, "continue-on-fail")) {
+                                        worked = true;
+                                    }
                                 }
                             }
                         }

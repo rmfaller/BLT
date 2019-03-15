@@ -6,9 +6,9 @@
         "http://am0.example.com:8080"
     ],
     "_comment-loading-style": "none, roundrobin, random, ha", 
-    "loading-style": "none", 
+    "loading-style": "ha", 
     "minvalue": 0,
-    "maxvalue": 2000,
+    "maxvalue": 2000000,
     "threshold-to-error": 200,
     "threshold-to-fail": 1000,
     "continue-on-fail": true,
@@ -23,9 +23,9 @@
         },
         {
             "name": "workload-ds",
-            "iteration": 400,
+            "iteration": 8000,
             "start-delay": 0,
-            "threads": 4,
+            "threads": 1,
             "thread-group-size": 0,
             "thread-interval": 1000
         }

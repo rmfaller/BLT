@@ -280,6 +280,7 @@ public class BLT {
                 System.out.printf("%10s", "  TxFail");
                 System.out.printf("%10s", "Failtime");
                 System.out.printf("%10s", " Skipped");
+                System.out.printf("%10s", " Retried");
                 System.out.printf("%12s", "CbdPsOps");
                 System.out.printf("%10s", " ThrdOps");
                 System.out.printf("%10s", "Avrms/op");
@@ -349,6 +350,7 @@ public class BLT {
                     long failed = 0;
                     long failedtime = 0;
                     long skipped = 0;
+                    long retried = 0;
                     float ops = 0;
                     float threadops = 0;
                     for (int r = 0; r < rattr.length; r++) {
@@ -371,6 +373,9 @@ public class BLT {
                                 if (include) {
                                     totalskipped = totalskipped + tr[i].get(rattr[r]);
                                 }
+                            }
+                            if ((rattr[r].endsWith("~retry"))) {
+                                retried = retried + tr[i].get(rattr[r]);
                             }
                             if ((rattr[r].endsWith("~passed")) || (rattr[r].endsWith("~exceeded")) || (rattr[r].endsWith("~failed"))) {
                                 txtotal = txtotal + tr[i].get(rattr[r]);
@@ -433,6 +438,7 @@ public class BLT {
                     System.out.format("%10s", failed);
                     System.out.format("%10s", failedtime);
                     System.out.format("%10s", skipped);
+                    System.out.format("%10s", retried);
                     if ((passedtime + exceededtime) != 0) {
                         ops = (((passed + exceeded) / (float) (passedtime + exceededtime)) * 1000) * result[i].length;
                     } else {

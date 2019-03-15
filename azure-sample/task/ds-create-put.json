@@ -1,7 +1,7 @@
 {
     "name": "ds-create-put",
     "request": "PUT",
-    "service-location-port": ["$BLT-DSHOST0"],
+    "service-location-port": ["$BLT-DSHOST0", "$BLT-DSHOST1"],
     "header": {
         "X-OpenIDM-Username": "$BLT-DSADMINID",
         "X-OpenIDM-Password": "$BLT-DSADMINPASSWORD",

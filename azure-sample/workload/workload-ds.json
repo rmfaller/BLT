@@ -4,16 +4,16 @@
         {
             "name": "ds-create-put",
             "continue-on-fail": false,
-            "threshold-to-error": 200,
-            "threshold-to-fail": 400
+            "threshold-to-error": 400,
+            "threshold-to-fail": 600
         },
 	{
             "name": "sleep"
 	},
         {
             "name": "ds-read",
-            "threshold-to-error": 400,
-            "threshold-to-fail": 600
+            "threshold-to-error": 600,
+            "threshold-to-fail": 800
         },
         {
             "name": "ds-delete",
