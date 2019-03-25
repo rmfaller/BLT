@@ -1,8 +1,8 @@
 {
     "name": "config",
-    "job": "./azure-sample/job/job.json",
-    "workload": "./azure-sample/workload/",
-    "task": "./azure-sample/task/",
+    "job": "./realm-test/job/job.json",
+    "workload": "./realm-test/workload/",
+    "task": "./realm-test/task/",
     "BLT-environment": {
         "$BLT-AMHOST0": "http://am0.example.com:8080",
         "$BLT-AMHOST1": "http://am1.example.com:8080",
@@ -13,7 +13,7 @@
         "$BLT-IGHOST0": "http://ig0.example.com:8080",
         "$BLT-IGHOST1": "http://ig1.example.com:8080",
         "$BLT-MINVALUE": 0,
-        "$BLT-MAXVALUE": 2000000,
+        "$BLT-MAXVALUE": 2000,
         "$BLT-AM-REALM": "am",
         "$BLT-AMADMINID": "amadmin",
         "$BLT-AMADMINPASSWORD": "password",

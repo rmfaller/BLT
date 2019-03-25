@@ -280,7 +280,7 @@ public class BLT {
                 System.out.printf("%10s", "  TxFail");
                 System.out.printf("%10s", "Failtime");
                 System.out.printf("%10s", " Skipped");
-                System.out.printf("%10s", " Retried");
+//                System.out.printf("%10s", " Retried");
                 System.out.printf("%12s", "CbdPsOps");
                 System.out.printf("%10s", " ThrdOps");
                 System.out.printf("%10s", "Avrms/op");
@@ -438,7 +438,7 @@ public class BLT {
                     System.out.format("%10s", failed);
                     System.out.format("%10s", failedtime);
                     System.out.format("%10s", skipped);
-                    System.out.format("%10s", retried);
+//                    System.out.format("%10s", retried);
                     if ((passedtime + exceededtime) != 0) {
                         ops = (((passed + exceeded) / (float) (passedtime + exceededtime)) * 1000) * result[i].length;
                     } else {
@@ -486,6 +486,7 @@ public class BLT {
                 System.out.format("%10s", totalfailed);
                 System.out.format("%10s", totalfailedtime);
                 System.out.format("%10s", totalskipped);
+//                System.out.format("%10s", "     ");
                 System.out.format("%10.2f%s", totalops, "/s");
                 System.out.format("%8.2f%s", totalthreadops, "/s");
 //                System.out.format("%8.2f%s", ((totalpassedtime + totalexceededtime) / (float) (totalpassed + totalexceeded)) / (float) result[i].length, "ms");

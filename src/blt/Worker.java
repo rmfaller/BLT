@@ -132,7 +132,9 @@ class Worker extends Thread {
                 conn = new HttpURLConnection[slp.size()];
                 if (slp.size() > 1) {
                     if (getString(index, "loading-style").compareTo("roundrobin") == 0) {
-                        instance++;
+                        if (i != 0) {
+                            instance++;
+                        }
                         if (instance >= slp.size()) {
                             instance = 0;
                         }

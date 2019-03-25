@@ -1,0 +1,33 @@
+dn: ou=people,dc=example,dc=com
+changetype: modify
+add: aci
+aci: (target="ldap:///*,dc=example,dc=com") (targetattr = "* || +")(version 3.0;acl "Admins"; allow( all, proxy, import, export) groupdn = "ldap:///cn=Admins,ou=Groups,dc=example,dc=com";)
+
+dn: dc=example,dc=com
+changetype: modify
+add: aci
+aci: (targetcontrol="2.16.840.1.113730.3.4.18") (version 3.0; acl "Apps can use the Proxy Authorization Control"; allow(read) groupdn = "ldap:///cn=Admins,ou=Groups,dc=example,dc=com";)
+aci: (target="ldap:///dc=example,dc=com") (targetattr ="*") (version 3.0; acl "Allow apps proxied auth"; allow(proxy) (groupdn = "ldap:///cn=Admins,ou=Groups,dc=example,dc=com");)
+
+dn: ou=groups,dc=example,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: groups
+
+dn: cn=adminuser,ou=people,dc=example,dc=com
+objectClass: top
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+sn: User
+cn: adminuser
+givenName: Admin
+userPassword: password
+uid: adminuser
+
+dn: cn=admins,ou=groups,dc=example,dc=com
+objectClass: top
+objectClass: groupOfUniqueNames
+uniqueMember: cn=adminuser,ou=people,dc=example,dc=com
+cn: admins
+

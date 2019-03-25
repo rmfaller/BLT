@@ -1,0 +1,15 @@
+{
+    "name": "am-authenticate",
+    "request": "POST",
+    "header": { 
+        "X-OpenAM-Username": "user.$BLT-RANDOM-NUMBER",
+        "X-OpenAM-Password": "$BLT-PASSWORD",
+        "Accept-API-Version": "resource=2.0, protocol=1.0",
+        "X-ForgeRock-Transactionid": "",
+        "Content-Type": "application/json"
+    },
+    "_url-endpoint": "/$BLT-AM-REALM/json/realms/root/",
+    "url-endpoint": "/json/realms/root/",
+    "url-payload": "authenticate",
+    "data-payload": {}
+}

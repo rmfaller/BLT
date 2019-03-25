@@ -3,29 +3,32 @@
     "load-generator": "My MacBook Pro",
     "services-description": "Testing BLT",
     "service-location-port": [
-        "http://am0.example.com:8080"
+        "http://am0.example.com:8080/am", 
+        "http://am0.example.com:8080/am0", 
+        "http://am0.example.com:8080/am1", 
+        "http://am0.example.com:8080/am2"
     ],
     "_comment-loading-style": "none, roundrobin, random, ha", 
-    "loading-style": "ha", 
+    "loading-style": "roundrobin", 
     "minvalue": 0,
-    "maxvalue": 2000000,
+    "maxvalue": 2000,
     "threshold-to-error": 200,
     "threshold-to-fail": 1000,
     "continue-on-fail": true,
     "workload": [
         {
             "name": "workload-am",
-            "iteration": 0,
+            "iteration": 10,
             "start-delay": 0,
-            "threads": 0,
+            "threads": 2,
             "thread-group-size": 0,
             "thread-interval": 1000
         },
         {
             "name": "workload-ds",
-            "iteration": 2000,
+            "iteration": 0,
             "start-delay": 0,
-            "threads": 2,
+            "threads": 0,
             "thread-group-size": 0,
             "thread-interval": 1000
         }
