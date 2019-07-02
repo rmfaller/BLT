@@ -1,0 +1,21 @@
+{
+    "name": "am-create-realm",
+    "request": "POST",
+    "service-location-port": [
+        "$BLT-AMHOST0"
+    ],
+    "header": { 
+        "iplanetDirectoryPro": "$BLT-TOKEN-PAYLOAD",
+        "Accept-API-Version": "resource=1.0",
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+    },
+    "url-endpoint": "/am/json/global-config/",
+    "url-payload": "realms",
+    "data-payload": {
+        "name": "$BLT-REALM-PREFIX.$BLT-INCREMENT",
+        "active": true,
+        "parentPath": "/",
+        "aliases": ["$BLT-REALM-PREFIX.$BLT-INCREMENT"]
+    }
+}

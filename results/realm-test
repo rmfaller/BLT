@@ -1,0 +1,264 @@
+Summary for job = job and workload = workload-am completed on Mon Apr 01 11:42:18 PDT 2019 running for 0 Days 0 Hours 0 Minutes 17 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-authenticate            2    2000     25025  200  500      2000     25025         0         0         0         0         0    159.84/s   79.92/s   12.51ms  100.00%    0.00%    0.00%
+am-logout                  2       0         0   10   20         0         0         0         0         0         0      2000      0.00/s    0.00/s    0.00ms    0.00%    0.00%    0.00%
+am-read-user               2    2000      3440  200  500      2000      3440         0         0         0         0         0   1162.79/s  581.40/s    1.72ms  100.00%    0.00%    0.00%
+am-validate                2    2000      3689  200  500      2000      3689         0         0         0         0         0   1084.30/s  542.15/s    1.84ms  100.00%    0.00%    0.00%
+Totals                     2    6000     32154                6000     32154         0         0         0         0      2000   2406.94/s 1203.47/s    5.36ms
+excludes sleep & skipped
+
+ Approximately 36412 tasks completed in 57154ms..... done. Total lapsed time = 57232ms
+
+Summary for job = job and workload = workload-am completed on Mon Apr 01 13:34:17 PDT 2019 running for 0 Days 0 Hours 0 Minutes 57 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-authenticate            4    8000    170047  200  500      8000    170047         0         0         0         0         0    188.18/s   47.05/s   21.26ms  100.00%    0.00%    0.00%
+am-logout                  4       0         0   10   20         0         0         0         0         0         0      8000      0.00/s    0.00/s    0.00ms    0.00%    0.00%    0.00%
+am-read-user               4    8000     23989  200  500      8000     23989         0         0         0         0         0   1333.94/s  333.49/s    3.00ms  100.00%    0.00%    0.00%
+am-validate                4    8000     25140  200  500      8000     25140         0         0         0         0         0   1272.87/s  318.22/s    3.14ms  100.00%    0.00%    0.00%
+Totals                     4   24000    219176               24000    219176         0         0         0         0      8000   2795.00/s  698.75/s    9.13ms
+excludes sleep & skipped
+
+------ 10 Am realms ------
+Approximately 20674 tasks completed in 48244ms..... done. Total lapsed time = 48353ms
+Summary for job = job and workload = workload-am completed on Mon Apr 01 13:55:01 PDT 2019 running for 0 Days 0 Hours 0 Minutes 48 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-authenticate            1    4000     32618  100  200      4000     32618         0         0         0         0         0    122.63/s  122.63/s    8.15ms  100.00%    0.00%    0.00%
+am-logout                  1       0         0   10   20         0         0         0         0         0         0      4000      0.00/s    0.00/s    0.00ms    0.00%    0.00%    0.00%
+am-read-user               1    4000      5607  100  200      4000      5607         0         0         0         0         0    713.39/s  713.39/s    1.40ms  100.00%    0.00%    0.00%
+am-validate                1    4000      6041  100  200      4000      6041         0         0         0         0         0    662.14/s  662.14/s    1.51ms  100.00%    0.00%    0.00%
+Totals                     1   12000     44266               12000     44266         0         0         0         0      4000   1498.17/s 1498.17/s    3.69ms
+excludes sleep & skipped
+
+ Approximately 19341 tasks completed in 33244ms..... done. Total lapsed time = 33366ms
+Summary for job = job and workload = workload-am completed on Mon Apr 01 13:42:44 PDT 2019 running for 0 Days 0 Hours 0 Minutes 33 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-authenticate            2    4000     47898  100  200      4000     47898         0         0         0         0         0    167.02/s   83.51/s   11.97ms  100.00%    0.00%    0.00%
+am-logout                  2       0         0   10   20         0         0         0         0         0         0      4000      0.00/s    0.00/s    0.00ms    0.00%    0.00%    0.00%
+am-read-user               2    4000      7033  100  200      4000      7033         0         0         0         0         0   1137.49/s  568.75/s    1.76ms  100.00%    0.00%    0.00%
+am-validate                2    4000      7494  100  200      4000      7494         0         0         0         0         0   1067.52/s  533.76/s    1.87ms  100.00%    0.00%    0.00%
+Totals                     2   12000     62425               12000     62425         0         0         0         0      4000   2372.04/s 1186.02/s    5.20ms
+excludes sleep & skipped
+
+ Approximately 18521 tasks completed in 28200ms..... done. Total lapsed time = 28224ms
+Summary for job = job and workload = workload-am completed on Mon Apr 01 13:51:39 PDT 2019 running for 0 Days 0 Hours 0 Minutes 28 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-authenticate            3    3999     60578  100  200      3999     60578         0         0         0         0         0    198.04/s   66.01/s   15.15ms  100.00%    0.00%    0.00%
+am-logout                  3       0         0   10   20         0         0         0         0         0         0      3999      0.00/s    0.00/s    0.00ms    0.00%    0.00%    0.00%
+am-read-user               3    3999      9752  100  200      3999      9752         0         0         0         0         0   1230.21/s  410.07/s    2.44ms  100.00%    0.00%    0.00%
+am-validate                3    3999      9875  100  200      3999      9875         0         0         0         0         0   1214.89/s  404.96/s    2.47ms  100.00%    0.00%    0.00%
+Totals                     3   11997     80205               11997     80205         0         0         0         0      3999   2643.14/s  881.05/s    6.69ms
+excludes sleep & skipped
+
+ Approximately 17693 tasks completed in 27645ms..... done. Total lapsed time = 27736ms
+Summary for job = job and workload = workload-am completed on Mon Apr 01 13:45:48 PDT 2019 running for 0 Days 0 Hours 0 Minutes 27 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-authenticate            4    4000     79164  100  200      3999     79024         1       140         0         0         0    202.11/s   50.53/s   19.79ms   99.97%    0.03%    0.00%
+am-logout                  4       0         0   10   20         0         0         0         0         0         0      4000      0.00/s    0.00/s    0.00ms    0.00%    0.00%    0.00%
+am-read-user               4    4000     12916  100  200      4000     12916         0         0         0         0         0   1238.77/s  309.69/s    3.23ms  100.00%    0.00%    0.00%
+am-validate                4    4000     13476  100  200      4000     13476         0         0         0         0         0   1187.30/s  296.82/s    3.37ms  100.00%    0.00%    0.00%
+Totals                     4   12000    105556               11999    105416         1       140         0         0      4000   2628.18/s  657.05/s    8.80ms
+excludes sleep & skipped
+
+------ 100 Am realms ------
+ Approximately 268 tasks completed in 62550ms..... done. Total lapsed time = 62667ms
+Summary for job = job-realms and workload = workload-am-realm completed on Mon Apr 01 14:01:04 PDT 2019 running for 0 Days 0 Hours 1 Minutes 2 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-amadmin-authenticate    1      90      1304  200  400        90      1304         0         0         0         0         0     69.02/s   69.02/s   14.49ms  100.00%    0.00%    0.00%
+am-amadmin-logout          1      90       879  200  400        90       879         0         0         0         0         0    102.39/s  102.39/s    9.77ms  100.00%    0.00%    0.00%
+am-create-realm            1      90     60312 2000 3000        90     60312         0         0         0         0         0      1.49/s    1.49/s  670.13ms  100.00%    0.00%    0.00%
+Totals                     1     270     62495                 270     62495         0         0         0         0         0    172.90/s  172.90/s  231.46ms
+excludes sleep & skipped
+
+Approximately 20444 tasks completed in 49911ms..... done. Total lapsed time = 49970ms
+Summary for job = job and workload = workload-am completed on Mon Apr 01 14:06:12 PDT 2019 running for 0 Days 0 Hours 0 Minutes 49 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-authenticate            1    4000     33981  100  200      4000     33981         0         0         0         0         0    117.71/s  117.71/s    8.50ms  100.00%    0.00%    0.00%
+am-logout                  1       0         0   10   20         0         0         0         0         0         0      4000      0.00/s    0.00/s    0.00ms    0.00%    0.00%    0.00%
+am-read-user               1    4000      5692  100  200      4000      5692         0         0         0         0         0    702.74/s  702.74/s    1.42ms  100.00%    0.00%    0.00%
+am-validate                1    4000      6310  100  200      4000      6310         0         0         0         0         0    633.91/s  633.91/s    1.58ms  100.00%    0.00%    0.00%
+Totals                     1   12000     45983               12000     45983         0         0         0         0      4000   1454.37/s 1454.37/s    3.83ms
+excludes sleep & skipped
+
+ Approximately 19607 tasks completed in 31922ms..... done. Total lapsed time = 32007ms
+Summary for job = job and workload = workload-am completed on Mon Apr 01 14:08:44 PDT 2019 running for 0 Days 0 Hours 0 Minutes 32 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-authenticate            2    4000     45838  100  200      4000     45838         0         0         0         0         0    174.53/s   87.26/s   11.46ms  100.00%    0.00%    0.00%
+am-logout                  2       0         0   10   20         0         0         0         0         0         0      4000      0.00/s    0.00/s    0.00ms    0.00%    0.00%    0.00%
+am-read-user               2    4000      7021  100  200      4000      7021         0         0         0         0         0   1139.44/s  569.72/s    1.76ms  100.00%    0.00%    0.00%
+am-validate                2    4000      7168  100  200      4000      7168         0         0         0         0         0   1116.07/s  558.04/s    1.79ms  100.00%    0.00%    0.00%
+Totals                     2   12000     60027               12000     60027         0         0         0         0      4000   2430.04/s 1215.02/s    5.00ms
+excludes sleep & skipped
+
+ Approximately 18421 tasks completed in 28896ms..... done. Total lapsed time = 29005ms
+Summary for job = job and workload = workload-am completed on Mon Apr 01 14:11:03 PDT 2019 running for 0 Days 0 Hours 0 Minutes 29 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-authenticate            3    3999     62114  100  200      3999     62114         0         0         0         0         0    193.14/s   64.38/s   15.53ms  100.00%    0.00%    0.00%
+am-logout                  3       0         0   10   20         0         0         0         0         0         0      3999      0.00/s    0.00/s    0.00ms    0.00%    0.00%    0.00%
+am-read-user               3    3999      9849  100  200      3999      9849         0         0         0         0         0   1218.09/s  406.03/s    2.46ms  100.00%    0.00%    0.00%
+am-validate                3    3999      9810  100  200      3999      9810         0         0         0         0         0   1222.94/s  407.65/s    2.45ms  100.00%    0.00%    0.00%
+Totals                     3   11997     81773               11997     81773         0         0         0         0      3999   2634.17/s  878.06/s    6.82ms
+excludes sleep & skipped
+
+ Approximately 17975 tasks completed in 26167ms..... done. Total lapsed time = 26259ms
+Summary for job = job and workload = workload-am completed on Mon Apr 01 14:14:39 PDT 2019 running for 0 Days 0 Hours 0 Minutes 26 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-authenticate            4    4000     75450  100  200      4000     75450         0         0         0         0         0    212.06/s   53.02/s   18.86ms  100.00%    0.00%    0.00%
+am-logout                  4       0         0   10   20         0         0         0         0         0         0      4000      0.00/s    0.00/s    0.00ms    0.00%    0.00%    0.00%
+am-read-user               4    4000     11831  100  200      4000     11831         0         0         0         0         0   1352.38/s  338.09/s    2.96ms  100.00%    0.00%    0.00%
+am-validate                4    4000     12751  100  200      4000     12751         0         0         0         0         0   1254.80/s  313.70/s    3.19ms  100.00%    0.00%    0.00%
+Totals                     4   12000    100032               12000    100032         0         0         0         0      4000   2819.24/s  704.81/s    8.34ms
+excludes sleep & skipped
+
+------ 500 Am realms ------
+ Approximately 1198 tasks completed in 278708ms..... done. Total lapsed time = 278753ms
+Summary for job = job-realms and workload = workload-am-realm completed on Mon Apr 01 14:21:51 PDT 2019 running for 0 Days 0 Hours 4 Minutes 38 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-amadmin-authenticate    1     400      5044  200  400       400      5044         0         0         0         0         0     79.30/s   79.30/s   12.61ms  100.00%    0.00%    0.00%
+am-amadmin-logout          1     400      4882  200  400       400      4882         0         0         0         0         0     81.93/s   81.93/s   12.20ms  100.00%    0.00%    0.00%
+am-create-realm            1     400    268444 2000 3000       400    268444         0         0         0         0         0      1.49/s    1.49/s  671.11ms  100.00%    0.00%    0.00%
+Totals                     1    1200    278370                1200    278370         0         0         0         0         0    162.73/s  162.73/s  231.98ms
+excludes sleep & skipped
+
+ Approximately 20309 tasks completed in 50623ms..... done. Total lapsed time = 50705ms
+Summary for job = job and workload = workload-am completed on Mon Apr 01 14:27:44 PDT 2019 running for 0 Days 0 Hours 0 Minutes 50 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-authenticate            1    4000     34221  100  200      4000     34221         0         0         0         0         0    116.89/s  116.89/s    8.56ms  100.00%    0.00%    0.00%
+am-logout                  1       0         0   10   20         0         0         0         0         0         0      4000      0.00/s    0.00/s    0.00ms    0.00%    0.00%    0.00%
+am-read-user               1    4000      5752  100  200      4000      5752         0         0         0         0         0    695.41/s  695.41/s    1.44ms  100.00%    0.00%    0.00%
+am-validate                1    4000      6439  100  200      4000      6439         0         0         0         0         0    621.21/s  621.21/s    1.61ms  100.00%    0.00%    0.00%
+Totals                     1   12000     46412               12000     46412         0         0         0         0      4000   1433.51/s 1433.51/s    3.87ms
+excludes sleep & skipped
+
+ Approximately 18809 tasks completed in 36696ms..... done. Total lapsed time = 36814ms
+Summary for job = job and workload = workload-am completed on Mon Apr 01 14:31:20 PDT 2019 running for 0 Days 0 Hours 0 Minutes 36 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-authenticate            2    4000     53126  100  200      4000     53126         0         0         0         0         0    150.59/s   75.29/s   13.28ms  100.00%    0.00%    0.00%
+am-logout                  2       0         0   10   20         0         0         0         0         0         0      4000      0.00/s    0.00/s    0.00ms    0.00%    0.00%    0.00%
+am-read-user               2    4000      7654  100  200      4000      7654         0         0         0         0         0   1045.21/s  522.60/s    1.91ms  100.00%    0.00%    0.00%
+am-validate                2    4000      8385  100  200      4000      8385         0         0         0         0         0    954.08/s  477.04/s    2.10ms  100.00%    0.00%    0.00%
+Totals                     2   12000     69165               12000     69165         0         0         0         0      4000   2149.88/s 1074.94/s    5.76ms
+excludes sleep & skipped
+
+ Approximately 17553 tasks completed in 34016ms..... done. Total lapsed time = 34039ms
+Summary for job = job and workload = workload-am completed on Mon Apr 01 14:34:04 PDT 2019 running for 0 Days 0 Hours 0 Minutes 34 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-authenticate            3    3999     73147  100  200      3999     73147         0         0         0         0         0    164.01/s   54.67/s   18.29ms  100.00%    0.00%    0.00%
+am-logout                  3       0         0   10   20         0         0         0         0         0         0      3999      0.00/s    0.00/s    0.00ms    0.00%    0.00%    0.00%
+am-read-user               3    3999     11849  100  200      3999     11849         0         0         0         0         0   1012.49/s  337.50/s    2.96ms  100.00%    0.00%    0.00%
+am-validate                3    3999     11708  100  200      3999     11708         0         0         0         0         0   1024.68/s  341.56/s    2.93ms  100.00%    0.00%    0.00%
+Totals                     3   11997     96704               11997     96704         0         0         0         0      3999   2201.19/s  733.73/s    8.06ms
+excludes sleep & skipped
+
+ Approximately 16858 tasks completed in 33652ms..... done. Total lapsed time = 33750ms
+Summary for job = job and workload = workload-am completed on Mon Apr 01 14:36:29 PDT 2019 running for 0 Days 0 Hours 0 Minutes 33 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-authenticate            4    4000     97479  100  200      3999     97359         1       120         0         0         0    164.14/s   41.03/s   24.37ms   99.97%    0.03%    0.00%
+am-logout                  4       0         0   10   20         0         0         0         0         0         0      4000      0.00/s    0.00/s    0.00ms    0.00%    0.00%    0.00%
+am-read-user               4    4000     15136  100  200      4000     15136         0         0         0         0         0   1057.08/s  264.27/s    3.78ms  100.00%    0.00%    0.00%
+am-validate                4    4000     15881  100  200      4000     15881         0         0         0         0         0   1007.49/s  251.87/s    3.97ms  100.00%    0.00%    0.00%
+Totals                     4   12000    128496               11999    128376         1       120         0         0      4000   2228.71/s  557.18/s   10.71ms
+excludes sleep & skipped
+
+------ 1000 Am realms ------
+
+ Approximately 1498 tasks completed in 437505ms..... done. Total lapsed time = 437569ms
+Summary for job = job-realms and workload = workload-am-realm completed on Mon Apr 01 14:46:55 PDT 2019 running for 0 Days 0 Hours 7 Minutes 17 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-amadmin-authenticate    1     500      6663  200  400       500      6663         0         0         0         0         0     75.04/s   75.04/s   13.33ms  100.00%    0.00%    0.00%
+am-amadmin-logout          1     500      9511  200  400       500      9511         0         0         0         0         0     52.57/s   52.57/s   19.02ms  100.00%    0.00%    0.00%
+am-create-realm            1     500    420889 2000 3000       500    420889         0         0         0         0         0      1.19/s    1.19/s  841.78ms  100.00%    0.00%    0.00%
+Totals                     1    1500    437063                1500    437063         0         0         0         0         0    128.80/s  128.80/s  291.38ms
+excludes sleep & skipped
+
+ Approximately 20189 tasks completed in 53125ms..... done. Total lapsed time = 53187ms
+Summary for job = job and workload = workload-am completed on Mon Apr 01 15:42:33 PDT 2019 running for 0 Days 0 Hours 0 Minutes 53 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-authenticate            1    4000     36424  100  200      3991     35064         9      1360         0         0         0    109.82/s  109.82/s    9.11ms   99.78%    0.22%    0.00%
+am-logout                  1       0         0   10   20         0         0         0         0         0         0      4000      0.00/s    0.00/s    0.00ms    0.00%    0.00%    0.00%
+am-read-user               1    4000      6018  100  200      4000      6018         0         0         0         0         0    664.67/s  664.67/s    1.50ms  100.00%    0.00%    0.00%
+am-validate                1    4000      6608  100  200      4000      6608         0         0         0         0         0    605.33/s  605.33/s    1.65ms  100.00%    0.00%    0.00%
+Totals                     1   12000     49050               11991     47690         9      1360         0         0      4000   1379.82/s 1379.82/s    4.09ms
+excludes sleep & skipped
+
+ Approximately 19353 tasks completed in 35599ms..... done. Total lapsed time = 35616ms
+Summary for job = job and workload = workload-am completed on Mon Apr 01 15:52:35 PDT 2019 running for 0 Days 0 Hours 0 Minutes 35 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-authenticate            2    4000     51422  100  200      4000     51422         0         0         0         0         0    155.58/s   77.79/s   12.86ms  100.00%    0.00%    0.00%
+am-logout                  2       0         0   10   20         0         0         0         0         0         0      4000      0.00/s    0.00/s    0.00ms    0.00%    0.00%    0.00%
+am-read-user               2    4000      7572  100  200      4000      7572         0         0         0         0         0   1056.52/s  528.26/s    1.89ms  100.00%    0.00%    0.00%
+am-validate                2    4000      8005  100  200      4000      8005         0         0         0         0         0    999.38/s  499.69/s    2.00ms  100.00%    0.00%    0.00%
+Totals                     2   12000     66999               12000     66999         0         0         0         0      4000   2211.47/s 1105.74/s    5.58ms
+excludes sleep & skipped
+
+ Approximately 18325 tasks completed in 30024ms..... done. Total lapsed time = 30031ms
+Summary for job = job and workload = workload-am completed on Mon Apr 01 15:55:36 PDT 2019 running for 0 Days 0 Hours 0 Minutes 30 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-authenticate            3    3999     64566  100  200      3998     64464         1       102         0         0         0    185.81/s   61.94/s   16.15ms   99.97%    0.03%    0.00%
+am-logout                  3       0         0   10   20         0         0         0         0         0         0      3999      0.00/s    0.00/s    0.00ms    0.00%    0.00%    0.00%
+am-read-user               3    3999     10411  100  200      3999     10411         0         0         0         0         0   1152.34/s  384.11/s    2.60ms  100.00%    0.00%    0.00%
+am-validate                3    3999     10816  100  200      3999     10816         0         0         0         0         0   1109.19/s  369.73/s    2.70ms  100.00%    0.00%    0.00%
+Totals                     3   11997     85793               11996     85691         1       102         0         0      3999   2447.34/s  815.78/s    7.15ms
+excludes sleep & skipped
+
+ Approximately 17723 tasks completed in 29929ms..... done. Total lapsed time = 30008ms
+Summary for job = job and workload = workload-am completed on Mon Apr 01 15:57:58 PDT 2019 running for 0 Days 0 Hours 0 Minutes 30 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-authenticate            4    4000     87137  100  200      3996     86439         4       698         0         0         0    183.62/s   45.90/s   21.78ms   99.90%    0.10%    0.00%
+am-logout                  4       0         0   10   20         0         0         0         0         0         0      4000      0.00/s    0.00/s    0.00ms    0.00%    0.00%    0.00%
+am-read-user               4    4000     13629  100  200      4000     13629         0         0         0         0         0   1173.97/s  293.49/s    3.41ms  100.00%    0.00%    0.00%
+am-validate                4    4000     14032  100  200      4000     14032         0         0         0         0         0   1140.25/s  285.06/s    3.51ms  100.00%    0.00%    0.00%
+Totals                     4   12000    114798               11996    114100         4       698         0         0      4000   2497.84/s  624.46/s    9.57ms
+excludes sleep & skipped
+
+------ 1500 Am realms ------
+
+ Approximately 1499 tasks completed in 548744ms..... done. Total lapsed time = 548764ms
+Summary for job = job-realms and workload = workload-am-realm completed on Mon Apr 01 16:09:22 PDT 2019 running for 0 Days 0 Hours 9 Minutes 8 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-amadmin-authenticate    1     500      7762  200  400       500      7762         0         0         0         0         0     64.42/s   64.42/s   15.52ms  100.00%    0.00%    0.00%
+am-amadmin-logout          1     500     15567  200  400       500     15567         0         0         0         0         0     32.12/s   32.12/s   31.13ms  100.00%    0.00%    0.00%
+am-create-realm            1     500    524939 2000 3000       500    524939         0         0         0         0         0      0.95/s    0.95/s 1049.88ms  100.00%    0.00%    0.00%
+Totals                     1    1500    548268                1500    548268         0         0         0         0         0     97.49/s   97.49/s  365.51ms
+excludes sleep & skipped
+
+Approximately 18628 tasks completed in 69823ms..... done. Total lapsed time = 69913ms
+Summary for job = job and workload = workload-am completed on Mon Apr 01 16:15:45 PDT 2019 running for 0 Days 0 Hours 1 Minutes 9 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-authenticate            1    4000     50085  100  200      3967     44851        30      4590         3       644         0     80.84/s   80.84/s   12.37ms   99.18%    0.75%    0.08%
+am-logout                  1       0         0   10   20         0         0         0         0         0         0      4000      0.00/s    0.00/s    0.00ms    0.00%    0.00%    0.00%
+am-read-user               1    3997      7207  100  200      3997      7207         0         0         0         0         3    554.60/s  554.60/s    1.80ms  100.00%    0.00%    0.00%
+am-validate                1    3997      7973  100  200      3997      7973         0         0         0         0         3    501.32/s  501.32/s    1.99ms  100.00%    0.00%    0.00%
+Totals                     1   11994     65265               11961     60031        30      4590         3       644      4006   1136.76/s 1136.76/s    5.39ms
+excludes sleep & skipped
+
+Approximately 17436 tasks completed in 49220ms..... done. Total lapsed time = 49284ms
+Summary for job = job and workload = workload-am completed on Mon Apr 01 16:18:43 PDT 2019 running for 0 Days 0 Hours 0 Minutes 49 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-authenticate            2    4000     72859  100  200      3998     72519         1       106         1       234         0    110.13/s   55.06/s   18.16ms   99.95%    0.03%    0.03%
+am-logout                  2       0         0   10   20         0         0         0         0         0         0      4000      0.00/s    0.00/s    0.00ms    0.00%    0.00%    0.00%
+am-read-user               2    3999     10065  100  200      3999     10065         0         0         0         0         1    794.63/s  397.32/s    2.52ms  100.00%    0.00%    0.00%
+am-validate                2    3999     10585  100  200      3999     10585         0         0         0         0         1    755.60/s  377.80/s    2.65ms  100.00%    0.00%    0.00%
+Totals                     2   11998     93509               11996     93169         1       106         1       234      4002   1660.36/s  830.18/s    7.77ms
+excludes sleep & skipped
+
+ Approximately 16776 tasks completed in 47542ms..... done. Total lapsed time = 47545ms
+Summary for job = job and workload = workload-am completed on Mon Apr 01 16:21:30 PDT 2019 running for 0 Days 0 Hours 0 Minutes 47 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-authenticate            3    3999    106726  100  200      3998    106624         1       102         0         0         0    112.41/s   37.47/s   26.69ms   99.97%    0.03%    0.00%
+am-logout                  3       0         0   10   20         0         0         0         0         0         0      3999      0.00/s    0.00/s    0.00ms    0.00%    0.00%    0.00%
+am-read-user               3    3999     14098  100  200      3999     14098         0         0         0         0         0    850.97/s  283.66/s    3.53ms  100.00%    0.00%    0.00%
+am-validate                3    3999     15154  100  200      3999     15154         0         0         0         0         0    791.67/s  263.89/s    3.79ms  100.00%    0.00%    0.00%
+Totals                     3   11997    135978               11996    135876         1       102         0         0      3999   1755.05/s  585.02/s   11.33ms
+excludes sleep & skipped
+
+ Approximately 16506 tasks completed in 46462ms..... done. Total lapsed time = 46465ms
+
+Summary for job = job and workload = workload-am completed on Mon Apr 01 16:24:26 PDT 2019 running for 0 Days 0 Hours 0 Minutes 46 Seconds:
+Operation               Thds TxTotal  AccmTime  T2E  T2F    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime   Skipped    CbdPsOps   ThrdOps  Avrms/op  Success   Exceed     Fail
+am-authenticate            4    4000    139582  100  200      3971    136322        29      3260         0         0         0    114.63/s   28.66/s   34.90ms   99.28%    0.72%    0.00%
+am-logout                  4       0         0   10   20         0         0         0         0         0         0      4000      0.00/s    0.00/s    0.00ms    0.00%    0.00%    0.00%
+am-read-user               4    4000     19149  100  200      4000     19149         0         0         0         0         0    835.55/s  208.89/s    4.79ms  100.00%    0.00%    0.00%
+am-validate                4    4000     20095  100  200      4000     20095         0         0         0         0         0    796.22/s  199.05/s    5.02ms  100.00%    0.00%    0.00%
+Totals                     4   12000    178826               11971    175566        29      3260         0         0      4000   1746.40/s  436.60/s   14.90ms
+excludes sleep & skipped
+

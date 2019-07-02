@@ -1,0 +1,30 @@
+{
+    "name": "config",
+    "job": "./test/job/job.json",
+    "workload": "./test/workload/",
+    "task": "./test/task/",
+    "BLT-environment": {
+        "$BLT-AMHOST0": "http://am0:8080",
+        "$BLT-REALM-PREFIX": "r"
+    },
+    "BLT-reserved": {
+        "$BLT-RANDOM-NUMBER": "random-long",
+        "$BLT-RANDOMNUMBER0": "random-long",
+        "$BLT-RANDOMNUMBER1": "random-long",
+        "$BLT-RANDOMNUMBER2": "random-long",
+        "$BLT-RANDOMNUMBER3": "random-long",
+        "$BLT-RANDOMNUMBER4": "random-long",
+        "$BLT-RANDOMNUMBER5": "random-long",
+        "$BLT-RANDOMNUMBER6": "random-long",
+        "$BLT-RANDOMNUMBER7": "random-long",
+        "$BLT-RANDOMNUMBER8": "random-long",
+        "$BLT-RANDOMNUMBER9": "random-long",
+        "$BLT-RANDOM-ALPHA-STRING": "Alpha only - not implemented",
+        "$BLT-RANDOM-ALPHANUMERIC-STRING": "Alpha and number - not implemented",
+        "$BLT-THREADID": "threadid-int",
+        "$BLT-INCREMENT": "long",
+        "$BLT-DECREMENT": "long",
+        "$BLT-TOKEN-PAYLOAD": "tokenId",
+        "$BLT-SLEEP": "sleep"
+    }
+}

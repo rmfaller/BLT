@@ -1,0 +1,12 @@
+{
+    "name": "ds-read",
+    "request": "GET",
+    "service-location-port": ["$BLT-DSHOST1"],
+    "header": {
+        "X-OpenIDM-Username": "$BLT-DSADMINID",
+        "X-OpenIDM-Password": "$BLT-DSADMINPASSWORD",
+        "Content-Type": "application/json"
+    },
+    "url-endpoint": "/api/users/",
+    "url-payload": "tuser.$BLT-THREADID.$BLT-INCREMENT"
+}

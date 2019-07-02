@@ -1,0 +1,9 @@
+{
+    "name": "task",
+    "request": "POST",
+    "header": { 
+        "U": "user.$BLT-INCREMENT.$BLT-DECREMENT"
+    },
+    "url-endpoint": "/$BLT-REALM-PREFIX.$BLT-RANDOMNUMBER0.$BLT-RANDOMNUMBER1.$BLT-RANDOMNUMBER2.$BLT-RANDOMNUMBER3/",
+    "url-payload": "$BLT-THREADID"
+}

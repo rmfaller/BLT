@@ -1,15 +1,15 @@
 {
-    "name": "am-validate",
+    "name": "am-logout",
     "request": "POST",
     "header": { 
         "iplanetDirectoryPro": "$BLT-TOKEN-PAYLOAD",
+        "Accept": "application/json",
         "Accept-API-Version": "resource=3.1",
         "X-ForgeRock-Transactionid": "",
-        "Accept": "application/json",
         "Content-Type": "application/json"
     },
-    "url-endpoint": "$BLT-REALM-PREFIX.$BLT-RANDOM-NUMBER/sessions",
-    "url-payload": "?_action=validate",
+    "url-endpoint": "amrealm$BLT-RANDOM-NUMBER/sessions",
+    "url-payload": "?_action=logout",
     "data-payload": {
         "tokenId": "$BLT-TOKEN-PAYLOAD"
     }

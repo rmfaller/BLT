@@ -1,0 +1,13 @@
+{
+    "name": "am-delete-realm",
+    "request": "DELETE",
+    "service-location-port": [
+        "http://am0.example.com:8080"
+    ],
+    "header": {
+        "iplanetDirectoryPro": "$BLT-TOKEN-PAYLOAD",
+        "Accept": "application/json"
+    },
+    "url-endpoint": "/am/json/global-config/realms",
+    "url-payload": "realm-$BLT-REALM-PREFIX-$BLT-INCREMENT"
+}

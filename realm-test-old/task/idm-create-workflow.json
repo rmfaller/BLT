@@ -1,0 +1,34 @@
+{
+    "name": "idm-create-workflow",
+    "request": "POST",
+    "service-location-port": [
+        "http://idm0.example.com:8080"
+    ],
+    "header": {
+        "X-OpenIDM-Username": "user1",
+        "X-OpenIDM-Password": "Welcome1",
+        "Content-Type": "application/json"
+    },
+    "url-endpoint": "/openidm/workflow/processinstance",
+    "url-payload": "?_action=create",
+    "data-payload": {
+        "userName": "user.1",
+        "givenName": "User",
+        "sn": "1",
+        "telephoneNumber": "123-456-7890",
+        "description": "",
+        "password": "AbcD-0123!",
+        "mail": "user.1@example.com",
+        "provisionToXML": "1",
+        "department": "payroll",
+        "jobTitle": "payroll",
+        "description": "",
+        "startDate": "",
+        "endDate": "",
+        "_processDefinitionId": "contractorOnboarding:1:5"
+    }
+}
+
+
+
+ 

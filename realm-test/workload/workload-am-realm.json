@@ -1,0 +1,23 @@
+{
+    "name": "workload-am-realm",
+    "task": [
+        {
+            "name": "am-amadmin-authenticate"
+        },
+        {
+            "name": "am-create-realm",
+            "threshold-to-error": 2000,
+            "threshold-to-fail": 3000,
+            "continue-on-fail": true
+        },
+        {
+            "name": "am-configure-realm"
+        },
+        {
+            "name": "am-delete-default-repo"
+        },
+        {
+            "name": "am-amadmin-logout"
+        }
+    ]
+}

@@ -1,23 +1,23 @@
 {
-    "name": "job",
+    "name": "job-realms",
     "load-generator": "My MacBook Pro",
-    "services-description": "Generates authN traffic across multiple AM realms",
+    "services-description": "Testing BLT",
     "service-location-port": [
         "$BLT-AMHOST0"
      ],
     "_comment-loading-style": "none, roundrobin, random, ha",
     "loading-style": "none", 
-    "threshold-to-error": 1000,
-    "threshold-to-fail": 2000,
+    "minvalue": 0,
+    "maxvalue": 5000,
+    "threshold-to-error": 4000,
+    "threshold-to-fail": 6000,
     "continue-on-fail": true,
     "workload": [
         {
-            "name": "workload-am",
-            "minvalue": 0,
-            "maxvalue": 199,
-            "iteration": 100,
+            "name": "workload-am-realm",
+            "iteration": 5000,
             "start-delay": 0,
-            "threads": 40,
+            "threads": 1,
             "thread-group-size": 0,
             "thread-interval": 1000
         }

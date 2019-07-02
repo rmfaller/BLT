@@ -1,0 +1,11 @@
+{
+    "name": "workload",
+    "minvalue": 0,
+    "maxvalue": 9,
+    "task": [
+        {
+            "name": "task",
+            "write-file": "./bulk-task/test"
+        }
+    ]
+}

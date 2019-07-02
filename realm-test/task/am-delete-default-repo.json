@@ -1,0 +1,15 @@
+{
+    "name": "am-delete-default-repo",
+    "request": "DELETE",
+    "service-location-port": [
+        "$BLT-AMHOST0"
+    ],
+    "header": {
+        "iplanetDirectoryPro": "$BLT-TOKEN-PAYLOAD",
+        "Accept-API-Version": "resource=1.0",
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+    },
+    "url-endpoint": "/am/json/realms/root/realms/",
+    "url-payload": "$BLT-REALM-PREFIX.$BLT-INCREMENT/realm-config/services/id-repositories/LDAPv3ForOpenDS/OpenDJ"
+}

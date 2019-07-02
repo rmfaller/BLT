@@ -1,0 +1,16 @@
+{
+    "name": "am-amadmin-authenticate",
+    "request": "POST",
+    "service-location-port": [
+        "http://am0.example.com:8080"
+    ],
+    "header": { 
+        "X-OpenAM-Username": "$BLT-AMADMINID",
+        "X-OpenAM-Password": "$BLT-AMADMINPASSWORD",
+        "Accept-API-Version": "resource=2.0, protocol=1.0",
+        "Content-Type": "application/json"
+    },
+    "url-endpoint": "/am/json/realms/root/",
+    "url-payload": "authenticate",
+    "data-payload": {}
+}
