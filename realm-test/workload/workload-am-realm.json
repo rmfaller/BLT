@@ -6,9 +6,8 @@
         },
         {
             "name": "am-create-realm",
-            "threshold-to-error": 2000,
-            "threshold-to-fail": 3000,
-            "continue-on-fail": true
+            "threshold-to-error": 5000,
+            "threshold-to-fail": 10000
         },
         {
             "name": "am-configure-realm"

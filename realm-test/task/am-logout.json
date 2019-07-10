@@ -8,7 +8,7 @@
         "X-ForgeRock-Transactionid": "",
         "Content-Type": "application/json"
     },
-    "url-endpoint": "$BLT-REALM-PREFIX.$BLT-RANDOM-NUMBER/sessions",
+    "url-endpoint": "$BLT-REALM-PREFIX.$BLT-INCREMENT/sessions",
     "url-payload": "?_action=logout",
     "data-payload": {
         "tokenId": "$BLT-TOKEN-PAYLOAD"

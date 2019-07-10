@@ -437,19 +437,6 @@ class Worker extends Thread {
                 case "$BLT-RANDOM-NUMBER":
                     tmpstring = tmpstring.replace(ks, randomvalue.toString());
                     break;
-                case "$BLT-RANDOMNUMBER0":
-                case "$BLT-RANDOMNUMBER1":
-                case "$BLT-RANDOMNUMBER2":
-                case "$BLT-RANDOMNUMBER3":
-                case "$BLT-RANDOMNUMBER4":
-                case "$BLT-RANDOMNUMBER5":
-                case "$BLT-RANDOMNUMBER6":
-                case "$BLT-RANDOMNUMBER7":
-                case "$BLT-RANDOMNUMBER8":
-                case "$BLT-RANDOMNUMBER9":
-                    Long rv = (long) (Math.random() * ((long) getLong(0, "maxvalue") + 1));
-                    tmpstring = tmpstring.replace(ks, rv.toString());
-                    break;
                 case "$BLT-TOKEN-PAYLOAD":
                     kv = (String) reserved.get(ks);
                     boolean found = false;

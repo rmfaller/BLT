@@ -8,6 +8,6 @@
         "Accept-API-Version" : "protocol=2.1,resource=3.0",
         "Content-Type": "application/json"
     },
-    "url-endpoint": "$BLT-REALM-PREFIX.$BLT-RANDOM-NUMBER/users",
+    "url-endpoint": "$BLT-REALM-PREFIX.$BLT-INCREMENT/users",
     "url-payload": "?_action=idFromSession"
 }

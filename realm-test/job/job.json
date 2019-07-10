@@ -4,20 +4,20 @@
     "services-description": "Generates authN traffic across multiple AM realms",
     "service-location-port": [
         "$BLT-AMHOST0"
-     ],
+    ],
     "_comment-loading-style": "none, roundrobin, random, ha",
     "loading-style": "none", 
     "threshold-to-error": 1000,
     "threshold-to-fail": 2000,
     "continue-on-fail": true,
+    "minvalue": 0,
+    "maxvalue": 2999,
     "workload": [
         {
             "name": "workload-am",
-            "minvalue": 0,
-            "maxvalue": 199,
-            "iteration": 100,
+            "iteration": 3000,
             "start-delay": 0,
-            "threads": 40,
+            "threads": 16,
             "thread-group-size": 0,
             "thread-interval": 1000
         }

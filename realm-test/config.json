@@ -5,12 +5,9 @@
     "task": "./realm-test/task/",
     "BLT-environment": {
         "$BLT-AMHOST0": "http://frtcam0.example.com:8080/am/json/realms/root/realms/",
-        "$BLT-AMHOST1": "http://am1.example.com:8080",
-        "$BLT-MINVALUE": 0,
-        "$BLT-MAXVALUE": 2000,
         "$BLT-AM-REALM": "am",
         "$BLT-REALM-PREFIX": "r",
-        "$BLT-OU-PREFIX": "amou",
+        "$BLT-OU-PREFIX": "r",
         "$BLT-AMADMINID": "amadmin",
         "$BLT-AMADMINPASSWORD": "password",
         "$BLT-PASSWORD": "password"

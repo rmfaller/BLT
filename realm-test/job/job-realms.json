@@ -5,13 +5,11 @@
     "service-location-port": [
         "$BLT-AMHOST0"
      ],
-    "_comment-loading-style": "none, roundrobin, random, ha",
-    "loading-style": "none", 
     "minvalue": 0,
-    "maxvalue": 5000,
+    "maxvalue": 4999,
     "threshold-to-error": 4000,
     "threshold-to-fail": 6000,
-    "continue-on-fail": true,
+    "continue-on-fail": false,
     "workload": [
         {
             "name": "workload-am-realm",

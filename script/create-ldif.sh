@@ -1,5 +1,5 @@
 #!/bin/bash
-OUPREFIX="amou"
+OUPREFIX="r"
 echo "dn: dc=example,dc=com"
 echo "objectClass: top"
 echo "objectClass: domain"
@@ -11,7 +11,7 @@ echo "objectClass: organizationalUnit"
 echo "ou: People"
 echo ""
 ouloop=0
-while [  $ouloop -lt 10 ]; do
+while [  $ouloop -lt 10000 ]; do
   echo "dn: ou=$OUPREFIX.$ouloop,dc=example,dc=com"
   echo "objectClass: top"
   echo "objectClass: organizationalUnit"
@@ -23,7 +23,7 @@ while [  $ouloop -lt 10 ]; do
   echo "ou: People"
   echo ""
   userloop=0
-  while [  $userloop -lt 10 ]; do
+  while [  $userloop -lt 10000 ]; do
     echo "dn: uid=user.$userloop,ou=People,ou=$OUPREFIX.$ouloop,dc=example,dc=com"
     echo "objectClass: top"
     echo "objectClass: person"
