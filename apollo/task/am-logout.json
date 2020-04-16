@@ -1,0 +1,16 @@
+{
+    "name": "am-logout",
+    "request": "POST",
+    "header": { 
+        "iplanetDirectoryPro": "$BLT-TOKEN-PAYLOAD",
+        "Accept": "application/json",
+        "Accept-API-Version": "resource=3.1",
+        "X-ForgeRock-Transactionid": "",
+        "Content-Type": "application/json"
+    },
+    "url-endpoint": "$BLT-AM-REALM/json/sessions",
+    "url-payload": "?_action=logout",
+    "data-payload": {
+        "tokenId": "$BLT-TOKEN-PAYLOAD"
+    }
+}

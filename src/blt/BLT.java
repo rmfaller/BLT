@@ -74,7 +74,7 @@ public class BLT {
                         break;
                     case "-i":
                     case "--increment":
-                        incrementthread = new Integer(args[i + 1]).intValue();
+                        incrementthread = Integer.valueOf(args[i + 1]).intValue();
                         break;
                     case "-s":
                     case "--summary":
@@ -585,7 +585,7 @@ public class BLT {
                     } else {
                         include = false;
                     }
-                    System.out.print(tasks[t] + "~" + new Integer(ti).toString() + "," + result[i].length + ",");
+                    System.out.print(tasks[t] + "~" + Integer.toString(ti) + "," + result[i].length + ",");
                     long txtotal = 0;
                     long accmtime = 0;
                     long t2e = 0;

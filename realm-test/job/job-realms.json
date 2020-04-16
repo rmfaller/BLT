@@ -6,14 +6,14 @@
         "$BLT-AMHOST0"
      ],
     "minvalue": 0,
-    "maxvalue": 4999,
+    "maxvalue": 499,
     "threshold-to-error": 4000,
     "threshold-to-fail": 6000,
     "continue-on-fail": false,
     "workload": [
         {
-            "name": "workload-am-realm",
-            "iteration": 5000,
+            "name": "workload-am-realm-config",
+            "iteration": 500,
             "start-delay": 0,
             "threads": 1,
             "thread-group-size": 0,

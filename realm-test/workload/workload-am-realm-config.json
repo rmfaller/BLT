@@ -1,0 +1,14 @@
+{
+    "name": "workload-am-realm-config",
+    "task": [
+        {
+            "name": "am-amadmin-authenticate"
+        },
+        {
+            "name": "am-configure-realm"
+        },
+        {
+            "name": "am-amadmin-logout"
+        }
+    ]
+}

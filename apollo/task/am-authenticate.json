@@ -1,0 +1,13 @@
+{
+    "name": "am-authenticate",
+    "request": "POST",
+    "header": { 
+        "X-OpenAM-Username": "amadmin",
+        "X-OpenAM-Password": "$BLT-AMADMINPASSWORD",
+        "cache-control": "no-cache",
+        "Accept-API-Version": "resource=2.0, protocol=1.0",
+        "Content-Type": "application/json"
+    },
+    "url-endpoint": "/auth/json/realms/root/",
+    "url-payload": "authenticate"
+}

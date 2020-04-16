@@ -1,5 +1,5 @@
 {
-    "name": "base-workload",
+    "name": "workload-ds",
     "task": [
         {
             "name": "ds-create-post",
@@ -15,10 +15,7 @@
             "name": "ds-create-put",
             "threshold-to-error": 0,
             "threshold-to-fail": 0,
-            "write-file": "./bulk-task/cleanup"
-        },
-        {
-            "name": "sleep"
+            "write-file": "./bulk-task/creates"
         },
         {
             "name": "ds-read",
@@ -49,7 +46,7 @@
             "name": "ds-delete",
             "threshold-to-error": 0,
             "threshold-to-fail": 0,
-            "read-file": "./bulk-task/cleanup.json"
+            "write-file": "./bulk-task/deletes"
         }
     ]
 }

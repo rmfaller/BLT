@@ -386,7 +386,7 @@ class Worker extends Thread {
                         value = (Long) jobconfig.get(key);
                     } else {
                         if (value == null) {
-                            value = new Long(0);
+                            value = Long.valueOf(0);
                         }
                     }
                 }
@@ -432,6 +432,8 @@ class Worker extends Thread {
         String ks = null;
         String kv = null;
         for (Object key : reserved.keySet()) {
+            boolean found = false;
+            int i = 0;
             ks = (String) key;
             switch (ks) {
                 case "$BLT-RANDOM-NUMBER":
@@ -439,16 +441,34 @@ class Worker extends Thread {
                     break;
                 case "$BLT-TOKEN-PAYLOAD":
                     kv = (String) reserved.get(ks);
-                    boolean found = false;
-                    int i = state.length - 1;
-                    while ((!found) && (i >= 0)) {
+                    found = false;
+//                   i = state.length - 1;
+                    i = 0;
+//                    while ((!found) && (i >= 0)) {
+                    while ((!found) && (i < state.length)) {
                         if (state[i] != null) {
                             if (state[i].containsKey(kv)) {
                                 tmpstring = tmpstring.replace(ks, (String) state[i].get(kv));
                                 found = true;
                             }
                         }
-                        i--;
+//                        i--;
+                        i++;
+                    }
+                    break;
+                case "$BLT-ID-PAYLOAD":
+                    kv = (String) reserved.get(ks);
+                    found = false;
+                    i = 0;
+                    while ((!found) && (i < state.length)) {
+                        if (state[i] != null) {
+                            if (state[i].containsKey(kv)) {
+                                tmpstring = tmpstring.replace(ks, (String) state[i].get(kv));
+//                                System.out.println("TMP = " + tmpstring + " kv = " + kv + " i = " + i + " ks = " + ks + " index = " + index);
+                                found = true;
+                            }
+                        }
+                        i++;
                     }
                     break;
                 case "$BLT-INCREMENT":
@@ -458,7 +478,7 @@ class Worker extends Thread {
                     tmpstring = tmpstring.replace(ks, maxvalue.toString());
                     break;
                 case "$BLT-THREADID":
-                    tmpstring = tmpstring.replace(ks, new Integer(this.threadid).toString());
+                    tmpstring = tmpstring.replace(ks, Integer.toString(this.threadid));
                     break;
                 default:
                     break;

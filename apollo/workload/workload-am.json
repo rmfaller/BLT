@@ -1,0 +1,11 @@
+{
+    "name": "workload-am",
+    "task": [
+        {
+            "name": "am-authenticate"
+        },
+        {
+            "name": "am-logout"
+        }
+    ]
+}

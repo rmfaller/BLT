@@ -1,0 +1,22 @@
+{
+    "name": "base-job",
+    "load-generator": "My MacBook Pro",
+    "services-description": "Testing BLT",
+    "service-location-port": [ "$BLT-FRAAS-IDM-TENANT" ],
+    "loading-style": "none", 
+    "minvalue": 0,
+    "maxvalue": 2000,
+    "threshold-to-error": 200,
+    "threshold-to-fail": 1000,
+    "continue-on-fail": false,
+    "workload": [
+        {
+            "name": "base-workload",
+            "iteration": 10000,
+            "threads": 1,
+            "start-delay": 0,
+            "thread-group-size": 0,
+            "thread-interval": 1000
+        }
+    ]
+}

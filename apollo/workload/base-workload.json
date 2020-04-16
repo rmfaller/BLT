@@ -1,5 +1,5 @@
 {
-    "name": "base-workload",
+    "name": "ibase-workload",
     "task": [
         {
             "name": "ds-create-post",

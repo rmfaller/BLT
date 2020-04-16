@@ -1,0 +1,35 @@
+{
+    "name": "base-config",
+    "job": "./fraas/base-job/base-job.json",
+    "workload": "./fraas/base-workload/",
+    "task": "./fraas/base-task/",
+    "BLT-environment": {
+        "$BLT-FRAAS-AM-TENANT": "https://openam-loadtest.forgeblocks.com",
+        "$BLT-FRAAS-IDM-TENANT": "https://openidm-loadtest.forgeblocks.com",
+        "$BLT-MINVALUE": 0,
+        "$BLT-MAXVALUE": 200000,
+        "$BLT-AM-REALM": "am",
+        "$BLT-AMADMINID": "amadmin",
+        "$BLT-AMADMINPASSWORD": "6CNYa3HRUogOsG4",
+        "$BLT-DSADMINID": "adminuser",
+        "$BLT-DSADMINPASSWORD": "password",
+        "$BLT-IDMADMINID": "openidm-admin",
+        "$BLT-IDMADMINPASSWORD": "5t67P3kRxTK2LEH",
+        "$BLT-IDMUSERID": "user1",
+        "$BLT-IDMUSERPASSWORD": "Welcome1",
+        "$BLT-IDMMANAGERID": "manager1",
+        "$BLT-IDMMANAGERPASSWORD": "Welcome1",
+        "$BLT-PASSWORD": "password"
+    },
+    "BLT-reserved": {
+        "$BLT-RANDOM-NUMBER": "random-long",
+        "$BLT-RANDOM-ALPHA-STRING": "Alpha only - not implemented",
+        "$BLT-RANDOM-ALPHANUMERIC-STRING": "Alpha and number - not implemented",
+        "$BLT-THREADID": "threadid-int",
+        "$BLT-INCREMENT": "long",
+        "$BLT-DECREMENT": "long",
+        "$BLT-TOKEN-PAYLOAD": "tokenId",
+        "$BLT-ID-PAYLOAD": "_id",
+        "$BLT-SLEEP": "sleep"
+    }
+}

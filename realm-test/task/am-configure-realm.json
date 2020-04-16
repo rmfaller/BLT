@@ -45,7 +45,7 @@
         },
         "ldapsettings": {
             "openam-idrepo-ldapv3-heartbeat-interval": 10,
-            "sun-idrepo-ldapv3-config-ldap-server": ["frtcds0.example.com:1389"],
+            "sun-idrepo-ldapv3-config-ldap-server": ["frtclg0.example.com:9389"],
             "sun-idrepo-ldapv3-config-connection_pool_max_size": 10,
             "openam-idrepo-ldapv3-proxied-auth-enabled": false,
             "sun-idrepo-ldapv3-config-authid": "cn=Directory Manager",

@@ -1,0 +1,57 @@
+{
+    "name": "job",
+    "load-generator": "My MacBook Pro",
+    "services-description": "Testing BLT",
+    "service-location-port": [
+        "https://auth-perf.apollosba.com:443"
+    ],
+    "_comment-loading-style": "none, roundrobin, random, ha", 
+    "loading-style": "none", 
+    "minvalue": 0,
+    "maxvalue": 2000,
+    "threshold-to-error": 200,
+    "threshold-to-fail": 1000,
+    "continue-on-fail": true,
+    "workload": [
+        {
+            "name": "workload-am",
+            "iteration": 1,
+            "start-delay": 0,
+            "threads": 1,
+            "thread-group-size": 0,
+            "thread-interval": 1000
+        },
+        {
+            "name": "workload-ds",
+            "iteration": 0,
+            "start-delay": 0,
+            "threads": 0,
+            "thread-group-size": 0,
+            "thread-interval": 1000
+        },
+        {
+            "name": "workload-idm",
+            "iteration": 0,
+            "start-delay": 0,
+            "threads": 0,
+            "thread-group-size": 0,
+            "thread-interval": 1000
+        },
+        {
+            "name": "workload-idm-workflow",
+            "iteration": 0,
+            "start-delay": 0,
+            "threads": 0,
+            "thread-group-size": 0,
+            "thread-interval": 1000
+        },
+        {
+            "name": "workload-ig",
+            "iteration": 0,
+            "start-delay": 0,
+            "threads": 0,
+            "thread-group-size": 0,
+            "thread-interval": 1000
+        }
+    ]
+}

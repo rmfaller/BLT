@@ -1,0 +1,23 @@
+{
+    "name": "base-workload",
+    "task": [{
+            "name": "idm-create-post",
+            "threshold-to-error": 200,
+            "threshold-to-fail": 2000
+        },
+        {
+            "name": "sleep"
+        },
+        {
+            "name": "idm-read",
+            "threshold-to-error": 200,
+            "threshold-to-fail": 2000
+        },
+        {
+            "name": "idm-delete",
+            "threshold-to-error": 100,
+            "threshold-to-fail": 2000,
+            "write-file": "./bulk-task/cleanup"
+        }
+    ]
+}

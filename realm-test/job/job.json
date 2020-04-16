@@ -11,13 +11,13 @@
     "threshold-to-fail": 2000,
     "continue-on-fail": true,
     "minvalue": 0,
-    "maxvalue": 2999,
+    "maxvalue": 499,
     "workload": [
         {
             "name": "workload-am",
-            "iteration": 3000,
+            "iteration": 50000,
             "start-delay": 0,
-            "threads": 16,
+            "threads": 4,
             "thread-group-size": 0,
             "thread-interval": 1000
         }

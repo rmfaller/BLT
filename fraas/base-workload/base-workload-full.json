@@ -2,14 +2,10 @@
     "name": "base-workload",
     "task": [
         {
-            "name": "ds-create-post",
+            "name": "idm-create-post",
             "threshold-to-error": 0,
-            "threshold-to-fail": 0
-        },
-        {
-            "name": "ds-create-put",
-            "threshold-to-error": 0,
-            "threshold-to-fail": 0
+            "threshold-to-fail": 0,
+            "write-file": "./bulk-task/cleanup"
         },
         {
             "name": "ds-create-put",
@@ -22,11 +18,6 @@
         },
         {
             "name": "ds-read",
-            "threshold-to-error": 0,
-            "threshold-to-fail": 0
-        },
-        {
-            "name": "ds-update",
             "threshold-to-error": 0,
             "threshold-to-fail": 0
         },
