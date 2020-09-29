@@ -1,0 +1,25 @@
+{
+    "name": "job",
+    "load-generator": "My MacBook Pro",
+    "services-description": "Testing BLT",
+    "service-location-port": [
+        "http://auslfr80.core.cpa.state.tx.us:9080"
+    ],
+    "_comment-loading-style": "none, roundrobin, random, ha", 
+    "loading-style": "none", 
+    "minvalue": 0,
+    "maxvalue": 2000,
+    "threshold-to-error": 200,
+    "threshold-to-fail": 1000,
+    "continue-on-fail": true,
+    "workload": [
+        {
+            "name": "workload-am",
+            "iteration": 1,
+            "start-delay": 0,
+            "threads": 1,
+            "thread-group-size": 2,
+            "thread-interval": 100
+        }
+    ]
+}

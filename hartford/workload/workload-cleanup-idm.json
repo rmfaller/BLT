@@ -1,0 +1,11 @@
+{
+    "name": "workload-cleanup-idm",
+    "task": [
+        {
+            "name": "idm-delete",
+            "threshold-to-error": 4000,
+            "threshold-to-fail": 6000,
+            "read-file": "./bulk-task/deletes-blt.json"
+        }
+    ]
+}

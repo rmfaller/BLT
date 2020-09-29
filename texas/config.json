@@ -1,0 +1,25 @@
+{
+    "name": "config",
+    "job": "./texas/job/job.json",
+    "workload": "./texas/workload/",
+    "task": "./texas/task/",
+    "BLT-environment": {
+        "$BLT-AMHOST0": "http://auslfr80.core.cpa.state.tx.us:9080",
+        "$BLT-MINVALUE": 0,
+        "$BLT-MAXVALUE": 10000,
+        "$BLT-AM-REALM": "/openam",
+        "$BLT-AMADMINID": "amadmin",
+        "$BLT-AMADMINPASSWORD": "password",
+        "$BLT-PASSWORD": "password"
+    },
+    "BLT-reserved": {
+        "$BLT-RANDOM-NUMBER": "random-long",
+        "$BLT-RANDOM-ALPHA-STRING": "Alpha only - not implemented",
+        "$BLT-RANDOM-ALPHANUMERIC-STRING": "Alpha and number - not implemented",
+        "$BLT-THREADID": "threadid-int",
+        "$BLT-INCREMENT": "long",
+        "$BLT-DECREMENT": "long",
+        "$BLT-TOKEN-PAYLOAD": "tokenId",
+        "$BLT-SLEEP": "sleep"
+    }
+}

@@ -1,0 +1,52 @@
+{
+    "name": "workload-ds",
+    "task": [
+        {
+            "name": "ds-create-post",
+            "threshold-to-error": 0,
+            "threshold-to-fail": 0
+        },
+        {
+            "name": "ds-create-put",
+            "threshold-to-error": 0,
+            "threshold-to-fail": 0
+        },
+        {
+            "name": "ds-create-put",
+            "threshold-to-error": 0,
+            "threshold-to-fail": 0,
+            "write-file": "./bulk-task/creates"
+        },
+        {
+            "name": "ds-read",
+            "threshold-to-error": 0,
+            "threshold-to-fail": 0
+        },
+        {
+            "name": "ds-update",
+            "threshold-to-error": 0,
+            "threshold-to-fail": 0
+        },
+        {
+            "name": "ds-patch",
+            "threshold-to-error": 0,
+            "threshold-to-fail": 0
+        },
+        {
+            "name": "ds-query",
+            "threshold-to-error": 0,
+            "threshold-to-fail": 0
+        },
+        {
+            "name": "ds-delete",
+            "threshold-to-error": 0,
+            "threshold-to-fail": 0
+        },
+        {
+            "name": "ds-delete",
+            "threshold-to-error": 0,
+            "threshold-to-fail": 0,
+            "write-file": "./bulk-task/deletes"
+        }
+    ]
+}

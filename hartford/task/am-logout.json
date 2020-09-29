@@ -1,0 +1,12 @@
+{
+    "name": "am-logout",
+    "request": "POST",
+    "header": { 
+        "iplanetDirectoryPro": "$BLT-TOKEN-PAYLOAD",
+        "Cache-Control": "no-cache",
+        "Accept-API-Version": "resource=3.1, protocol=1.0",
+        "Content-Type": "application/json"
+    },
+    "url-endpoint": "$BLT-AM-REALM/json/realms/root/sessions/",
+    "url-payload": "?_action=logout"
+}

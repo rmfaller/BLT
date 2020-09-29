@@ -1,0 +1,25 @@
+{
+    "name": "config",
+    "job": "./hartford/job/job.json",
+    "workload": "./hartford/workload/",
+    "task": "./hartford/task/",
+    "BLT-environment": {
+        "$BLT-AMHOST0": "http://am.example.com:8080",
+        "$BLT-MINVALUE": 0,
+        "$BLT-MAXVALUE": 10000,
+        "$BLT-AM-REALM": "/am",
+        "$BLT-AMADMINID": "amadmin",
+        "$BLT-AMADMINPASSWORD": "password",
+        "$BLT-PASSWORD": "password"
+    },
+    "BLT-reserved": {
+        "$BLT-RANDOM-NUMBER": "random-long",
+        "$BLT-RANDOM-ALPHA-STRING": "Alpha only - not implemented",
+        "$BLT-RANDOM-ALPHANUMERIC-STRING": "Alpha and number - not implemented",
+        "$BLT-THREADID": "threadid-int",
+        "$BLT-INCREMENT": "long",
+        "$BLT-DECREMENT": "long",
+        "$BLT-TOKEN-PAYLOAD": "tokenId",
+        "$BLT-SLEEP": "sleep"
+    }
+}
