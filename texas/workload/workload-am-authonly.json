@@ -1,0 +1,7 @@
+{
+    "name": "workload-am-authonly",
+    "task": [{
+            "name": "am-authenticate"
+        }
+    ]
+}

@@ -1,0 +1,23 @@
+{
+    "name": "am-create-user",
+    "request": "PUT",
+    "header": { 
+        "iplanetDirectoryPro": "$BLT-TOKEN-PAYLOAD",
+        "Accept": "application/json, text/javascript, */*; q=0.01",
+        "Accept-API-Version": "resource=4.0, protocol=2.1",
+        "If-None-Match": "*",
+        "Content-Type": "application/json"
+    },
+    "url-endpoint": "$BLT-AM-REALM/json/realms/root/realms/salestax/users/",
+    "url-payload": "user.$BLT-INCREMENT",
+    "data-payload": {
+        "userName": "user.$BLT-INCREMENT",
+        "givenName": "user",
+        "sn": "$BLT-INCREMENT",
+        "cn": "User",
+        "telephoneNumber": "123-456-7890",
+        "description": "Managed user object for user.$BLT-INCREMENT",
+        "userPassword": "password",
+        "mail": "user.$BLT-INCREMENT@example.com"
+    }
+}

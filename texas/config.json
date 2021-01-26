@@ -4,10 +4,10 @@
     "workload": "./texas/workload/",
     "task": "./texas/task/",
     "BLT-environment": {
-        "$BLT-AMHOST0": "http://auslfr80.core.cpa.state.tx.us:9080",
+        "$BLT-AMHOST0": "http://u0.example.coms:8080",
         "$BLT-MINVALUE": 0,
         "$BLT-MAXVALUE": 10000,
-        "$BLT-AM-REALM": "/openam",
+        "$BLT-AM-REALM": "/am",
         "$BLT-AMADMINID": "amadmin",
         "$BLT-AMADMINPASSWORD": "password",
         "$BLT-PASSWORD": "password"

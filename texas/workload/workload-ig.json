@@ -1,8 +1,0 @@
-{
-    "name": "workload-ig",
-    "task": [
-        {
-            "name": "sleep"
-        }
-    ]
-}

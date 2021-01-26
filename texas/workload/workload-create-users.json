@@ -1,0 +1,14 @@
+{
+    "name": "workload-create-users",
+    "task": [
+        {
+            "name": "amadmin-authenticate"
+        },
+        {
+            "name": "am-create-user"
+        },
+        {
+            "name": "am-logout"
+        }
+    ]
+}
